@@ -79,8 +79,8 @@ async function validate(dir) {
   await writeFile(join(dir, 'out', 'report.json'), JSON.stringify(report, null, 2));
   await writeImages(dir, images);
   const icon = { pass: '✔', fail: '✘', warn: '!', pending: '…', 'n/a': '-' };
-  log(`\n${report.mesh}  ${report.passed ? 'PASSOU' : 'FALHOU'} nos checks bloqueantes${report.pending.length ? ` (pendente: ${report.pending.join(', ')})` : ''}`);
-  for (const c of report.checks) log(`  ${icon[c.status]} ${c.label.padEnd(18)} ${c.value}${c.blocking ? '' : '  (alerta)'}`);
+  log(`\n${report.mesh}  ${report.passed ? 'PASSED' : 'FAILED'} the blocking checks${report.pending.length ? ` (pending: ${report.pending.join(', ')})` : ''}`);
+  for (const c of report.checks) log(`  ${icon[c.status]} ${c.label.padEnd(18)} ${c.value}${c.blocking ? '' : '  (warning)'}`);
   return { ...ctx, report };
 }
 
@@ -137,7 +137,7 @@ async function render(dir) {
     const refs = [], paired = new Set();
     for (const p of referenceImages(dir, bp)) {
       const name = basename(p);
-      refs.push({ label: `referência: ${name}`, input: p });
+      refs.push({ label: `reference: ${name}`, input: p });
       if (cams[name]) {
         const r = files.find((f) => basename(f).startsWith(`ref-${name.replace(/\.\w+$/, '')}_`));
         if (r) { refs.push({ label: basename(r, '.png'), input: r }); paired.add(r); }
@@ -148,10 +148,10 @@ async function render(dir) {
     const n = Number(basename(out));
     await writeFile(sheet, await contactSheet([...refs, ...renders], {
       columns: Math.min(4, refs.length + renders.length),
-      title: `${bp.meshName} · iteração ${n} · ${stats.triangles} tris · ${stats.size.map((v) => v.toFixed(3)).join(' × ')} m`,
+      title: `${bp.meshName} · iteration ${n} · ${stats.triangles} tris · ${stats.size.map((v) => v.toFixed(3)).join(' × ')} m`,
     }));
     const max = resolveRules(bp).maxIterations;
-    if (n > max) console.warn(`aviso: iteração ${n} passou do teto de ${max} (spec: máximo de 5 por padrão)`);
+    if (n > max) console.warn(`warning: iteration ${n} is past the ceiling of ${max} (spec: 5 by default)`);
     console.log(JSON.stringify({ iteration: out, sheet, stats, files }, null, 2));
   } finally {
     await studio.close();
@@ -163,7 +163,7 @@ async function writePreview(dir, bp) {
   const studio = await openStudio();
   try {
     await studio.load(join(dir, 'out', `${bp.meshName}.glb`));
-    const cells = referenceImages(dir, bp).map((p, i) => ({ label: `referência ${i + 1}`, input: p }));
+    const cells = referenceImages(dir, bp).map((p, i) => ({ label: `reference ${i + 1}`, input: p }));
     for (const view of DEFAULT_VIEWS) cells.push({ label: view, input: await studio.render({ view, width: 512, height: 512 }) });
     await writeFile(join(dir, 'out', 'preview.png'), await contactSheet(cells, { cell: 512, columns: Math.min(4, cells.length), title: bp.meshName }));
   } finally {
@@ -211,10 +211,10 @@ async function exportAsset(dir) {
   report.interchange = reread;
   await writeFile(join(dest, 'report.json'), JSON.stringify(report, null, 2));
   for (const [fmt, r] of Object.entries(reread)) {
-    log(`  ${r.ok ? '✔' : '✘'} ${fmt.toUpperCase()} relido: ${r.triangles}/${r.expectedTriangles} triângulos, ${r.size.join(' × ')} m (esperado ${r.expectedSize.join(' × ')})`);
+    log(`  ${r.ok ? '✔' : '✘'} ${fmt.toUpperCase()} re-read: ${r.triangles}/${r.expectedTriangles} triangles, ${r.size.join(' × ')} m (expected ${r.expectedSize.join(' × ')})`);
   }
   if (!Object.values(reread).every((r) => r.ok)) {
-    console.error(`\nexport falhou: FBX/OBJ relido não confere com o GLB (${dest})`);
+    console.error(`\nexport failed: the re-read FBX/OBJ does not match the GLB (${dest})`);
     process.exit(1);
   }
   // Zip of the same folder, for handing the package over.
@@ -272,9 +272,9 @@ async function batch(names) {
   }
   await mkdir(join(ROOT, 'dist'), { recursive: true });
   await writeFile(join(ROOT, 'dist', 'batch-report.json'), JSON.stringify({ step, generatedAt: new Date().toISOString(), rows }, null, 2));
-  const md = [`# Lote meshsmith (${step})`, '', '| Asset | Estilo | OK | Tempo (s) | Triângulos | FBX/OBJ relidos | Pendências |', '| --- | --- | --- | --- | --- | --- | --- |',
-    ...rows.map((r) => `| ${r.asset} | ${r.style} | ${r.ok ? 'sim' : 'não'} | ${r.seconds} | ${r.triangles ?? '—'} | ${r.interchange ? Object.values(r.interchange).every(Boolean) ? 'ok' : 'falhou' : '—'} | ${[...r.failed, r.error].filter(Boolean).join(', ') || '—'} |`),
-    '', `${rows.filter((r) => r.ok).length}/${rows.length} ok · ${rows.filter((r) => r.style === 'pbr').length} PBR · ${rows.filter((r) => r.style === 'lowpoly').length} low-poly · tempo médio ${(rows.reduce((s, r) => s + r.seconds, 0) / Math.max(1, rows.length)).toFixed(1)} s`];
+  const md = [`# meshsmith batch (${step})`, '', '| Asset | Style | OK | Time (s) | Triangles | FBX/OBJ re-read | Outstanding |', '| --- | --- | --- | --- | --- | --- | --- |',
+    ...rows.map((r) => `| ${r.asset} | ${r.style} | ${r.ok ? 'yes' : 'no'} | ${r.seconds} | ${r.triangles ?? '—'} | ${r.interchange ? Object.values(r.interchange).every(Boolean) ? 'ok' : 'failed' : '—'} | ${[...r.failed, r.error].filter(Boolean).join(', ') || '—'} |`),
+    '', `${rows.filter((r) => r.ok).length}/${rows.length} ok · ${rows.filter((r) => r.style === 'pbr').length} PBR · ${rows.filter((r) => r.style === 'lowpoly').length} low-poly · mean time ${(rows.reduce((s, r) => s + r.seconds, 0) / Math.max(1, rows.length)).toFixed(1)} s`];
   await writeFile(join(ROOT, 'dist', 'batch-report.md'), md.join('\n') + '\n');
   console.log(md.slice(2).join('\n'));
   return rows;

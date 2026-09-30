@@ -1,9 +1,9 @@
 # __NAME__
 
-## Referência
-<!-- Prompt, links ou descrição das imagens em ref/ -->
+## Reference
+<!-- Prompt, links or a description of the images in ref/ -->
 
-## Medidas conhecidas
-<!-- Dimensões reais, se houver (m) -->
+## Known measurements
+<!-- Real-world dimensions, if any (m) -->
 
-## Observações
+## Notes
