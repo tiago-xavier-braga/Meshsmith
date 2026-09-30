@@ -89,7 +89,7 @@ Todo asset sai com dois canais de UV: **UV0** para texturas e **UV1** para light
 1. **Cobertura total:** todo vértice tem UV0; nenhuma face fica sem mapeamento.
 2. **Espaço 0–1:** todas as ilhas ficam dentro de 0–1. A exceção são superfícies com tiling ou trim sheet declaradas no blueprint.
 3. **Sem sobreposição:** 0% de overlap. Só é permitido quando o blueprint marca a peça como `mirror` ou `stack`, e nesse caso o bake usa uma única cópia.
-4. **Seams em lugares certos:** em arestas vivas (≥ 60°) e em áreas pouco visíveis (base, costas, interior). Nunca no meio de uma superfície contínua visível.
+4. **Seams em lugares certos:** em arestas vivas (≥ 60°) e em áreas pouco visíveis (base, costas, interior). Nunca no meio de uma superfície contínua visível. O `studio3d` define os charts (chanfros ficam com a face, faixas fechadas são cortadas na linha de trás) e o xatlas só parametriza e empacota.
 5. **Hard edge = seam:** toda aresta com normal dividida também é seam de UV. Isso evita artefatos no normal map.
 6. **Distorção baixa:** stretch de área e de ângulo ≤ 5% por ilha, medido pelo relatório do xatlas.
 7. **Texel density uniforme:** variação ≤ ±10% entre ilhas do mesmo asset. Faces nunca vistas (fundo encostado no chão) podem ter 25% da densidade.
@@ -105,6 +105,7 @@ Todo asset sai com dois canais de UV: **UV0** para texturas e **UV1** para light
 
 | Resolução da textura | Padding entre ilhas | Margem da borda |
 | --- | --- | --- |
+| 256² | 2 px | 1 px |
 | 512² | 4 px | 2 px |
 | 1024² | 8 px | 4 px |
 | 2048² | 16 px | 8 px |
@@ -122,7 +123,7 @@ Todo asset sai com dois canais de UV: **UV0** para texturas e **UV1** para light
 - **Eixos:** convenção glTF, com +Y para cima e a frente do asset voltada para +Z.
 - **Pivot:** centro da base para props; canto inferior alinhado ao grid para modulares.
 - **Malha limpa:** vértices soldados (weld), sem faces de área zero, sem arestas non-manifold e com normais para fora. Objetos fechados são watertight.
-- **Suavização:** normais divididas por ângulo (padrão de 40°) ou chanfros reais.
+- **Suavização:** normais ponderadas por área e divididas por ângulo (padrão de 50°, para chanfros de 45° ficarem suaves e pegarem luz) ou chanfros reais.
 - **Chanfros:** arestas visíveis têm chanfro de 2 a 5 mm para pegar luz, exceto no estilo low-poly facetado.
 - **Orçamento de triângulos:** prop pequeno 300 a 1.500; prop médio 1.500 a 5.000; prop herói 5.000 a 15.000; módulo de arquitetura 200 a 2.000.
 
