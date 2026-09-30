@@ -1,0 +1,35 @@
+{
+  "iteration": 1,
+  "checklist": {
+    "front": {
+      "silhouette": 2,
+      "proportions": 2,
+      "parts": 2,
+      "materials": 2,
+      "details": 2
+    },
+    "right": {
+      "silhouette": 2,
+      "proportions": 2,
+      "parts": 2,
+      "materials": 2,
+      "details": 2
+    },
+    "top": {
+      "silhouette": 2,
+      "proportions": 2,
+      "parts": 2,
+      "materials": 2,
+      "details": 2
+    },
+    "iso": {
+      "silhouette": 2,
+      "proportions": 2,
+      "parts": 2,
+      "materials": 2,
+      "details": 2
+    }
+  },
+  "differences": [],
+  "notes": "Prompt only. Closes the junction of two walls at 90°; its own 0.1 m grid in plan."
+}

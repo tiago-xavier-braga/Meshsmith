@@ -1,0 +1,19 @@
+{
+  "name": "wood-crate",
+  "meshName": "SM_WoodCrate",
+  "category": "prop-medium",
+  "static": true,
+  "dimensions": { "x": 0.6, "y": 0.6, "z": 0.6 },
+  "reference": { "prompt": "Pine wood crate, 60 cm, vertical corner posts, horizontal boards with a gap between them and cut-out handles on the sides." },
+  "materials": {
+    "wood": { "color": "#b88a55", "roughness": 0.75, "metalness": 0 },
+    "woodDark": { "color": "#8a6238", "roughness": 0.8, "metalness": 0 }
+  },
+  "parts": [
+    { "id": "post", "material": "woodDark" },
+    { "id": "plank", "material": "wood" },
+    { "id": "plank-handle", "material": "wood" },
+    { "id": "lid", "material": "wood" },
+    { "id": "bottom", "material": "wood", "hidden": true }
+  ]
+}

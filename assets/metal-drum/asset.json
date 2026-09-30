@@ -1,0 +1,17 @@
+{
+  "name": "metal-drum",
+  "meshName": "SM_MetalDrum",
+  "category": "prop-medium",
+  "static": true,
+  "dimensions": { "x": 0.584, "y": 0.88, "z": 0.584 },
+  "reference": { "prompt": "200 litre steel drum, blue, with two rolling hoops, beaded rims and two bungs in the lid." },
+  "materials": {
+    "paint": { "color": "#1f4e8c", "roughness": 0.45, "metalness": 0.6 },
+    "steel": { "color": "#9aa0a6", "roughness": 0.35, "metalness": 1 }
+  },
+  "parts": [
+    { "id": "body", "material": "paint", "smoothingAngle": 50 },
+    { "id": "hoop", "material": "paint", "smoothingAngle": 80 },
+    { "id": "bung", "material": "steel" }
+  ]
+}

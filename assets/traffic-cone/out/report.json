@@ -1,0 +1,194 @@
+{
+  "asset": "traffic-cone",
+  "mesh": "SM_TrafficCone",
+  "generatedAt": "2026-09-30T21:40:12.265Z",
+  "passed": true,
+  "readyToExport": true,
+  "blockingFailed": [],
+  "pending": [],
+  "warnings": [],
+  "uv": [
+    {
+      "mesh": "SM_TrafficCone_Mesh",
+      "resolution": 256,
+      "palette": true,
+      "lightmapTexelsPerUnit": 76.13847255706787
+    }
+  ],
+  "iterations": 0,
+  "review": {
+    "iteration": 2,
+    "checklist": {
+      "ref-foto": {
+        "silhouette": 2,
+        "proportions": 2,
+        "parts": 2,
+        "materials": 1,
+        "details": 1
+      },
+      "front": {
+        "silhouette": 2,
+        "proportions": 2,
+        "parts": 2,
+        "materials": 2,
+        "details": 2
+      },
+      "right": {
+        "silhouette": 2,
+        "proportions": 2,
+        "parts": 2,
+        "materials": 2,
+        "details": 2
+      },
+      "top": {
+        "silhouette": 2,
+        "proportions": 2,
+        "parts": 2,
+        "materials": 2,
+        "details": 2
+      },
+      "iso": {
+        "silhouette": 2,
+        "proportions": 2,
+        "parts": 2,
+        "materials": 2,
+        "details": 2
+      }
+    },
+    "notes": "Scaled from the photo (0.55 mm/px, 28\" cone). It1: top too thin and bands too low; it2: broken top with a 4.5 cm radius and bands measured off the photo."
+  },
+  "checks": [
+    {
+      "id": "gltf",
+      "label": "GLB valid",
+      "criterion": "0 errors, 0 warnings",
+      "tool": "glTF-Validator",
+      "blocking": true,
+      "status": "pass",
+      "value": "0 errors, 0 warnings"
+    },
+    {
+      "id": "uv0-present",
+      "label": "UV0 present",
+      "criterion": "100% of vertices",
+      "tool": "meshsmith",
+      "blocking": true,
+      "status": "pass",
+      "value": "100%"
+    },
+    {
+      "id": "palette",
+      "label": "Palette (low-poly)",
+      "criterion": "every face inside its material cell",
+      "tool": "meshsmith",
+      "blocking": true,
+      "status": "pass",
+      "value": "172/172 faces, 2 colours"
+    },
+    {
+      "id": "uv0-overlap",
+      "label": "UV0 overlap",
+      "criterion": "does not apply to the palette",
+      "tool": "meshsmith",
+      "blocking": true,
+      "status": "n/a",
+      "value": "low-poly palette"
+    },
+    {
+      "id": "uv0-range",
+      "label": "UV0 outside 0–1",
+      "criterion": "does not apply to the palette",
+      "tool": "meshsmith",
+      "blocking": true,
+      "status": "n/a",
+      "value": "low-poly palette"
+    },
+    {
+      "id": "uv0-padding",
+      "label": "Padding",
+      "criterion": "does not apply to the palette",
+      "tool": "meshsmith",
+      "blocking": true,
+      "status": "n/a",
+      "value": "low-poly palette"
+    },
+    {
+      "id": "uv1-lightmap",
+      "label": "UV1 lightmap",
+      "criterion": "present, no overlap, padding ≥ 2 texels",
+      "tool": "meshsmith",
+      "blocking": true,
+      "status": "pass",
+      "value": "42 islands, overlap 0 px, min gap > 4 texels @ 128²"
+    },
+    {
+      "id": "mesh",
+      "label": "Mesh",
+      "criterion": "manifold, no zero-area faces, normals facing out",
+      "tool": "meshsmith",
+      "blocking": true,
+      "status": "pass",
+      "value": "4/4 parts watertight, 0 zero-area faces, 0 flipped normals"
+    },
+    {
+      "id": "dimensions",
+      "label": "Dimensions",
+      "criterion": "±2% of the blueprint, pivot base-center",
+      "tool": "meshsmith (bounding box)",
+      "blocking": true,
+      "status": "pass",
+      "value": "0.360 × 0.710 × 0.360 m (deviation x 0.0%, y -0.0%, z 0.0%); pivot ok (base centre XZ 0.000, 0.000; base y 0.0000)"
+    },
+    {
+      "id": "triangles",
+      "label": "Triangles",
+      "criterion": "50–1500 (lowpoly)",
+      "tool": "glTF-Transform inspect",
+      "blocking": true,
+      "status": "pass",
+      "value": "172"
+    },
+    {
+      "id": "textures",
+      "label": "Textures",
+      "criterion": "power of two, at the declared size",
+      "tool": "sharp",
+      "blocking": true,
+      "status": "pass",
+      "value": "1 textures ok"
+    },
+    {
+      "id": "visual",
+      "label": "Visual fidelity",
+      "criterion": "score ≥ 8/10 on every view (checklist: silhouette, proportions, parts, materials, details)",
+      "tool": "Claude (vision)",
+      "blocking": true,
+      "status": "pass",
+      "value": "ref-foto 8, front 10, right 10, top 10, iso 10 (iteration 2)",
+      "details": {
+        "differences": [
+          "Low-poly style: the black grime and the worn bands in the photo become just a darker gradient at the base.",
+          "The reflective bands lack the chequered pattern of the real tape."
+        ]
+      }
+    },
+    {
+      "id": "lods",
+      "label": "LODs",
+      "criterion": "LOD1/LOD2 with fewer triangles than the previous one",
+      "tool": "meshoptimizer",
+      "blocking": false,
+      "status": "n/a",
+      "value": "small asset, no LODs"
+    },
+    {
+      "id": "collision",
+      "label": "Collision",
+      "criterion": "<mesh>_col present",
+      "tool": "meshsmith",
+      "blocking": false,
+      "status": "pass",
+      "value": "hull, 68 triangles"
+    }
+  ]
+}

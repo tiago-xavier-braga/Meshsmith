@@ -1,0 +1,15 @@
+{
+  "iteration": 2,
+  "checklist": {
+    "ref-foto": { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 1 },
+    "front":    { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 1 },
+    "right":    { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 2 },
+    "top":      { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 2 },
+    "iso":      { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 1 }
+  },
+  "differences": [
+    "The label carries procedural text (without the real WATER/SAFEX lettering or the pictograms).",
+    "The wall bracket in the photo is not part of the asset."
+  ],
+  "notes": "Scaled from the photo (Ø18 cm body = 300 px). It1: the label was flat and the wear too heavy; it2: label preset (pseudo-print) and wear 0.15."
+}

@@ -1,0 +1,13 @@
+{
+  "iteration": 3,
+  "checklist": {
+    "front": { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 2 },
+    "right": { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 2 },
+    "top":   { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 1 },
+    "iso":   { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 2 }
+  },
+  "differences": [
+    "Top view: no wood grain on the seat (that arrives with the F4 textures)."
+  ],
+  "notes": "Prompt only (no image). It1: legs splayed the wrong way; it2: feet poked 2 mm through the floor; it3: feet cut flush with a CSG intersect and the blueprint dimensions corrected to the tripod’s real bbox."
+}

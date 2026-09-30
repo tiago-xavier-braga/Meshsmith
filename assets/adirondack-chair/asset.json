@@ -1,0 +1,88 @@
+{
+  "name": "adirondack-chair",
+  "meshName": "SM_AdirondackChair",
+  "category": "lowpoly",
+  "style": "lowpoly",
+  "static": true,
+  "dimensions": {
+    "x": 0.81,
+    "y": 1,
+    "z": 1.04
+  },
+  "reference": {
+    "images": [
+      "photo.jpg"
+    ],
+    "prompt": "Red plastic/painted-wood Adirondack chair: 6-slat fan back with a rounded top leaning backwards, wide flat arms, vertical front legs, side stringers running down to the floor at the back, slatted seat with a curved front.",
+    "cameras": {
+      "photo.jpg": {
+        "position": [
+          2.9,
+          0.62,
+          1.05
+        ],
+        "target": [
+          0,
+          0.45,
+          -0.05
+        ],
+        "fov": 27
+      }
+    }
+  },
+  "materials": {
+    "paint": {
+      "color": "#c9221b",
+      "gradient": "#e64336",
+      "roughness": 0.55,
+      "metalness": 0
+    },
+    "metal": {
+      "color": "#9a9ca0",
+      "roughness": 0.4,
+      "metalness": 1
+    }
+  },
+  "parts": [
+    {
+      "id": "stringer",
+      "material": "paint"
+    },
+    {
+      "id": "leg",
+      "material": "paint"
+    },
+    {
+      "id": "post",
+      "material": "paint"
+    },
+    {
+      "id": "seat",
+      "material": "paint"
+    },
+    {
+      "id": "apron",
+      "material": "paint"
+    },
+    {
+      "id": "back",
+      "material": "paint"
+    },
+    {
+      "id": "rail",
+      "material": "paint"
+    },
+    {
+      "id": "arm",
+      "material": "paint"
+    },
+    {
+      "id": "bracket",
+      "material": "paint"
+    },
+    {
+      "id": "bolt",
+      "material": "metal"
+    }
+  ]
+}

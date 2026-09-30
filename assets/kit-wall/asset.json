@@ -1,0 +1,48 @@
+{
+  "name": "kit-wall",
+  "meshName": "SM_KitWall",
+  "category": "architecture",
+  "style": "pbr",
+  "static": true,
+  "pivot": "grid-corner",
+  "grid": [
+    0.5,
+    0.5,
+    0.1
+  ],
+  "dimensions": {
+    "x": 2,
+    "y": 3,
+    "z": 0.2
+  },
+  "reference": {
+    "images": [],
+    "prompt": "Wall module 2 × 3 m, 20 cm thick, light plaster, wooden skirting on both faces."
+  },
+  "materials": {
+    "plaster": {
+      "color": "#d8d2c6",
+      "roughness": 0.9,
+      "metalness": 0,
+      "preset": "concrete"
+    },
+    "trim": {
+      "color": "#6b4428",
+      "roughness": 0.55,
+      "metalness": 0,
+      "preset": "wood",
+      "rings": 60
+    }
+  },
+  "parts": [
+    {
+      "id": "wall",
+      "material": "plaster",
+      "tiling": 1
+    },
+    {
+      "id": "baseboard",
+      "material": "trim"
+    }
+  ]
+}

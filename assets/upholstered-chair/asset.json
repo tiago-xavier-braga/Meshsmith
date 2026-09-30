@@ -1,0 +1,87 @@
+{
+  "name": "upholstered-chair",
+  "meshName": "SM_UpholsteredChair",
+  "category": "prop-medium",
+  "style": "pbr",
+  "static": true,
+  "dimensions": {
+    "x": 0.45,
+    "y": 0.98,
+    "z": 0.566
+  },
+  "reference": {
+    "images": [
+      "photo.jpg"
+    ],
+    "prompt": "Classic dining chair in dark wood (walnut): turned front legs, curved rear legs that carry on into the back with finials on top, seat and back upholstered in mustard velvet, apron cut in a curve, low stretchers between the legs.",
+    "cameras": {
+      "photo.jpg": {
+        "position": [
+          1.95,
+          0.52,
+          0.3
+        ],
+        "target": [
+          0,
+          0.47,
+          -0.02
+        ],
+        "fov": 33
+      }
+    }
+  },
+  "materials": {
+    "wood": {
+      "color": "#4e2415",
+      "roughness": 0.58,
+      "metalness": 0,
+      "preset": "wood",
+      "rings": 70
+    },
+    "velvet": {
+      "color": "#80520f",
+      "roughness": 0.9,
+      "metalness": 0,
+      "preset": "fabric",
+      "threads": 900
+    }
+  },
+  "parts": [
+    {
+      "id": "front-leg",
+      "material": "wood"
+    },
+    {
+      "id": "block",
+      "material": "wood"
+    },
+    {
+      "id": "back-leg",
+      "material": "wood"
+    },
+    {
+      "id": "finial",
+      "material": "wood"
+    },
+    {
+      "id": "apron",
+      "material": "wood"
+    },
+    {
+      "id": "stretcher",
+      "material": "wood"
+    },
+    {
+      "id": "crest",
+      "material": "wood"
+    },
+    {
+      "id": "seat",
+      "material": "velvet"
+    },
+    {
+      "id": "back-pad",
+      "material": "velvet"
+    }
+  ]
+}

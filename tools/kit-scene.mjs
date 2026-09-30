@@ -1,6 +1,6 @@
 // Assembles already-built kit modules into one GLB to check snapping and tile continuity:
 //   node tools/kit-scene.mjs <out.glb> <layout.json>
-// layout.json: [{ "asset": "kit-parede", "position": [x, y, z], "rotationY": 0 }, ...]
+// layout.json: [{ "asset": "kit-wall", "position": [x, y, z], "rotationY": 0 }, ...]
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { Document, NodeIO } from '@gltf-transform/core';

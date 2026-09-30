@@ -1,0 +1,11 @@
+{
+  "iteration": 2,
+  "checklist": {
+    "front": { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 2 },
+    "right": { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 2 },
+    "top":   { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 2 },
+    "iso":   { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 2 }
+  },
+  "differences": [],
+  "notes": "Low-poly version of wood-stool from the same generator. It1: a 9-sided seat came out 3% short in the bbox; it2: an octagon with vertices on the axes."
+}

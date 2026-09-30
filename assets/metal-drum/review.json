@@ -1,0 +1,37 @@
+{
+  "iteration": 6,
+  "checklist": {
+    "front": {
+      "silhouette": 2,
+      "proportions": 2,
+      "parts": 2,
+      "materials": 2,
+      "details": 1
+    },
+    "right": {
+      "silhouette": 2,
+      "proportions": 2,
+      "parts": 2,
+      "materials": 2,
+      "details": 1
+    },
+    "top": {
+      "silhouette": 2,
+      "proportions": 2,
+      "parts": 2,
+      "materials": 2,
+      "details": 2
+    },
+    "iso": {
+      "silhouette": 2,
+      "proportions": 2,
+      "parts": 2,
+      "materials": 2,
+      "details": 2
+    }
+  },
+  "differences": [
+    "Without the labels, dents or run-off marks a drum in service would have."
+  ],
+  "notes": "Prompt only. Rolling hoops, beads, a recessed lid and two bungs of different sizes."
+}

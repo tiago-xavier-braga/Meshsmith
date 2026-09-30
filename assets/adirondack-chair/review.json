@@ -1,0 +1,14 @@
+{
+  "iteration": 3,
+  "checklist": {
+    "ref-foto": { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 1 },
+    "front":    { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 2 },
+    "right":    { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 2 },
+    "top":      { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 2 },
+    "iso":      { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 2 }
+  },
+  "differences": [
+    "Low-poly style: without the curved ('waterfall') front edge of the seat and without the curved cut of the stringers in the photo."
+  ],
+  "notes": "It1: back too low and no apron; it2: back at 31° with a wider arched top, front apron, taller stringers; it3: photo camera pulled back and dimensions updated."
+}

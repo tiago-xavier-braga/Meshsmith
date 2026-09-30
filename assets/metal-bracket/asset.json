@@ -1,0 +1,15 @@
+{
+  "name": "metal-bracket",
+  "meshName": "SM_MetalBracket",
+  "category": "prop-small",
+  "static": true,
+  "dimensions": { "x": 0.08, "y": 0.12, "z": 0.12 },
+  "reference": { "prompt": "Galvanised steel L bracket, 80 mm wide, 120 mm flanges, 8 mm plate, central triangular gusset and two slotted holes per flange." },
+  "materials": {
+    "steel": { "color": "#b4b9bf", "roughness": 0.4, "metalness": 1 }
+  },
+  "parts": [
+    { "id": "bracket", "material": "steel" },
+    { "id": "gusset", "material": "steel" }
+  ]
+}

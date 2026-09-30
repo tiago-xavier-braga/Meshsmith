@@ -1,0 +1,230 @@
+{
+  "asset": "kit-pillar",
+  "mesh": "SM_KitPillar",
+  "generatedAt": "2026-09-30T21:36:48.961Z",
+  "passed": true,
+  "readyToExport": true,
+  "blockingFailed": [],
+  "pending": [],
+  "warnings": [
+    "triangles"
+  ],
+  "uv": [
+    {
+      "mesh": "SM_KitPillar_Mesh",
+      "texelsPerUnit": 1147.1696853637695,
+      "resolution": 512,
+      "padding": 4,
+      "margin": 2,
+      "lightmapTexelsPerUnit": 83.43173265457153
+    }
+  ],
+  "iterations": 0,
+  "review": {
+    "iteration": 1,
+    "checklist": {
+      "front": {
+        "silhouette": 2,
+        "proportions": 2,
+        "parts": 2,
+        "materials": 2,
+        "details": 2
+      },
+      "right": {
+        "silhouette": 2,
+        "proportions": 2,
+        "parts": 2,
+        "materials": 2,
+        "details": 2
+      },
+      "top": {
+        "silhouette": 2,
+        "proportions": 2,
+        "parts": 2,
+        "materials": 2,
+        "details": 2
+      },
+      "iso": {
+        "silhouette": 2,
+        "proportions": 2,
+        "parts": 2,
+        "materials": 2,
+        "details": 2
+      }
+    },
+    "notes": "Prompt only. Closes the junction of two walls at 90°; its own 0.1 m grid in plan."
+  },
+  "checks": [
+    {
+      "id": "gltf",
+      "label": "GLB valid",
+      "criterion": "0 errors, 0 warnings",
+      "tool": "glTF-Validator",
+      "blocking": true,
+      "status": "pass",
+      "value": "0 errors, 0 warnings"
+    },
+    {
+      "id": "uv0-present",
+      "label": "UV0 present",
+      "criterion": "100% of vertices",
+      "tool": "meshsmith",
+      "blocking": true,
+      "status": "pass",
+      "value": "100%"
+    },
+    {
+      "id": "uv0-overlap",
+      "label": "UV0 overlap",
+      "criterion": "0% (except mirror and stack)",
+      "tool": "meshsmith (rasterisation)",
+      "blocking": true,
+      "status": "pass",
+      "value": "0.000% (0 px)"
+    },
+    {
+      "id": "uv0-range",
+      "label": "UV0 outside 0–1",
+      "criterion": "0 islands (except declared tiling)",
+      "tool": "meshsmith",
+      "blocking": true,
+      "status": "pass",
+      "value": "0 islands"
+    },
+    {
+      "id": "uv0-padding",
+      "label": "Padding",
+      "criterion": "≥ 4 px between islands, ≥ 2 px from the border (512²)",
+      "tool": "meshsmith",
+      "blocking": true,
+      "status": "pass",
+      "value": "min gap > 6 px, min border 3 px"
+    },
+    {
+      "id": "uv0-texel-density",
+      "label": "Texel density",
+      "criterion": "±10% between islands",
+      "tool": "meshsmith",
+      "blocking": false,
+      "status": "pass",
+      "value": "1151 px/m (median), max deviation 0.2%",
+      "details": {
+        "target": 512,
+        "meetsTarget": true,
+        "textureResolution": 512
+      }
+    },
+    {
+      "id": "uv0-distortion",
+      "label": "Distortion",
+      "criterion": "≤ 5% per island",
+      "tool": "meshsmith (UV Jacobian)",
+      "blocking": false,
+      "status": "pass",
+      "value": "worst island 1.1%"
+    },
+    {
+      "id": "uv0-utilization",
+      "label": "Utilisation",
+      "criterion": "≥ 70% of the UV space",
+      "tool": "meshsmith",
+      "blocking": false,
+      "status": "pass",
+      "value": "78.9%"
+    },
+    {
+      "id": "uv0-seams",
+      "label": "Seams",
+      "criterion": "on hard edges or hidden areas",
+      "tool": "meshsmith",
+      "blocking": false,
+      "status": "pass",
+      "value": "0.0% of seam length on visible continuous surface",
+      "details": {
+        "islands": 6
+      }
+    },
+    {
+      "id": "uv1-lightmap",
+      "label": "UV1 lightmap",
+      "criterion": "present, no overlap, padding ≥ 2 texels",
+      "tool": "meshsmith",
+      "blocking": true,
+      "status": "pass",
+      "value": "12 islands, overlap 0 px, min gap > 4 texels @ 128²"
+    },
+    {
+      "id": "mesh",
+      "label": "Mesh",
+      "criterion": "manifold, no zero-area faces, normals facing out",
+      "tool": "meshsmith",
+      "blocking": true,
+      "status": "pass",
+      "value": "2/2 parts watertight, 0 zero-area faces, 0 flipped normals"
+    },
+    {
+      "id": "dimensions",
+      "label": "Dimensions",
+      "criterion": "±2% of the blueprint, pivot grid-corner",
+      "tool": "meshsmith (bounding box)",
+      "blocking": true,
+      "status": "pass",
+      "value": "0.200 × 3.000 × 0.200 m (deviation x 0.0%, y 0.0%, z 0.0%); pivot ok (base centre XZ 0.100, 0.100; base y -0.0000)"
+    },
+    {
+      "id": "grid",
+      "label": "Kit grid",
+      "criterion": "dimensions multiple of 0.1 × 0.5 × 0.1 m (±1 mm)",
+      "tool": "meshsmith",
+      "blocking": true,
+      "status": "pass",
+      "value": "2.00×0.1, 6.00×0.5, 2.00×0.1; sockets: north, south, west, east"
+    },
+    {
+      "id": "triangles",
+      "label": "Triangles",
+      "criterion": "200–2000 (architecture)",
+      "tool": "glTF-Transform inspect",
+      "blocking": true,
+      "status": "warn",
+      "value": "88 (below the minimum, warning only)"
+    },
+    {
+      "id": "textures",
+      "label": "Textures",
+      "criterion": "power of two, at the declared size",
+      "tool": "sharp",
+      "blocking": true,
+      "status": "pass",
+      "value": "6 textures ok"
+    },
+    {
+      "id": "visual",
+      "label": "Visual fidelity",
+      "criterion": "score ≥ 8/10 on every view (checklist: silhouette, proportions, parts, materials, details)",
+      "tool": "Claude (vision)",
+      "blocking": true,
+      "status": "pass",
+      "value": "front 10, right 10, top 10, iso 10 (iteration 1)",
+      "details": {}
+    },
+    {
+      "id": "lods",
+      "label": "LODs",
+      "criterion": "LOD1/LOD2 with fewer triangles than the previous one",
+      "tool": "meshoptimizer",
+      "blocking": false,
+      "status": "n/a",
+      "value": "small asset, no LODs"
+    },
+    {
+      "id": "collision",
+      "label": "Collision",
+      "criterion": "<mesh>_col present",
+      "tool": "meshsmith",
+      "blocking": false,
+      "status": "pass",
+      "value": "hull, 60 triangles"
+    }
+  ]
+}

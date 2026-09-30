@@ -1,0 +1,24 @@
+{
+  "name": "traffic-cone",
+  "meshName": "SM_TrafficCone",
+  "category": "lowpoly",
+  "style": "lowpoly",
+  "static": true,
+  "dimensions": { "x": 0.36, "y": 0.71, "z": 0.36 },
+  "reference": {
+    "images": ["photo.jpg"],
+    "prompt": "Orange 28\" (71 cm) traffic cone, 36 cm square base with rounded corners, two white reflective bands, broken uneven top, grimy at the bottom.",
+    "cameras": {
+      "photo.jpg": { "position": [0.72, 1.22, 1.3], "target": [0, 0.3, 0], "fov": 34 }
+    }
+  },
+  "materials": {
+    "orange": { "color": "#b8401c", "gradient": "#f2622a", "roughness": 0.6, "metalness": 0 },
+    "band": { "color": "#b9b7ad", "gradient": "#dedcd2", "roughness": 0.35, "metalness": 0 }
+  },
+  "parts": [
+    { "id": "base", "material": "orange" },
+    { "id": "cone", "material": "orange" },
+    { "id": "band", "material": "band" }
+  ]
+}

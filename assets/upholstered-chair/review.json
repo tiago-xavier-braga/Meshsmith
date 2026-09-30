@@ -1,0 +1,16 @@
+{
+  "iteration": 4,
+  "checklist": {
+    "ref-foto": { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 1, "details": 1 },
+    "front":    { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 1, "details": 1 },
+    "right":    { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 1 },
+    "top":      { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 2 },
+    "iso":      { "silhouette": 2, "proportions": 2, "parts": 2, "materials": 2, "details": 1 }
+  },
+  "differences": [
+    "The velvet lacks the photo’s sheen: the fabric preset only has a weave.",
+    "The top rail has no scrolled carving; it is a plain arch.",
+    "The seat cushion is more even than the photo’s (without the uneven bulk of the padding)."
+  ],
+  "notes": "It1: the upholstered back sagged (tilt pivot); it2: colours too light, seat too low; it3: walnut and ochre colours, taller cushion; it4: normals/textures checked (the highlight on the front was the studio environment reflecting; roughness 0.58)."
+}

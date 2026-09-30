@@ -8,7 +8,7 @@ import { ROOT } from '../lib/core/asset.js';
 import { openStudio } from '../lib/core/render.js';
 
 const out = process.argv[2] ?? join(ROOT, 'docs', 'media', 'showcase.png');
-const ASSETS = ['extintor-agua', 'cadeira-estofada', 'cadeira-adirondack', 'tambor-metal', 'banco-madeira', 'banco-madeira-lp', 'cone-transito'];
+const ASSETS = ['water-extinguisher', 'upholstered-chair', 'adirondack-chair', 'metal-drum', 'wood-stool', 'wood-stool-lp', 'traffic-cone'];
 const CELL = 420, COLS = 4;
 
 // Inside the project: the studio only serves files under the project root (dist/ is ignored).
