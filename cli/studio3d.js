@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // studio3d <command> <asset> [options]
 //   new       scaffold assets/<asset>/ (ref/, prompt.md, asset.json, asset.js)
+//   batch     [asset ...] [--step validate|export]: many assets, summary in dist/batch-report.{json,md}
 //   build     asset.js -> UV0/UV1 -> out/SM_<Nome>.glb
 //   uv        build + UV layout images (debug/uv0.png, uv1.png) + UV metrics
 //   render    build + views -> iterations/<n>/ + sheet.png (reference beside renders)
@@ -42,6 +43,7 @@ const { positionals, values } = parseArgs({
     dest: { type: 'string', default: DEFAULT_DEST },
     force: { type: 'boolean', default: false },
     quiet: { type: 'boolean', default: false },
+    step: { type: 'string' },
   },
 });
 const [cmd, name] = positionals;
@@ -242,12 +244,52 @@ async function scaffold(name) {
 
 const COMMANDS = { build, uv, render, validate, export: exportAsset };
 
+/**
+ * studio3d batch [asset ...] [--step validate|export]: every asset (all of assets/ when none are
+ * given) runs in its own process; the summary lands in dist/batch-report.{json,md}.
+ */
+async function batch(names) {
+  const { spawnSync } = await import('node:child_process');
+  const step = values.step ?? 'export';
+  const all = names.length ? names : (await readdir(join(ROOT, 'assets'), { withFileTypes: true }))
+    .filter((d) => d.isDirectory() && existsSync(join(ROOT, 'assets', d.name, 'asset.json'))).map((d) => d.name);
+  const rows = [];
+  for (const asset of all) {
+    const t0 = performance.now();
+    const r = spawnSync(process.execPath, [join(ROOT, 'cli', 'studio3d.js'), step, asset, '--quiet'], { encoding: 'utf8' });
+    const reportPath = join(ROOT, step === 'export' ? 'dist' : 'assets', asset, step === 'export' ? '' : 'out', 'report.json');
+    const rep = existsSync(reportPath) ? JSON.parse(await readFile(reportPath, 'utf8')) : null;
+    const tri = rep?.checks.find((c) => c.id === 'triangles')?.value;
+    const bp = JSON.parse(await readFile(join(ROOT, 'assets', asset, 'asset.json'), 'utf8'));
+    rows.push({
+      asset, style: bp.style ?? (bp.category === 'lowpoly' ? 'lowpoly' : 'pbr'), ok: r.status === 0,
+      seconds: +((performance.now() - t0) / 1000).toFixed(1), triangles: tri ?? null,
+      failed: rep ? [...rep.blockingFailed, ...rep.pending] : [], warnings: rep?.warnings ?? [],
+      interchange: rep?.interchange ? Object.fromEntries(Object.entries(rep.interchange).map(([k, v]) => [k, v.ok])) : null,
+      error: r.status === 0 ? null : (r.stderr || r.stdout).trim().split('\n').slice(-2).join(' '),
+    });
+    log(`${r.status === 0 ? '✔' : '✘'} ${asset} (${rows.at(-1).seconds} s)`);
+  }
+  await mkdir(join(ROOT, 'dist'), { recursive: true });
+  await writeFile(join(ROOT, 'dist', 'batch-report.json'), JSON.stringify({ step, generatedAt: new Date().toISOString(), rows }, null, 2));
+  const md = [`# Lote studio3d (${step})`, '', '| Asset | Estilo | OK | Tempo (s) | Triângulos | FBX/OBJ relidos | Pendências |', '| --- | --- | --- | --- | --- | --- | --- |',
+    ...rows.map((r) => `| ${r.asset} | ${r.style} | ${r.ok ? 'sim' : 'não'} | ${r.seconds} | ${r.triangles ?? '—'} | ${r.interchange ? Object.values(r.interchange).every(Boolean) ? 'ok' : 'falhou' : '—'} | ${[...r.failed, r.error].filter(Boolean).join(', ') || '—'} |`),
+    '', `${rows.filter((r) => r.ok).length}/${rows.length} ok · ${rows.filter((r) => r.style === 'pbr').length} PBR · ${rows.filter((r) => r.style === 'lowpoly').length} low-poly · tempo médio ${(rows.reduce((s, r) => s + r.seconds, 0) / Math.max(1, rows.length)).toFixed(1)} s`];
+  await writeFile(join(ROOT, 'dist', 'batch-report.md'), md.join('\n') + '\n');
+  console.log(md.slice(2).join('\n'));
+  return rows;
+}
+
 if (cmd === 'new' && name) {
   await scaffold(name);
   process.exit(0);
 }
+if (cmd === 'batch') {
+  const rows = await batch(positionals.slice(1));
+  process.exit(rows.every((r) => r.ok) ? 0 : 1);
+}
 if (!COMMANDS[cmd] || !name) {
-  console.log(`usage: studio3d <new|${Object.keys(COMMANDS).join('|')}> <asset> [--mode m1,m2] [--views v1,v2] [--size 768] [--dest path] [--force]`);
+  console.log(`usage: studio3d <new|batch|${Object.keys(COMMANDS).join('|')}> <asset> [--mode m1,m2] [--views v1,v2] [--size 768] [--dest path] [--force]`);
   process.exit(cmd ? 1 : 0);
 }
 const result = await COMMANDS[cmd](assetDir(name));

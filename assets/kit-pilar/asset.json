@@ -1,0 +1,48 @@
+{
+  "name": "kit-pilar",
+  "meshName": "SM_KitPilar",
+  "category": "architecture",
+  "style": "pbr",
+  "static": true,
+  "pivot": "grid-corner",
+  "grid": [
+    0.1,
+    0.5,
+    0.1
+  ],
+  "dimensions": {
+    "x": 0.2,
+    "y": 3,
+    "z": 0.2
+  },
+  "reference": {
+    "images": [],
+    "prompt": "Pilar de canto 20 × 20 cm, 3 m de altura, reboco claro com rodapé. Peça de encaixe: grid próprio de 0,1 m no plano."
+  },
+  "materials": {
+    "plaster": {
+      "color": "#d8d2c6",
+      "roughness": 0.9,
+      "metalness": 0,
+      "preset": "concrete"
+    },
+    "trim": {
+      "color": "#6b4428",
+      "roughness": 0.55,
+      "metalness": 0,
+      "preset": "wood",
+      "rings": 60
+    }
+  },
+  "parts": [
+    {
+      "id": "pillar",
+      "material": "plaster",
+      "tiling": 1
+    },
+    {
+      "id": "baseboard",
+      "material": "trim"
+    }
+  ]
+}

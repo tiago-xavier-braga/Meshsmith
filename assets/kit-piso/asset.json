@@ -1,0 +1,49 @@
+{
+  "name": "kit-piso",
+  "meshName": "SM_KitPiso",
+  "category": "architecture",
+  "style": "pbr",
+  "static": true,
+  "pivot": "grid-corner",
+  "grid": [
+    0.5,
+    0.1,
+    0.5
+  ],
+  "dimensions": {
+    "x": 2,
+    "y": 0.1,
+    "z": 2
+  },
+  "reference": {
+    "images": [],
+    "prompt": "Módulo de piso 2 × 2 m, 10 cm de espessura, assoalho de madeira sobre laje."
+  },
+  "materials": {
+    "floor": {
+      "color": "#9c6b41",
+      "roughness": 0.72,
+      "metalness": 0,
+      "preset": "wood",
+      "rings": 45
+    },
+    "plaster": {
+      "color": "#d8d2c6",
+      "roughness": 0.9,
+      "metalness": 0,
+      "preset": "concrete"
+    }
+  },
+  "parts": [
+    {
+      "id": "deck",
+      "material": "floor",
+      "tiling": 1
+    },
+    {
+      "id": "slab",
+      "material": "plaster",
+      "tiling": 1
+    }
+  ]
+}

@@ -16,6 +16,8 @@ export default function build(bp, { parts: P, materials }) {
 ```
 
 - `a.add(id, geometria, { position, rotation (graus XYZ), scale })`: `id` precisa existir em `asset.json → parts`. Repita o id para instâncias (4 pernas = 4 `add('perna', ...)`).
+- `a.socket(nome, [x,y,z], [rx,ry,rz])`: ponto de encaixe `SOCKET_<nome>` (nó vazio no GLB e no FBX); o +Z do socket aponta para fora do módulo.
+- `a.build({ translate: [x,y,z] })`: desloca tudo (por exemplo, para levar o pivot ao centro da base).
 - O material, as flags (`hidden`, `stack`, `mirror`, `tiling`) e o `smoothingAngle` vêm do blueprint.
 - Toda peça declarada precisa ser adicionada pelo menos uma vez.
 - Toda peça é soldada, orientada para fora e recebe normais ponderadas por área, divididas por ângulo (padrão de 50°; `0` = facetado, estilo low-poly).
@@ -61,4 +63,5 @@ Sulcos (boca, painéis) são prismas finos subtraídos da placa.
 - Peças que se tocam podem se interpenetrar; o manifold é checado por peça.
 - Faces nunca vistas (fundo no chão) vão numa peça com `"hidden": true` e recebem 25% da densidade de texel.
 - Instâncias idênticas (4 pés, parafusos) podem usar `"stack": true` e compartilhar UV. Cópias espelhadas usam `"mirror": true`.
-- Superfícies com textura repetida (piso, parede) usam `"tiling": <metros por repetição>`.
+- Superfícies com textura repetida (piso, parede) usam `"tiling": <metros por repetição>`: o material ganha um tile sem costura próprio (`T_<Nome>_<Material>_*`), com UV em escala de mundo. Um material é ou tileado ou do atlas, nunca os dois.
+- Kits modulares: `category: "architecture"`, `pivot: "grid-corner"` e `grid: [x, y, z]`. As dimensões precisam ser múltiplas do grid. Veja `lib/kits/common.js` e `assets/kit-*`; `node tools/kit-scene.mjs <saida.glb> <layout.json>` monta os módulos para conferir o encaixe.

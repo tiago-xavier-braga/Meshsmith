@@ -106,6 +106,10 @@ O export só roda com `readyToExport` (todos os checks bloqueantes ok e `review.
 
 LODs (`_LOD1`, `_LOD2` a 50% e 25%) e o colisor (`_col`, casco convexo) são gerados no build. No blueprint: `lods: [0.5, 0.25] | false`, `collision: "hull" | "box" | false`, e `decal: true` nas peças finas coladas na superfície (rótulos, adesivos), que os LODs não simplificam. A ferramenta nunca escreve em projetos de engine: o usuário copia o pacote. Nunca use `--force` sem o usuário pedir.
 
+## Lote
+
+`node cli/studio3d.js batch [asset ...] [--step validate|export]` roda vários assets (todos de `assets/` se nenhum for passado), cada um num processo, e grava `dist/batch-report.md` e `.json`.
+
 ## Resumo para o usuário
 
 Ao final, informe: iterações usadas, nota por vista, triângulos, resolução e densidade de texel, alertas relevantes, diferenças que restaram e o caminho do pacote exportado.

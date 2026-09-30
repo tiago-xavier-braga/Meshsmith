@@ -1,0 +1,35 @@
+{
+  "iteration": 1,
+  "checklist": {
+    "front": {
+      "silhueta": 2,
+      "proporcoes": 2,
+      "partes": 2,
+      "materiais": 2,
+      "detalhes": 2
+    },
+    "right": {
+      "silhueta": 2,
+      "proporcoes": 2,
+      "partes": 2,
+      "materiais": 2,
+      "detalhes": 2
+    },
+    "top": {
+      "silhueta": 2,
+      "proporcoes": 2,
+      "partes": 2,
+      "materiais": 2,
+      "detalhes": 2
+    },
+    "iso": {
+      "silhueta": 2,
+      "proporcoes": 2,
+      "partes": 2,
+      "materiais": 2,
+      "detalhes": 2
+    }
+  },
+  "differences": [],
+  "notes": "Só prompt. Parede lisa do kit; conferida montada na cena de teste (tools/kit-scene.mjs) com pilar, porta e piso."
+}

@@ -1,0 +1,231 @@
+{
+  "asset": "kit-parede-porta",
+  "mesh": "SM_KitParedePorta",
+  "generatedAt": "2026-09-30T16:09:09.419Z",
+  "passed": true,
+  "readyToExport": true,
+  "blockingFailed": [],
+  "pending": [],
+  "warnings": [
+    "uv0-texel-density",
+    "uv0-distortion"
+  ],
+  "uv": [
+    {
+      "mesh": "SM_KitParedePorta_Mesh",
+      "texelsPerUnit": 502.78754234313965,
+      "resolution": 1024,
+      "padding": 8,
+      "margin": 4,
+      "lightmapTexelsPerUnit": 20.478026568889618
+    }
+  ],
+  "iterations": 0,
+  "review": {
+    "iteration": 1,
+    "checklist": {
+      "front": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 2
+      },
+      "right": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 2
+      },
+      "top": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 2
+      },
+      "iso": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 2
+      }
+    },
+    "notes": "Só prompt. Vão centralizado com batente nas duas faces; rodapé interrompido no vão."
+  },
+  "checks": [
+    {
+      "id": "gltf",
+      "label": "GLB válido",
+      "criterion": "0 erros, 0 warnings",
+      "tool": "glTF-Validator",
+      "blocking": true,
+      "status": "pass",
+      "value": "0 erros, 0 warnings"
+    },
+    {
+      "id": "uv0-present",
+      "label": "UV0 presente",
+      "criterion": "100% dos vértices",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "pass",
+      "value": "100%"
+    },
+    {
+      "id": "uv0-overlap",
+      "label": "UV0 overlap",
+      "criterion": "0% (exceto mirror e stack)",
+      "tool": "studio3d (rasterização)",
+      "blocking": true,
+      "status": "pass",
+      "value": "0.000% (0 px)"
+    },
+    {
+      "id": "uv0-range",
+      "label": "UV0 fora de 0–1",
+      "criterion": "0 ilhas (exceto tiling declarado)",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "pass",
+      "value": "0 ilhas"
+    },
+    {
+      "id": "uv0-padding",
+      "label": "Padding",
+      "criterion": "≥ 8 px entre ilhas, ≥ 4 px da borda (1024²)",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "pass",
+      "value": "gap mín > 10 px, borda mín 5 px"
+    },
+    {
+      "id": "uv0-texel-density",
+      "label": "Texel density",
+      "criterion": "±10% entre ilhas",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "warn",
+      "value": "469 px/m (mediana), desvio máx 12.6%",
+      "details": {
+        "target": 512,
+        "meetsTarget": true,
+        "textureResolution": 1024
+      }
+    },
+    {
+      "id": "uv0-distortion",
+      "label": "Distorção",
+      "criterion": "≤ 5% por ilha",
+      "tool": "studio3d (Jacobiano da UV)",
+      "blocking": false,
+      "status": "warn",
+      "value": "pior ilha 8.2% (16 faixas < 4 px de largura ignoradas)"
+    },
+    {
+      "id": "uv0-utilization",
+      "label": "Aproveitamento",
+      "criterion": "≥ 70% do espaço UV",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "pass",
+      "value": "71.7%"
+    },
+    {
+      "id": "uv0-seams",
+      "label": "Seams",
+      "criterion": "em arestas vivas ou áreas ocultas",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "pass",
+      "value": "0.0% do comprimento de seam em superfície contínua visível",
+      "details": {
+        "islands": 58
+      }
+    },
+    {
+      "id": "uv1-lightmap",
+      "label": "UV1 lightmap",
+      "criterion": "presente, sem overlap, padding ≥ 2 texels",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "pass",
+      "value": "51 ilhas, overlap 0 px, gap mín > 4 texels @ 128²"
+    },
+    {
+      "id": "mesh",
+      "label": "Malha",
+      "criterion": "manifold, sem faces de área zero, normais para fora",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "pass",
+      "value": "8/8 peças watertight, 0 faces área zero, 0 normais invertidas"
+    },
+    {
+      "id": "dimensions",
+      "label": "Dimensões",
+      "criterion": "±2% do blueprint, pivot grid-corner",
+      "tool": "studio3d (bounding box)",
+      "blocking": true,
+      "status": "pass",
+      "value": "2.000 × 3.000 × 0.200 m (desvio x 0.0%, y 0.0%, z 0.0%); pivot ok (centro da base XZ 1.000, 0.100; base y -0.0000)"
+    },
+    {
+      "id": "grid",
+      "label": "Grid do kit",
+      "criterion": "dimensões múltiplas de 0.5 × 0.5 × 0.1 m (±1 mm)",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "pass",
+      "value": "4.00×0.5, 6.00×0.5, 2.00×0.1; sockets: left, right, door"
+    },
+    {
+      "id": "triangles",
+      "label": "Triângulos",
+      "criterion": "200–2000 (architecture)",
+      "tool": "glTF-Transform inspect",
+      "blocking": true,
+      "status": "pass",
+      "value": "376"
+    },
+    {
+      "id": "textures",
+      "label": "Texturas",
+      "criterion": "potência de 2, no tamanho declarado",
+      "tool": "sharp",
+      "blocking": true,
+      "status": "pass",
+      "value": "6 texturas ok"
+    },
+    {
+      "id": "visual",
+      "label": "Fidelidade visual",
+      "criterion": "nota ≥ 8/10 em cada vista (checklist: silhueta, proporcoes, partes, materiais, detalhes)",
+      "tool": "Claude (visão)",
+      "blocking": true,
+      "status": "pass",
+      "value": "front 10, right 10, top 10, iso 10 (iteração 1)",
+      "details": {}
+    },
+    {
+      "id": "lods",
+      "label": "LODs",
+      "criterion": "LOD1/LOD2 com menos triângulos que o anterior",
+      "tool": "meshoptimizer",
+      "blocking": false,
+      "status": "n/a",
+      "value": "asset pequeno, sem LODs"
+    },
+    {
+      "id": "collision",
+      "label": "Colisão",
+      "criterion": "<malha>_col presente",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "pass",
+      "value": "hull, 98 triângulos"
+    }
+  ]
+}
