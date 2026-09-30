@@ -10,22 +10,22 @@ textured, validated and exported for Unity, Godot and Blender.
 > **Status:** roadmap phases F0–F6 done (F3 has 4 of its 5 real references;
 > the optional TripoSR step is not included). Engine import tests (F7) are
 > the last open phase. A personal study project — see the
-> [spec & roadmap](Meshsmith%20-%20Spec%20%26%20Roadmap.md) (in Portuguese)
-> for how it was built, phase by phase.
+> [spec & roadmap](Meshsmith%20-%20Spec%20%26%20Roadmap.md) for how it was
+> built, phase by phase.
 
 ## Examples
 
 Every asset lives in `assets/<name>/` with its blueprint (`asset.json`), its
 generator (`asset.js`) and, when it came from a photo, the reference in `ref/`:
 
-- **From real photos:** `extintor-agua` (water extinguisher),
-  `cadeira-estofada` (upholstered dining chair), `cadeira-adirondack`
-  (low-poly), `cone-transito` (low-poly traffic cone).
-- **From prompts:** `caixa-madeira` (crate), `tambor-metal` (steel drum),
-  `suporte-metalico` (L bracket), `banco-madeira` (stool).
-- **Both styles, one generator:** `banco-madeira` (PBR) and
-  `banco-madeira-lp` (low-poly) share the same `asset.js`.
-- **Modular kit:** `kit-parede`, `kit-parede-porta`, `kit-piso`, `kit-pilar`,
+- **From real photos:** `water-extinguisher`, `upholstered-chair`
+  (a dining chair), `adirondack-chair` (low-poly), `traffic-cone`
+  (low-poly).
+- **From prompts:** `wood-crate`, `metal-drum` (a steel drum),
+  `metal-bracket` (an L bracket), `wood-stool`.
+- **Both styles, one generator:** `wood-stool` (PBR) and
+  `wood-stool-lp` (low-poly) share the same `asset.js`.
+- **Modular kit:** `kit-wall`, `kit-wall-door`, `kit-floor`, `kit-pillar`,
   on a shared grid with snap sockets and seamless tiling textures.
 
 ## Why Meshsmith
@@ -67,16 +67,16 @@ npx playwright install chromium
 
 ```bash
 # Scaffold a new asset (ref/, prompt.md, asset.json, asset.js)
-node cli/meshsmith.js new cadeira-madeira
+node cli/meshsmith.js new wood-chair
 
 # Build + render the comparison sheet (reference photos next to the renders)
-node cli/meshsmith.js render cadeira-madeira
+node cli/meshsmith.js render wood-chair
 
 # Run every check and write out/report.json
-node cli/meshsmith.js validate cadeira-madeira
+node cli/meshsmith.js validate wood-chair
 
-# Package dist/cadeira-madeira/ (GLB, FBX, OBJ, textures, preview, report) + .zip
-node cli/meshsmith.js export cadeira-madeira
+# Package dist/wood-chair/ (GLB, FBX, OBJ, textures, preview, report) + .zip
+node cli/meshsmith.js export wood-chair
 
 # Validate or export many assets at once, summary in dist/batch-report.md
 node cli/meshsmith.js batch --step export
@@ -86,8 +86,8 @@ A blueprint describes the asset; the generator builds it from the part library:
 
 ```json
 {
-  "name": "mesa-lateral",
-  "meshName": "SM_MesaLateral",
+  "name": "side-table",
+  "meshName": "SM_SideTable",
   "category": "prop-medium",
   "style": "pbr",
   "dimensions": { "x": 0.5, "y": 0.55, "z": 0.5 },
@@ -97,7 +97,7 @@ A blueprint describes the asset; the generator builds it from the part library:
 ```
 
 ```js
-// assets/mesa-lateral/asset.js — metres, Y up, front towards +Z, pivot on the base
+// assets/side-table/asset.js — metres, Y up, front towards +Z, pivot on the base
 export default function build(bp, { parts: P, materials }) {
   const a = P.assembly(bp, materials);
   a.add('top', P.bevelBox({ size: [0.5, 0.03, 0.5], bevel: 0.004 }), { position: [0, 0.52, 0] });
@@ -107,8 +107,8 @@ export default function build(bp, { parts: P, materials }) {
 }
 ```
 
-With [Claude Code](https://claude.com/claude-code), the `/modelar-3d` skill
-(`.claude/skills/modelar-3d/`) runs the whole loop: reference, blueprint,
+With [Claude Code](https://claude.com/claude-code), the `/model-3d` skill
+(`.claude/skills/model-3d/`) runs the whole loop: reference, blueprint,
 generator, render-compare iterations, validation and export. The part library
 is documented in [lib/parts/README.md](lib/parts/README.md).
 

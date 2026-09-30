@@ -1,67 +1,67 @@
-# Biblioteca de peças (`parts`)
+# Part library (`parts`)
 
-O `asset.js` recebe `(bp, { THREE, parts: P, materials })` e devolve `P.assembly(...).build()`.
-Unidades em metros, Y para cima, frente em +Z, pivot no centro da base (y = 0).
+`asset.js` receives `(bp, { THREE, parts: P, materials })` and returns `P.assembly(...).build()`.
+Units in metres, Y up, front towards +Z, pivot at the centre of the base (y = 0).
 
-## Montagem
+## Assembly
 
 ```js
 export default function build(bp, { parts: P, materials }) {
   const a = P.assembly(bp, materials);
-  a.add('tampo', P.bevelBox({ size: [1.2, 0.03, 0.6] }), { position: [0, 0.72, 0] });
+  a.add('top', P.bevelBox({ size: [1.2, 0.03, 0.6] }), { position: [0, 0.72, 0] });
   for (const x of [-0.55, 0.55]) for (const z of [-0.25, 0.25])
-    a.add('perna', P.cylinder({ radius: 0.02, height: 0.72 }), { position: [x, 0, z] });
+    a.add('leg', P.cylinder({ radius: 0.02, height: 0.72 }), { position: [x, 0, z] });
   return a.build();
 }
 ```
 
-- `a.add(id, geometria, { position, rotation (graus XYZ), scale })`: `id` precisa existir em `asset.json → parts`. Repita o id para instâncias (4 pernas = 4 `add('perna', ...)`).
-- `a.socket(nome, [x,y,z], [rx,ry,rz])`: ponto de encaixe `SOCKET_<nome>` (nó vazio no GLB e no FBX); o +Z do socket aponta para fora do módulo.
-- `a.build({ translate: [x,y,z] })`: desloca tudo (por exemplo, para levar o pivot ao centro da base).
-- O material, as flags (`hidden`, `stack`, `mirror`, `tiling`) e o `smoothingAngle` vêm do blueprint.
-- Toda peça declarada precisa ser adicionada pelo menos uma vez.
-- Toda peça é soldada, orientada para fora e recebe normais ponderadas por área, divididas por ângulo (padrão de 50°; `0` = facetado, estilo low-poly).
+- `a.add(id, geometry, { position, rotation (degrees XYZ), scale })`: `id` must exist in `asset.json → parts`. Repeat the id for instances (4 legs = 4 `add('leg', ...)`).
+- `a.socket(name, [x,y,z], [rx,ry,rz])`: snap point `SOCKET_<name>` (an empty node in the GLB and the FBX); the socket's +Z points out of the module.
+- `a.build({ translate: [x,y,z] })`: shifts everything (to bring the pivot to the centre of the base, for instance).
+- The material, the flags (`hidden`, `stack`, `mirror`, `tiling`) and `smoothingAngle` come from the blueprint.
+- Every declared part must be added at least once.
+- Every part is welded, oriented outwards and given area-weighted normals, split by angle (50° by default; `0` = faceted, low-poly style).
 
-## Primitivas
+## Primitives
 
-| Função | Parâmetros | Observações |
+| Function | Parameters | Notes |
 | --- | --- | --- |
-| `bevelBox` | `{ size: [x,y,z], bevel = 0.003, segments = 1, origin = 'base' }` | `segments` 1 = chanfro de 45°, >1 = arredondado. `origin: 'center'` centraliza em Y |
-| `cylinder` | `{ radius, height, segments = 24, bevel = 0.003, radiusTop }` | Base em y = 0; `radiusTop` gera tronco de cone |
-| `lathe` | `{ profile: [[r, y], ...], segments = 24, phiStart, phiLength }` | Perfil de baixo para cima; r = 0 nas pontas vira tampa plana |
-| `loft` | `{ sections: [[[x,y,z], ...], ...], capStart = true, capEnd = true }` | Seções fechadas com o mesmo número de pontos; cascas, capacetes, cascos, garrafas |
-| `superellipse` | `{ y, a, front, back = front, n = 2, segments = 48, cx, cz }` | Seção para `loft` no plano XZ: meia-largura `a`, meia-profundidade frente/trás, `n` > 2 mais quadrado |
-| `extrude` | `{ shape: [[x,y],...], holes: [[[x,y],...]], depth, bevel = 0.002, bevelSegments = 1, curveSegments = 12 }` | Contorno no plano XY, extrudado em Z e centrado em Z. Furos em sentido oposto ao contorno |
-| `sweep` | `{ path: [[x,y,z],...], profile?: [[x,y],...], radius = 0.01, radialSegments = 12, segments = 32, closed = false, curve = 'catmullrom' \| 'polyline' }` | Tubos, alças, aros e molduras; as pontas são tampadas se o caminho for aberto |
-| `roundedRect(w, h, r, steps = 4)` | contorno 2D | Para `extrude` (tábuas, placas, furos oblongos) |
-| `circle(r, steps = 24, cx, cy)` | contorno 2D | Furos redondos em `extrude` |
+| `bevelBox` | `{ size: [x,y,z], bevel = 0.003, segments = 1, origin = 'base' }` | `segments` 1 = 45° chamfer, >1 = rounded. `origin: 'center'` centres it in Y |
+| `cylinder` | `{ radius, height, segments = 24, bevel = 0.003, radiusTop }` | Base at y = 0; `radiusTop` gives a truncated cone |
+| `lathe` | `{ profile: [[r, y], ...], segments = 24, phiStart, phiLength }` | Profile from bottom to top; r = 0 at the ends becomes a flat cap |
+| `loft` | `{ sections: [[[x,y,z], ...], ...], capStart = true, capEnd = true }` | Closed sections with the same number of points; shells, helmets, hulls, bottles |
+| `superellipse` | `{ y, a, front, back = front, n = 2, segments = 48, cx, cz }` | A section for `loft` on the XZ plane: half-width `a`, front/back half-depth, `n` > 2 is more square |
+| `extrude` | `{ shape: [[x,y],...], holes: [[[x,y],...]], depth, bevel = 0.002, bevelSegments = 1, curveSegments = 12 }` | Outline on the XY plane, extruded in Z and centred in Z. Holes wind opposite to the outline |
+| `sweep` | `{ path: [[x,y,z],...], profile?: [[x,y],...], radius = 0.01, radialSegments = 12, segments = 32, closed = false, curve = 'catmullrom' \| 'polyline' }` | Tubes, handles, hoops and mouldings; the ends are capped when the path is open |
+| `roundedRect(w, h, r, steps = 4)` | 2D outline | For `extrude` (boards, plates, slotted holes) |
+| `circle(r, steps = 24, cx, cy)` | 2D outline | Round holes in `extrude` |
 
-## Operações
+## Operations
 
-| Função | Uso |
+| Function | Use |
 | --- | --- |
-| `transform(geo, { position, rotation, scale })` | Cópia transformada; escala negativa corrige o winding |
-| `mirror(geo, 'x' \| 'y' \| 'z')` | Espelha pelo plano da origem |
-| `csg(base, 'subtract' \| 'add' \| 'intersect', ...outros)` | Booleanas com manifold-3d (saída sempre watertight). Prefira `extrude` com `holes` para furos em chapas planas: a topologia fica mais limpa |
+| `transform(geo, { position, rotation, scale })` | A transformed copy; a negative scale fixes the winding |
+| `mirror(geo, 'x' \| 'y' \| 'z')` | Mirrors across the plane through the origin |
+| `csg(base, 'subtract' \| 'add' \| 'intersect', ...others)` | Booleans with manifold-3d (the output is always watertight). Prefer `extrude` with `holes` for holes in flat plates: the topology comes out cleaner |
 
-## Placas em superfícies curvas
+## Plates on curved surfaces
 
-Para máscaras, painéis e placas que seguem uma casca, corte uma **camada** da casca com um **prisma** do contorno visto de frente ou de lado:
+For masks, panels and plates that follow a shell, cut a **layer** out of the shell with a **prism** of the outline seen from the front or the side:
 
 ```js
-const shell = (off) => P.loft({ sections: /* superellipses com a+off, front+off, back+off */ });
+const shell = (off) => P.loft({ sections: /* superellipses with a+off, front+off, back+off */ });
 const layer = { outer: shell(0.004), inner: shell(-0.004) };
-const prism = P.transform(P.extrude({ shape: contornoFrente, holes: [olhoD, olhoE], depth: 0.3, bevel: 0 }), { position: [0, 0, 0.17] });
-const placa = P.csg(P.csg(prism, 'intersect', layer.outer), 'subtract', layer.inner);
+const prism = P.transform(P.extrude({ shape: frontOutline, holes: [rightEye, leftEye], depth: 0.3, bevel: 0 }), { position: [0, 0, 0.17] });
+const plate = P.csg(P.csg(prism, 'intersect', layer.outer), 'subtract', layer.inner);
 ```
 
-Sulcos (boca, painéis) são prismas finos subtraídos da placa.
+Grooves (a mouth, panel gaps) are thin prisms subtracted from the plate.
 
-## Dicas de modelagem
+## Modelling tips
 
-- Chanfre toda aresta visível (2 a 5 mm), a não ser no estilo low-poly facetado.
-- Peças que se tocam podem se interpenetrar; o manifold é checado por peça.
-- Faces nunca vistas (fundo no chão) vão numa peça com `"hidden": true` e recebem 25% da densidade de texel.
-- Instâncias idênticas (4 pés, parafusos) podem usar `"stack": true` e compartilhar UV. Cópias espelhadas usam `"mirror": true`.
-- Superfícies com textura repetida (piso, parede) usam `"tiling": <metros por repetição>`: o material ganha um tile sem costura próprio (`T_<Nome>_<Material>_*`), com UV em escala de mundo. Um material é ou tileado ou do atlas, nunca os dois.
-- Kits modulares: `category: "architecture"`, `pivot: "grid-corner"` e `grid: [x, y, z]`. As dimensões precisam ser múltiplas do grid. Veja `lib/kits/common.js` e `assets/kit-*`; `node tools/kit-scene.mjs <saida.glb> <layout.json>` monta os módulos para conferir o encaixe.
+- Chamfer every visible edge (2 to 5 mm), except in the faceted low-poly style.
+- Parts that touch may interpenetrate; the manifold is checked per part.
+- Faces that are never seen (the bottom on the floor) go in a part with `"hidden": true` and get 25% of the texel density.
+- Identical instances (4 feet, screws) can use `"stack": true` and share UVs. Mirrored copies use `"mirror": true`.
+- Surfaces with a repeating texture (floor, wall) use `"tiling": <metres per repeat>`: the material gets its own seamless tile (`T_<Name>_<Material>_*`), with UVs in world scale. A material is either tiled or part of the atlas, never both.
+- Modular kits: `category: "architecture"`, `pivot: "grid-corner"` and `grid: [x, y, z]`. The dimensions must be multiples of the grid. See `lib/kits/common.js` and `assets/kit-*`; `node tools/kit-scene.mjs <output.glb> <layout.json>` assembles the modules so the fit can be checked.

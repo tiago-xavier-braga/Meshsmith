@@ -2,124 +2,124 @@
 
 Sep 28, 2026 · @Tiago Xavier
 
-## Visão e objetivos
+## Vision and goals
 
-O Meshsmith gera modelos 3D prontos para jogo a partir de uma imagem ou de um prompt de referência. O Claude modela em código (Three.js), vê o próprio resultado e refina até ficar fiel à referência. Tudo roda localmente, com ferramentas gratuitas e sem APIs pagas além da licença do Claude.
+Meshsmith generates game-ready 3D models from a reference image or a prompt. Claude models in code (Three.js), looks at its own result and refines it until it is faithful to the reference. Everything runs locally, with free tools and no paid APIs beyond the Claude licence.
 
-Objetivos:
+Goals:
 
-1. **Entrada flexível:** uma ou mais imagens de referência, um prompt de texto, ou os dois juntos.
-2. **Saída game-ready:** malha limpa, UVs abertas seguindo as regras deste documento e materiais PBR.
-3. **Multi-engine e independente:** a ferramenta é um projeto próprio, fora de qualquer engine. Ela gera um pacote padrão (GLB, FBX, OBJ) que importa sem ajustes no Unity, no Godot 4 e no Blender. O teste de import nas engines acontece só na última fase.
-4. **Editável:** cada modelo é um arquivo de código versionável, que pode ser reaberto, ajustado e regenerado.
-5. **Repetível:** o fluxo inteiro dispara com um comando (`/modelar-3d`) e sempre segue as mesmas etapas e validações.
-6. **Dois estilos:** realista (PBR) e low-poly, escolhidos por asset no blueprint.
+1. **Flexible input:** one or more reference images, a text prompt, or both together.
+2. **Game-ready output:** a clean mesh, UVs unwrapped according to the rules in this document, and PBR materials.
+3. **Multi-engine and independent:** the tool is a project of its own, outside any engine. It produces a standard package (GLB, FBX, OBJ) that imports without adjustment into Unity, Godot 4 and Blender. The engine import test only happens in the last phase.
+4. **Editable:** every model is a versionable code file that can be reopened, adjusted and regenerated.
+5. **Repeatable:** the whole flow starts with one command (`/model-3d`) and always follows the same steps and validations.
+6. **Two styles:** realistic (PBR) and low-poly, chosen per asset in the blueprint.
 
-## Escopo
+## Scope
 
-O sistema foca em assets hard-surface e estilizados, onde a modelagem por código gera resultados limpos e melhores que os de geradores de IA. Formas orgânicas realistas ficam fora da v1.
+The system focuses on hard-surface and stylised assets, where modelling in code gives cleaner and better results than AI generators. Realistic organic shapes are out of scope for v1.
 
-| Categoria | v1 | Observação |
+| Category | v1 | Note |
 | --- | --- | --- |
-| Props e objetos (caixas, barris, ferramentas, eletrônicos) | Sim | Caso principal |
-| Móveis e decoração | Sim | Caso principal |
-| Arquitetura e kits modulares (paredes, portas, pisos) | Sim | Grid e snapping definidos no blueprint |
-| Low-poly e estilizado | Sim | Paleta de cores ou atlas de gradiente |
-| Peças técnicas e mecânicas | Sim | Precisão dimensional via blueprint |
-| Veículos estilizados | Parcial | Carroceria simples; curvas complexas limitadas |
-| Vegetação estilizada (árvores, rochas) | Parcial | Procedural com ruído |
-| Personagens, rostos, animais realistas | Não | Possível na F6 com gerador local opcional |
-| Rigging e animação | Não | Fora do escopo |
-| Escultura e detalhe de alta frequência | Não | Simulado via normal map procedural |
+| Props and objects (crates, barrels, tools, electronics) | Yes | The main case |
+| Furniture and decoration | Yes | The main case |
+| Architecture and modular kits (walls, doors, floors) | Yes | Grid and snapping defined in the blueprint |
+| Low-poly and stylised | Yes | Colour palette or gradient atlas |
+| Technical and mechanical parts | Yes | Dimensional accuracy via the blueprint |
+| Stylised vehicles | Partial | Simple bodywork; complex curves limited |
+| Stylised vegetation (trees, rocks) | Partial | Procedural with noise |
+| Characters, faces, realistic animals | No | Possible in F6 with an optional local generator |
+| Rigging and animation | No | Out of scope |
+| Sculpting and high-frequency detail | No | Simulated with a procedural normal map |
 
-Fidelidade esperada: forma, proporções e materiais fiéis à referência. Não é uma réplica fotogramétrica.
+Expected fidelity: shape, proportions and materials faithful to the reference. It is not a photogrammetric replica.
 
-## Estilos visuais
+## Visual styles
 
-Os dois estilos são predominantes e têm o mesmo peso. O blueprint escolhe um por asset (`"style": "pbr" | "lowpoly"`). O gerador pode ler `bp.style` para servir aos dois, e a mesma peça gera as duas versões mudando só o blueprint.
+Both styles are predominant and carry the same weight. The blueprint picks one per asset (`"style": "pbr" | "lowpoly"`). The generator can read `bp.style` to serve both, and the same part produces both versions by changing only the blueprint.
 
-| Aspecto | Realista (PBR) | Low-poly |
+| Aspect | Realistic (PBR) | Low-poly |
 | --- | --- | --- |
-| Geometria | Chanfros de 2 a 5 mm, normais ponderadas e suavizadas até 50° | Facetada (normal por face), sem chanfros, orçamento da categoria `lowpoly` |
-| UV0 | Ilhas únicas via xatlas, texel density da categoria | Paleta: cada face aponta para a célula da cor do seu material (overlap intencional) |
-| Texturas | `BaseColor`, `Normal` (OpenGL) e `ORM`, bake procedural de 512² a 2048² | `T_<Nome>_Palette` de 256², sem normal map |
-| Materiais | Presets procedurais: madeira, metal pintado, metal bruto, plástico, borracha, concreto, tecido | Cores chapadas da paleta, gradiente vertical opcional por material |
-| AO | Bake por raycast no ORM | Não usa (o sombreamento facetado já dá a leitura de forma) |
-| UV1 (lightmap) | xatlas | xatlas (igual ao PBR) |
+| Geometry | 2 to 5 mm chamfers, area-weighted normals smoothed up to 50° | Faceted (per-face normals), no chamfers, the `lowpoly` category's budget |
+| UV0 | Unique islands via xatlas, the category's texel density | Palette: every face points at the cell for its material's colour (overlap on purpose) |
+| Textures | `BaseColor`, `Normal` (OpenGL) and `ORM`, procedural bake from 512² to 2048² | `T_<Name>_Palette` at 256², no normal map |
+| Materials | Procedural presets: wood, painted metal, bare metal, plastic, rubber, concrete, fabric | Flat palette colours, optional vertical gradient per material |
+| AO | Raycast bake into the ORM | Not used (the faceted shading already reads the form) |
+| UV1 (lightmap) | xatlas | xatlas (same as PBR) |
 
-## Arquitetura e pipeline
+## Architecture and pipeline
 
-Cada asset passa por 9 etapas. As etapas 3 a 5 formam um ciclo: o Claude renderiza o modelo, compara-o com a referência e ajusta o código até as diferenças serem aceitáveis (máximo de 5 iterações por padrão).
+Every asset goes through 9 steps. Steps 3 to 5 form a loop: Claude renders the model, compares it against the reference and adjusts the code until the differences are acceptable (5 iterations at most by default).
 
 ```mermaid
 flowchart LR
-    A["1. Referência<br/>imagem, prompt ou ambos<br/>+ medidas, se houver"] --> B["2. Blueprint<br/>Claude lista partes,<br/>medidas e materiais (JSON)"]
-    B --> C["3. Modelagem<br/>código Three.js com<br/>biblioteca de peças"]
-    C --> D["4. Render<br/>4 vistas + câmera igual<br/>à da referência (headless)"]
-    D --> E{"5. Comparação<br/>Claude compara render<br/>e referência, lista erros"}
-    E -- ajustar --> C
-    E -- ok --> F["6. UV unwrap<br/>xatlas + seams, padding<br/>e texel density"]
-    F --> G["7. Materiais<br/>PBR e bake de texturas<br/>albedo, normal, ORM"]
-    G --> H["8. Validação<br/>checks automáticos;<br/>se falhar, volta à etapa"]
-    H --> I["9. Pacote<br/>GLB, FBX e OBJ<br/>em dist/, pronto para as engines"]
+    A["1. Reference<br/>image, prompt or both<br/>+ measurements, if any"] --> B["2. Blueprint<br/>Claude lists parts,<br/>measurements and materials (JSON)"]
+    B --> C["3. Modelling<br/>Three.js code with<br/>the part library"]
+    C --> D["4. Render<br/>4 views + a camera matching<br/>the reference (headless)"]
+    D --> E{"5. Comparison<br/>Claude compares render<br/>and reference, lists errors"}
+    E -- adjust --> C
+    E -- ok --> F["6. UV unwrap<br/>xatlas + seams, padding<br/>and texel density"]
+    F --> G["7. Materials<br/>PBR and texture bake<br/>albedo, normal, ORM"]
+    G --> H["8. Validation<br/>automatic checks;<br/>on failure, back to the step"]
+    H --> I["9. Package<br/>GLB, FBX and OBJ<br/>in dist/, ready for the engines"]
 ```
 
-Peças principais:
+The main pieces:
 
-- **Blueprint (`asset.json`):** descrição estruturada do asset: partes, dimensões em metros, materiais, orçamento de triângulos e engine-alvo. É o contrato entre a análise e a modelagem.
-- **Gerador (`asset.js`):** módulo Three.js que lê o blueprint e constrói a cena. Usa uma biblioteca interna de peças (caixa chanfrada, cilindro, lathe, extrude, sweep, booleanas).
-- **Estúdio headless:** página Three.js aberta via Playwright ou pelo browser do Claude. Renderiza as vistas de comparação e a textura de checker de UV.
-- **CLI `meshsmith`:** comandos `build`, `render`, `uv`, `validate` e `export`, que o Claude chama em sequência.
-- **Skill `/modelar-3d`:** orquestra o fluxo e registra cada iteração no relatório do asset.
+- **Blueprint (`asset.json`):** a structured description of the asset: parts, dimensions in metres, materials, triangle budget and target engine. It is the contract between analysis and modelling.
+- **Generator (`asset.js`):** a Three.js module that reads the blueprint and builds the scene. It uses an internal part library (bevelled box, cylinder, lathe, extrude, sweep, booleans).
+- **Headless studio:** a Three.js page opened through Playwright or through Claude's browser. It renders the comparison views and the UV checker texture.
+- **The `meshsmith` CLI:** the commands `build`, `render`, `uv`, `validate` and `export`, which Claude calls in sequence.
+- **The `/model-3d` skill:** orchestrates the flow and records every iteration in the asset's report.
 
-## Stack de ferramentas
+## Tool stack
 
-Todas as ferramentas são gratuitas e open source e rodam em Node.js (a v24 já está instalada). Nenhuma exige Python nem conta em serviço externo.
+Every tool is free and open source and runs on Node.js (v24 is already installed). None of them needs Python or an account on an external service.
 
-| Ferramenta | Função no pipeline | Licença | Fase |
+| Tool | Role in the pipeline | Licence | Phase |
 | --- | --- | --- | --- |
-| Node.js 24 | Runtime da CLI `meshsmith` | MIT | 0 |
-| Three.js | Modelagem, render, GLTFExporter, OBJExporter | MIT | 0 |
-| Playwright | Browser headless para render WebGL e screenshots | Apache-2.0 | 0 |
-| manifold-3d | Operações booleanas (furos, recortes, uniões) com saída sempre watertight | Apache-2.0 | 1 |
-| three-mesh-bvh | Raycast rápido para bake de AO e checagens | MIT | 4 |
-| mikktspace (WASM) | Tangentes MikkTSpace iguais às das engines, para o normal map | MIT | 4 |
-| xatlas (build WASM) | UV unwrap, empacotamento e UV2 de lightmap | MIT | 2 |
-| glTF-Transform | Weld, dedup, tangentes, compressão e inspeção de GLB | MIT | 2 |
-| Khronos glTF-Validator | Validação formal do GLB exportado | Apache-2.0 | 2 |
-| sharp | Redimensionar e converter texturas (PNG, WebP, KTX2 via toktx) | Apache-2.0 | 4 |
-| meshoptimizer | Simplificação para LODs | MIT | 5 |
-| assimpjs | Releitura do FBX e do OBJ exportados (verificação automática); o assimp só importa FBX | BSD-3 | 5 |
-| meshsmith (writer próprio) | Export FBX binário 7.4 e OBJ/MTL | — | 5 |
-| Blender CLI (opcional) | Fallback headless para FBX, se o writer próprio falhar em alguma engine | GPL | 7 |
-| TripoSR local (opcional) | Malha-base para formas orgânicas, na RTX 3060 | MIT | 6 |
+| Node.js 24 | Runtime for the `meshsmith` CLI | MIT | 0 |
+| Three.js | Modelling, rendering, GLTFExporter, OBJExporter | MIT | 0 |
+| Playwright | Headless browser for WebGL rendering and screenshots | Apache-2.0 | 0 |
+| manifold-3d | Boolean operations (holes, cut-outs, unions) with always-watertight output | Apache-2.0 | 1 |
+| three-mesh-bvh | Fast raycasting for the AO bake and for checks | MIT | 4 |
+| mikktspace (WASM) | MikkTSpace tangents matching the engines', for the normal map | MIT | 4 |
+| xatlas (WASM build) | UV unwrap, packing and lightmap UV2 | MIT | 2 |
+| glTF-Transform | Weld, dedup, tangents, compression and GLB inspection | MIT | 2 |
+| Khronos glTF-Validator | Formal validation of the exported GLB | Apache-2.0 | 2 |
+| sharp | Resizing and converting textures (PNG, WebP, KTX2 via toktx) | Apache-2.0 | 4 |
+| meshoptimizer | Simplification for LODs | MIT | 5 |
+| assimpjs | Re-reading the exported FBX and OBJ (automatic verification); assimp only imports FBX | BSD-3 | 5 |
+| meshsmith (own writer) | Binary FBX 7.4 and OBJ/MTL export | — | 5 |
+| Blender CLI (optional) | Headless fallback for FBX, should the own writer fail in some engine | GPL | 7 |
+| Local TripoSR (optional) | A base mesh for organic shapes, on the RTX 3060 | MIT | 6 |
 
-No lado das engines, o Unity importa GLB com o pacote gratuito **glTFast**; o Godot 4 e o Blender importam GLB nativamente.
+On the engine side, Unity imports GLB with the free **glTFast** package; Godot 4 and Blender import GLB natively.
 
-## Regras de UV e topologia
+## UV and topology rules
 
-Todo asset sai com dois canais de UV: **UV0** para texturas e **UV1** para lightmap. Ambos são gerados e validados automaticamente. Os valores abaixo são padrões e podem ser sobrescritos no blueprint de cada asset.
+Every asset ships with two UV channels: **UV0** for textures and **UV1** for the lightmap. Both are generated and validated automatically. The values below are defaults and can be overridden in each asset's blueprint.
 
-### UV0: texturas
+### UV0: textures
 
-1. **Cobertura total:** todo vértice tem UV0; nenhuma face fica sem mapeamento.
-2. **Espaço 0–1:** todas as ilhas ficam dentro de 0–1. A exceção são superfícies com tiling ou trim sheet declaradas no blueprint.
-3. **Sem sobreposição:** 0% de overlap. Só é permitido quando o blueprint marca a peça como `mirror` ou `stack`, e nesse caso o bake usa uma única cópia.
-4. **Seams em lugares certos:** em arestas vivas (≥ 60°) e em áreas pouco visíveis (base, costas, interior). Nunca no meio de uma superfície contínua visível. O `meshsmith` define os charts (chanfros ficam com a face, faixas fechadas são cortadas na linha de trás) e o xatlas só parametriza e empacota.
-5. **Hard edge = seam:** toda aresta com normal dividida também é seam de UV. Isso evita artefatos no normal map.
-6. **Distorção baixa:** stretch de área e de ângulo ≤ 5% por ilha, medido pelo relatório do xatlas.
-7. **Texel density uniforme:** variação ≤ ±10% entre ilhas do mesmo asset. Faces nunca vistas (fundo encostado no chão) podem ter 25% da densidade.
-8. **Orientação:** ilhas retangulares ficam alinhadas a U ou V; madeira segue o veio; textos e logos ficam na direção de leitura.
-9. **Aproveitamento:** as ilhas ocupam ≥ 70% do espaço UV.
+1. **Full coverage:** every vertex has a UV0; no face is left unmapped.
+2. **The 0–1 space:** every island sits inside 0–1. The exception is surfaces with tiling or a trim sheet declared in the blueprint.
+3. **No overlap:** 0% overlap. It is only allowed when the blueprint marks the part as `mirror` or `stack`, and in that case the bake uses a single copy.
+4. **Seams in the right places:** on hard edges (≥ 60°) and in barely visible areas (the base, the back, the inside). Never in the middle of a visible continuous surface. `meshsmith` defines the charts (chamfers stay with their face, closed bands are cut along the back line) and xatlas only parameterises and packs.
+5. **Hard edge = seam:** every edge with split normals is also a UV seam. That avoids normal-map artefacts.
+6. **Low distortion:** area and angle stretch ≤ 5% per island, measured from xatlas' report.
+7. **Uniform texel density:** variation ≤ ±10% between islands of the same asset. Faces that are never seen (a bottom resting on the floor) may have 25% of the density.
+8. **Orientation:** rectangular islands stay aligned to U or V; wood follows the grain; text and logos sit in reading direction.
+9. **Utilisation:** the islands take up ≥ 70% of the UV space.
 
-| Categoria | Texel density | Textura típica |
+| Category | Texel density | Typical texture |
 | --- | --- | --- |
-| Prop pequeno ou médio | 512 px/m | 1024² |
-| Prop herói (close-up) | 1024 px/m | 2048² |
-| Arquitetura e modulares | 512 px/m com tiling | 1024² tileável |
-| Low-poly estilizado | Atlas de paleta (células de cor) | 256² a 512² |
+| Small or medium prop | 512 px/m | 1024² |
+| Hero prop (close-up) | 1024 px/m | 2048² |
+| Architecture and modulars | 512 px/m with tiling | 1024² tileable |
+| Stylised low-poly | Palette atlas (colour cells) | 256² to 512² |
 
-| Resolução da textura | Padding entre ilhas | Margem da borda |
+| Texture resolution | Padding between islands | Border margin |
 | --- | --- | --- |
 | 256² | 2 px | 1 px |
 | 512² | 4 px | 2 px |
@@ -129,145 +129,145 @@ Todo asset sai com dois canais de UV: **UV0** para texturas e **UV1** para light
 
 ### UV1: lightmap
 
-- Gerado pelo xatlas em todo asset marcado como `static` (arquitetura e props fixos).
-- Sem sobreposição, dentro de 0–1 e com padding ≥ 2 texels na resolução de lightmap declarada (padrão de 128² por asset).
-- Exportado como `TEXCOORD_1` no GLB. O Unity lê como canal UV1 (`Mesh.uv2`), o Godot como UV2 e o Blender como segundo UV map.
+- Generated by xatlas on every asset marked `static` (architecture and fixed props).
+- No overlap, inside 0–1 and with padding ≥ 2 texels at the declared lightmap resolution (128² per asset by default).
+- Exported as `TEXCOORD_1` in the GLB. Unity reads it as the UV1 channel (`Mesh.uv2`), Godot as UV2 and Blender as the second UV map.
 
-### Topologia e escala
+### Topology and scale
 
-- **Escala real:** 1 unidade = 1 metro, com dimensões dentro de ±2% do blueprint.
-- **Eixos:** convenção glTF, com +Y para cima e a frente do asset voltada para +Z.
-- **Pivot:** centro da base para props; canto inferior alinhado ao grid para modulares.
-- **Malha limpa:** vértices soldados (weld), sem faces de área zero, sem arestas non-manifold e com normais para fora. Objetos fechados são watertight.
-- **Suavização:** normais ponderadas por área e divididas por ângulo (padrão de 50°, para chanfros de 45° ficarem suaves e pegarem luz) ou chanfros reais.
-- **Chanfros:** arestas visíveis têm chanfro de 2 a 5 mm para pegar luz, exceto no estilo low-poly facetado.
-- **Orçamento de triângulos:** prop pequeno 300 a 1.500; prop médio 1.500 a 5.000; prop herói 5.000 a 15.000; módulo de arquitetura 200 a 2.000.
+- **Real-world scale:** 1 unit = 1 metre, with dimensions within ±2% of the blueprint.
+- **Axes:** the glTF convention, with +Y up and the front of the asset facing +Z.
+- **Pivot:** the centre of the base for props; the bottom corner aligned to the grid for modulars.
+- **Clean mesh:** welded vertices, no zero-area faces, no non-manifold edges and normals facing out. Closed objects are watertight.
+- **Smoothing:** area-weighted normals split by angle (50° by default, so 45° chamfers stay smooth and catch the light) or real chamfers.
+- **Chamfers:** visible edges get a 2 to 5 mm chamfer to catch the light, except in the faceted low-poly style.
+- **Triangle budget:** small prop 300 to 1,500; medium prop 1,500 to 5,000; hero prop 5,000 to 15,000; architecture module 200 to 2,000.
 
-## Export por engine
+## Export per engine
 
-O GLB é o formato mestre: um único arquivo abre corretamente nas três engines. O FBX e o OBJ são derivados dele, para pipelines que ainda os exigem. A ferramenta não escreve em projetos de engine: ela gera o pacote em `dist/<nome>/` (e um `.zip`), e quem usa copia para o projeto. Os scripts de import do lado da engine (LODGroup e colliders no Unity) ficam em `unity/com.meshsmith.import` e são testados na F7.
+The GLB is the master format: a single file opens correctly in all three engines. The FBX and the OBJ are derived from it, for pipelines that still require them. The tool does not write into engine projects: it produces the package in `dist/<name>/` (plus a `.zip`), and whoever uses it copies that into their project. The engine-side import scripts (LODGroup and colliders in Unity) live in `unity/com.meshsmith.import` and are tested in F7.
 
-| Aspecto | Unity | Godot 4 | Blender |
+| Aspect | Unity | Godot 4 | Blender |
 | --- | --- | --- | --- |
-| Formato principal | FBX (binary), padrão da equipe | GLB nativo | GLB nativo |
-| Formato alternativo | GLB via glTFast | — | FBX, OBJ |
-| Material | URP Lit (convertido pelo glTFast) | StandardMaterial3D | Principled BSDF |
-| UV de lightmap | Canal UV1 (`TEXCOORD_1`) | UV2 (`TEXCOORD_1`) | Segundo UV map |
-| Colisão | Malha `<nome>_col` vira MeshCollider via script de import | Sufixo `-col` ou `-colonly` no nó (hint nativo) | Objeto separado `<nome>_col` |
-| LODs | Nós `_LOD0` a `_LOD2` viram LODGroup via script de import | Nós `_LOD` separados, ou LOD automático do importador | Objetos separados por LOD |
+| Main format | FBX (binary), the team's standard | GLB natively | GLB natively |
+| Alternative format | GLB via glTFast | — | FBX, OBJ |
+| Material | URP Lit (converted by glTFast) | StandardMaterial3D | Principled BSDF |
+| Lightmap UV | The UV1 channel (`TEXCOORD_1`) | UV2 (`TEXCOORD_1`) | The second UV map |
+| Collision | The `<name>_col` mesh becomes a MeshCollider through the import script | The `-col` or `-colonly` suffix on the node (a native hint) | A separate `<name>_col` object |
+| LODs | The `_LOD0` to `_LOD2` nodes become a LODGroup through the import script | Separate `_LOD` nodes, or the importer's automatic LOD | Separate objects per LOD |
 
-Pacote gerado por asset (`dist/<nome>/`):
+The package produced per asset (`dist/<name>/`):
 
-- `SM_<Nome>.glb`, com texturas embutidas
-- `SM_<Nome>.fbx` (binário 7.4, com UV1 e LODs) e `SM_<Nome>.obj` + `.mtl` (só LOD0 e colisor)
-- Dentro do GLB e do FBX: `SM_<Nome>_LOD0` a `_LOD2` (a partir de 600 triângulos) e `SM_<Nome>_col` (casco convexo, ≤ 256 triângulos)
-- `textures/`, com PNGs soltos: `T_<Nome>_BaseColor`, `T_<Nome>_Normal` (OpenGL, Y+) e `T_<Nome>_ORM` (R = AO, G = roughness, B = metallic). No low-poly, só `T_<Nome>_Palette`
-- `preview.png`: as quatro vistas lado a lado com a referência
-- `report.json`: resultado de todas as validações
+- `SM_<Name>.glb`, with the textures embedded
+- `SM_<Name>.fbx` (binary 7.4, with UV1 and LODs) and `SM_<Name>.obj` + `.mtl` (LOD0 and the collider only)
+- Inside the GLB and the FBX: `SM_<Name>_LOD0` to `_LOD2` (from 600 triangles up) and `SM_<Name>_col` (a convex hull, ≤ 256 triangles)
+- `textures/`, with loose PNGs: `T_<Name>_BaseColor`, `T_<Name>_Normal` (OpenGL, Y+) and `T_<Name>_ORM` (R = AO, G = roughness, B = metallic). In low-poly, only `T_<Name>_Palette`
+- `preview.png`: the four views side by side with the reference
+- `report.json`: the result of every validation
 
-No Unity, o normal map OpenGL (Y+) é o padrão. No Godot e no Blender também, então nenhuma engine precisa inverter o canal verde.
+In Unity, the OpenGL (Y+) normal map is the default. In Godot and Blender too, so no engine needs the green channel flipped.
 
-## Validação e critérios de aceite
+## Validation and acceptance criteria
 
-Um asset só é exportado quando passa em todos os checks bloqueantes. O comando `meshsmith validate` gera o `report.json`, e o Claude corrige as falhas antes de seguir.
+An asset is only exported once it passes every blocking check. The `meshsmith validate` command produces `report.json`, and Claude fixes the failures before moving on.
 
-| Check | Critério | Ferramenta | Bloqueia |
+| Check | Criterion | Tool | Blocking |
 | --- | --- | --- | --- |
-| GLB válido | 0 erros, 0 warnings | glTF-Validator | Sim |
-| UV0 presente | 100% dos vértices | meshsmith | Sim |
-| UV0 overlap | 0% (exceto `mirror`, `stack` e paleta low-poly) | meshsmith (rasterização) | Sim |
-| UV0 fora de 0–1 | 0 ilhas (exceto tiling declarado) | meshsmith | Sim |
-| Padding | ≥ tabela de padding | meshsmith | Sim |
-| Texel density | ±10% entre ilhas | meshsmith | Não (alerta) |
-| Distorção | ≤ 5% por ilha | xatlas | Não (alerta) |
-| UV1 lightmap | Presente e sem overlap se `static` | meshsmith | Sim |
-| Malha | Manifold, sem faces de área zero, normais para fora | three-mesh-bvh + meshsmith | Sim |
-| Dimensões | ±2% do blueprint | meshsmith (bounding box) | Sim |
-| Triângulos | Dentro do orçamento da categoria | glTF-Transform inspect | Sim |
-| Texturas | Potência de 2, no tamanho declarado; bordas das ilhas dilatadas (sem fundo vazando) | sharp | Sim |
-| Paleta (low-poly) | Toda face dentro de uma célula da paleta | meshsmith | Sim |
-| Fidelidade visual | Nota ≥ 8/10 do Claude em cada vista | Claude (visão) | Sim |
+| GLB valid | 0 errors, 0 warnings | glTF-Validator | Yes |
+| UV0 present | 100% of vertices | meshsmith | Yes |
+| UV0 overlap | 0% (except `mirror`, `stack` and the low-poly palette) | meshsmith (rasterisation) | Yes |
+| UV0 outside 0–1 | 0 islands (except declared tiling) | meshsmith | Yes |
+| Padding | ≥ the padding table | meshsmith | Yes |
+| Texel density | ±10% between islands | meshsmith | No (warning) |
+| Distortion | ≤ 5% per island | xatlas | No (warning) |
+| UV1 lightmap | Present and free of overlap when `static` | meshsmith | Yes |
+| Mesh | Manifold, no zero-area faces, normals facing out | three-mesh-bvh + meshsmith | Yes |
+| Dimensions | ±2% of the blueprint | meshsmith (bounding box) | Yes |
+| Triangles | Within the category's budget | glTF-Transform inspect | Yes |
+| Textures | Power of two, at the declared size; island borders dilated (no background bleeding) | sharp | Yes |
+| Palette (low-poly) | Every face inside a palette cell | meshsmith | Yes |
+| Visual fidelity | A score ≥ 8/10 from Claude on every view | Claude (vision) | Yes |
 
-Critérios de aceite da v1, medidos em um conjunto de 10 referências de teste:
+The v1 acceptance criteria, measured over a set of 10 test references:
 
-- [ ] 10 de 10 assets passam em todos os checks bloqueantes
-- [ ] Pelo menos 3 assets de cada estilo (realista e low-poly) no conjunto
-- [ ] Cada asset importa sem erros no Unity (FBX), no Godot 4 e no Blender (testado na F7)
-- [ ] A textura de checker não mostra esticamento visível em nenhuma vista
-- [ ] O lightmap bake no Unity não mostra vazamentos (light bleeding) nas seams (testado na F7)
-- [ ] Tempo médio de uma referência até o pacote final abaixo de 15 minutos
+- [ ] 10 out of 10 assets pass every blocking check
+- [ ] At least 3 assets of each style (realistic and low-poly) in the set
+- [ ] Every asset imports without errors into Unity (FBX), Godot 4 and Blender (tested in F7)
+- [ ] The checker texture shows no visible stretching on any view
+- [ ] The lightmap bake in Unity shows no light bleeding at the seams (tested in F7)
+- [ ] A mean time from reference to final package under 15 minutes
 
-## Estrutura de pastas e convenções
+## Folder structure and conventions
 
-A ferramenta é um projeto independente, sem dependência de nenhum projeto de engine. Cada asset tem uma pasta própria com a referência, o código-fonte e a saída de build. O `meshsmith export` monta o pacote final em `dist/<nome>/` e `dist/<nome>.zip`.
+The tool is an independent project, with no dependency on any engine project. Each asset has its own folder with the reference, the source code and the build output. `meshsmith export` assembles the final package in `dist/<name>/` and `dist/<name>.zip`.
 
 ```
 Meshsmith/
   package.json
-  cli/                 # comandos meshsmith (new, build, render, uv, validate, export)
+  cli/                 # meshsmith commands (new, build, render, uv, validate, export)
   lib/
-    parts/             # biblioteca de peças: bevelBox, lathe, extrude, sweep, csg
-    materials/         # materiais PBR procedurais e bake de texturas
-    uv/                # wrapper do xatlas, regras e métricas
-    validate/          # checks do report.json
+    parts/             # part library: bevelBox, lathe, extrude, sweep, csg
+    materials/         # procedural PBR materials and the texture bake
+    uv/                # the xatlas wrapper, rules and metrics
+    validate/          # the report.json checks
   studio/
-    index.html         # estúdio headless: luzes, câmeras, checker
+    index.html         # headless studio: lights, cameras, checker
   assets/
-    <nome>/
-      ref/             # imagens de referência e prompt.md
+    <name>/
+      ref/             # reference images and prompt.md
       asset.json       # blueprint
-      asset.js         # gerador Three.js
-      iterations/      # renders de cada iteração
-      out/             # saída de build: SM_<Nome>.glb, textures/, report.json
-      review.json      # avaliação visual (checklist por vista)
+      asset.js         # Three.js generator
+      iterations/      # the renders of each iteration
+      out/             # build output: SM_<Name>.glb, textures/, report.json
+      review.json      # the visual assessment (a checklist per view)
   dist/
-    <nome>/            # pacote final: .glb, .fbx, .obj, textures/, preview.png, report.json
-  templates/           # esqueleto de asset para `meshsmith new`
-  tools/               # scripts de diagnóstico (UV, topologia)
-  .claude/skills/modelar-3d/SKILL.md
+    <name>/            # final package: .glb, .fbx, .obj, textures/, preview.png, report.json
+  templates/           # the asset skeleton for `meshsmith new`
+  tools/               # diagnostic scripts (UV, topology)
+  .claude/skills/model-3d/SKILL.md
 ```
 
-| Item | Convenção | Exemplo |
+| Item | Convention | Example |
 | --- | --- | --- |
-| Pasta do asset | kebab-case | `cadeira-madeira` |
-| Malha estática | `SM_` + PascalCase | `SM_CadeiraMadeira` |
-| Textura | `T_<Nome>_<Mapa>` | `T_CadeiraMadeira_ORM` |
-| Material | `M_<Nome>_<Parte>` | `M_CadeiraMadeira_Assento` |
-| Colisão | `<malha>_col` | `SM_CadeiraMadeira_col` |
-| LOD | `<malha>_LOD<n>` | `SM_CadeiraMadeira_LOD1` |
+| Asset folder | kebab-case | `wood-chair` |
+| Static mesh | `SM_` + PascalCase | `SM_WoodChair` |
+| Texture | `T_<Name>_<Map>` | `T_WoodChair_ORM` |
+| Material | `M_<Name>_<Part>` | `M_WoodChair_Seat` |
+| Collision | `<mesh>_col` | `SM_WoodChair_col` |
+| LOD | `<mesh>_LOD<n>` | `SM_WoodChair_LOD1` |
 
 ## Roadmap
 
-O MVP (referência vira asset aprovado) fecha no fim da F3. A F4 e a F5 levam o asset a padrão de produção nos dois estilos, sem depender de nenhuma engine. A F6 traz os extras (kits modulares, lote). Os testes de import ficam para a F7, a última fase da v1. Cada fase só avança quando o seu gate é cumprido. As datas ficam para definir.
+The MVP (a reference becomes an approved asset) closes at the end of F3. F4 and F5 bring the asset up to production standard in both styles, without depending on any engine. F6 brings the extras (modular kits, batch). The import tests are left for F7, the last phase of v1. Each phase only moves on once its gate is met. The dates are still to be decided.
 
-| Fase | Entregas | Gate de saída | Status |
+| Phase | Deliverables | Exit gate | Status |
 | --- | --- | --- | --- |
-| **F0 · Fundação** | Projeto Node, Three.js, estúdio headless com Playwright, GLB de um cubo de teste | O GLB passa no glTF-Validator e renderiza certo no estúdio | Concluída |
-| **F1 · Biblioteca de peças** | bevelBox, cilindro, lathe, extrude, sweep e CSG; schema do blueprint (asset.json); normais por ângulo | 3 props feitos só com a biblioteca | Concluída |
-| **F2 · UV e validação** | xatlas (UV0 + UV1), seams por ângulo, padding, texel density, checker e report.json | report.json sem falhas bloqueantes nos 3 props | Concluída |
-| **F3 · Referência para modelo (MVP)** | Skill /modelar-3d, blueprint a partir de imagem ou prompt, render de 4 vistas, ciclo de comparação | **MVP: 5 referências reais viram assets aprovados** | 4 de 5 referências aprovadas (extintor, cadeira Adirondack, cone, cadeira estofada); falta 1 |
-| **F4 · Materiais e estilos** | Presets PBR procedurais, bake de BaseColor, Normal e ORM, AO via raycast, estilo low-poly (facetado + paleta) | 1 asset de cada estilo com texturas aprovadas: checker, vista de materiais e checks de textura | Concluída |
-| **F5 · Pacote de export** | FBX binário e OBJ (writers próprios, relidos pelo assimpjs), LODs com meshoptimizer, colisores, pacote `dist/<nome>/` + zip | 10 assets (pelo menos 3 de cada estilo) com pacote completo e checks ok, incluindo releitura do FBX e do OBJ | Concluída |
-| **F6 · Extras** | Kits modulares com grid, snapping e texturas tileáveis; geração em lote; TripoSR local para formas orgânicas (opcional, exige Python/CUDA) | Kit modular de arquitetura validado e lote dos 10+ assets em um comando | Kit (parede, parede com porta, piso, pilar) e `meshsmith batch` concluídos (14/14); TripoSR pendente |
-| **F7 · Testes nas engines (última)** | Import no Unity por FBX (formato principal da equipe) com o pacote `unity/com.meshsmith.import` (LODGroup, colisores), bake de lightmap; GLB via glTFast opcional; Godot e Blender se instalados | Critérios de aceite da v1 | Pacote Unity pronto; teste adiado para o fim |
+| **F0 · Foundation** | Node project, Three.js, headless studio with Playwright, a GLB of a test cube | The GLB passes the glTF-Validator and renders correctly in the studio | Done |
+| **F1 · Part library** | bevelBox, cylinder, lathe, extrude, sweep and CSG; the blueprint schema (asset.json); normals by angle | 3 props built with the library alone | Done |
+| **F2 · UV and validation** | xatlas (UV0 + UV1), seams by angle, padding, texel density, checker and report.json | report.json with no blocking failures on the 3 props | Done |
+| **F3 · Reference to model (MVP)** | The /model-3d skill, a blueprint from an image or a prompt, a render of 4 views, the comparison loop | **MVP: 5 real references become approved assets** | 4 of 5 references approved (extinguisher, Adirondack chair, cone, upholstered chair); 1 to go |
+| **F4 · Materials and styles** | Procedural PBR presets, a bake of BaseColor, Normal and ORM, AO via raycast, the low-poly style (faceted + palette) | 1 asset of each style with approved textures: checker, material view and texture checks | Done |
+| **F5 · Export package** | Binary FBX and OBJ (own writers, re-read by assimpjs), LODs with meshoptimizer, colliders, the `dist/<name>/` package + zip | 10 assets (at least 3 of each style) with a complete package and passing checks, including the FBX and OBJ re-read | Done |
+| **F6 · Extras** | Modular kits with a grid, snapping and tileable textures; batch generation; local TripoSR for organic shapes (optional, needs Python/CUDA) | A validated modular architecture kit and a batch of the 10+ assets in one command | The kit (wall, wall with door, floor, pillar) and `meshsmith batch` are done (14/14); TripoSR outstanding |
+| **F7 · Engine tests (last)** | Import into Unity via FBX (the team's main format) with the `unity/com.meshsmith.import` package (LODGroup, colliders), lightmap bake; GLB via glTFast optional; Godot and Blender if installed | The v1 acceptance criteria | The Unity package is ready; the test is deferred to the end |
 
-A ordem prioriza UV e validação (F2) antes do ciclo com referência (F3): as regras de UV passam a ser garantidas desde o primeiro asset gerado.
+The order puts UV and validation (F2) before the reference loop (F3): the UV rules are then guaranteed from the very first generated asset.
 
-## Riscos e questões em aberto
+## Risks and open questions
 
-| Risco | Impacto | Mitigação |
+| Risk | Impact | Mitigation |
 | --- | --- | --- |
-| Formas curvas complexas ficam genéricas | Fidelidade baixa em veículos e orgânicos | Peças sweep e lathe, subdivisão; TripoSR local na F6 (opcional) |
-| Seams automáticos do xatlas em lugares visíveis | Viola as regras de UV | Seams definidos por peça no gerador; xatlas só empacota |
-| assimpjs gera FBX com eixos ou escala errados | Import quebrado no Unity | Releitura automática do FBX na F5; teste real na F7; fallback para Blender CLI headless |
-| WebGL headless sem GPU no Playwright | Render lento ou diferente | Forçar GPU (RTX 3060) ou usar o browser do Claude |
-| Nota visual do Claude varia entre iterações | Critério de aprovação instável | Checklist fixo por vista, anotado no report.json |
-| Uso de tokens alto por asset (várias iterações com imagem) | Limite da licença | Teto de 5 iterações; renders em 768 px |
+| Complex curved shapes come out generic | Low fidelity on vehicles and organics | Sweep and lathe parts, subdivision; local TripoSR in F6 (optional) |
+| xatlas' automatic seams land in visible places | Breaks the UV rules | Seams defined per part in the generator; xatlas only packs |
+| assimpjs produces an FBX with the wrong axes or scale | A broken import in Unity | An automatic FBX re-read in F5; a real test in F7; a fallback to the headless Blender CLI |
+| Headless WebGL without a GPU in Playwright | A slow or different render | Force the GPU (RTX 3060) or use Claude's browser |
+| Claude's visual score varies between iterations | An unstable approval criterion | A fixed checklist per view, recorded in report.json |
+| High token use per asset (several iterations with an image) | The licence's limit | A ceiling of 5 iterations; renders at 768 px |
 
-Questões em aberto:
+Open questions:
 
-- [ ] Qual pipeline de render é o alvo no Unity: URP, HDRP ou Built-in? (necessário na F7)
-- [x] O GLB com glTFast basta no Unity, ou o FBX é obrigatório no fluxo da equipe? FBX é o formato principal no Unity; o GLB segue como formato mestre e para Godot/Blender
-- [ ] Os padrões de texel density (512 px/m para props) servem para os projetos atuais?
-- [x] Qual o estilo visual predominante? Os dois: realista (PBR) e low-poly (ver "Estilos visuais")
-- [x] Quais são as 10 referências do conjunto de teste da v1? caixa, tambor, suporte, banquinho (PBR e low-poly), extintor, cadeira Adirondack (low-poly), cone (low-poly) e cadeira estofada
+- [ ] Which render pipeline is the target in Unity: URP, HDRP or Built-in? (needed in F7)
+- [x] Is GLB with glTFast enough in Unity, or is FBX mandatory in the team's flow? FBX is the main format in Unity; GLB stays as the master format and for Godot/Blender
+- [ ] Do the texel density defaults (512 px/m for props) suit the current projects?
+- [x] Which visual style is predominant? Both: realistic (PBR) and low-poly (see "Visual styles")
+- [x] What are the 10 references of the v1 test set? crate, drum, bracket, stool (PBR and low-poly), extinguisher, Adirondack chair (low-poly), cone and upholstered chair
