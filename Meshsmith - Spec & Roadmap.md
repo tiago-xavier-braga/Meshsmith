@@ -1,10 +1,10 @@
-# 3D Studio — Spec & Roadmap
+# Meshsmith — Spec & Roadmap
 
 Sep 28, 2026 · @Tiago Xavier
 
 ## Visão e objetivos
 
-O 3D Studio gera modelos 3D prontos para jogo a partir de uma imagem ou de um prompt de referência. O Claude modela em código (Three.js), vê o próprio resultado e refina até ficar fiel à referência. Tudo roda localmente, com ferramentas gratuitas e sem APIs pagas além da licença do Claude.
+O Meshsmith gera modelos 3D prontos para jogo a partir de uma imagem ou de um prompt de referência. O Claude modela em código (Three.js), vê o próprio resultado e refina até ficar fiel à referência. Tudo roda localmente, com ferramentas gratuitas e sem APIs pagas além da licença do Claude.
 
 Objetivos:
 
@@ -69,7 +69,7 @@ Peças principais:
 - **Blueprint (`asset.json`):** descrição estruturada do asset: partes, dimensões em metros, materiais, orçamento de triângulos e engine-alvo. É o contrato entre a análise e a modelagem.
 - **Gerador (`asset.js`):** módulo Three.js que lê o blueprint e constrói a cena. Usa uma biblioteca interna de peças (caixa chanfrada, cilindro, lathe, extrude, sweep, booleanas).
 - **Estúdio headless:** página Three.js aberta via Playwright ou pelo browser do Claude. Renderiza as vistas de comparação e a textura de checker de UV.
-- **CLI `studio3d`:** comandos `build`, `render`, `uv`, `validate` e `export`, que o Claude chama em sequência.
+- **CLI `meshsmith`:** comandos `build`, `render`, `uv`, `validate` e `export`, que o Claude chama em sequência.
 - **Skill `/modelar-3d`:** orquestra o fluxo e registra cada iteração no relatório do asset.
 
 ## Stack de ferramentas
@@ -78,7 +78,7 @@ Todas as ferramentas são gratuitas e open source e rodam em Node.js (a v24 já 
 
 | Ferramenta | Função no pipeline | Licença | Fase |
 | --- | --- | --- | --- |
-| Node.js 24 | Runtime da CLI `studio3d` | MIT | 0 |
+| Node.js 24 | Runtime da CLI `meshsmith` | MIT | 0 |
 | Three.js | Modelagem, render, GLTFExporter, OBJExporter | MIT | 0 |
 | Playwright | Browser headless para render WebGL e screenshots | Apache-2.0 | 0 |
 | manifold-3d | Operações booleanas (furos, recortes, uniões) com saída sempre watertight | Apache-2.0 | 1 |
@@ -90,7 +90,7 @@ Todas as ferramentas são gratuitas e open source e rodam em Node.js (a v24 já 
 | sharp | Redimensionar e converter texturas (PNG, WebP, KTX2 via toktx) | Apache-2.0 | 4 |
 | meshoptimizer | Simplificação para LODs | MIT | 5 |
 | assimpjs | Releitura do FBX e do OBJ exportados (verificação automática); o assimp só importa FBX | BSD-3 | 5 |
-| studio3d (writer próprio) | Export FBX binário 7.4 e OBJ/MTL | — | 5 |
+| meshsmith (writer próprio) | Export FBX binário 7.4 e OBJ/MTL | — | 5 |
 | Blender CLI (opcional) | Fallback headless para FBX, se o writer próprio falhar em alguma engine | GPL | 7 |
 | TripoSR local (opcional) | Malha-base para formas orgânicas, na RTX 3060 | MIT | 6 |
 
@@ -105,7 +105,7 @@ Todo asset sai com dois canais de UV: **UV0** para texturas e **UV1** para light
 1. **Cobertura total:** todo vértice tem UV0; nenhuma face fica sem mapeamento.
 2. **Espaço 0–1:** todas as ilhas ficam dentro de 0–1. A exceção são superfícies com tiling ou trim sheet declaradas no blueprint.
 3. **Sem sobreposição:** 0% de overlap. Só é permitido quando o blueprint marca a peça como `mirror` ou `stack`, e nesse caso o bake usa uma única cópia.
-4. **Seams em lugares certos:** em arestas vivas (≥ 60°) e em áreas pouco visíveis (base, costas, interior). Nunca no meio de uma superfície contínua visível. O `studio3d` define os charts (chanfros ficam com a face, faixas fechadas são cortadas na linha de trás) e o xatlas só parametriza e empacota.
+4. **Seams em lugares certos:** em arestas vivas (≥ 60°) e em áreas pouco visíveis (base, costas, interior). Nunca no meio de uma superfície contínua visível. O `meshsmith` define os charts (chanfros ficam com a face, faixas fechadas são cortadas na linha de trás) e o xatlas só parametriza e empacota.
 5. **Hard edge = seam:** toda aresta com normal dividida também é seam de UV. Isso evita artefatos no normal map.
 6. **Distorção baixa:** stretch de área e de ângulo ≤ 5% por ilha, medido pelo relatório do xatlas.
 7. **Texel density uniforme:** variação ≤ ±10% entre ilhas do mesmo asset. Faces nunca vistas (fundo encostado no chão) podem ter 25% da densidade.
@@ -145,7 +145,7 @@ Todo asset sai com dois canais de UV: **UV0** para texturas e **UV1** para light
 
 ## Export por engine
 
-O GLB é o formato mestre: um único arquivo abre corretamente nas três engines. O FBX e o OBJ são derivados dele, para pipelines que ainda os exigem. A ferramenta não escreve em projetos de engine: ela gera o pacote em `dist/<nome>/` (e um `.zip`), e quem usa copia para o projeto. Os scripts de import do lado da engine (LODGroup e colliders no Unity) ficam em `unity/com.studio3d.import` e são testados na F7.
+O GLB é o formato mestre: um único arquivo abre corretamente nas três engines. O FBX e o OBJ são derivados dele, para pipelines que ainda os exigem. A ferramenta não escreve em projetos de engine: ela gera o pacote em `dist/<nome>/` (e um `.zip`), e quem usa copia para o projeto. Os scripts de import do lado da engine (LODGroup e colliders no Unity) ficam em `unity/com.meshsmith.import` e são testados na F7.
 
 | Aspecto | Unity | Godot 4 | Blender |
 | --- | --- | --- | --- |
@@ -169,23 +169,23 @@ No Unity, o normal map OpenGL (Y+) é o padrão. No Godot e no Blender também, 
 
 ## Validação e critérios de aceite
 
-Um asset só é exportado quando passa em todos os checks bloqueantes. O comando `studio3d validate` gera o `report.json`, e o Claude corrige as falhas antes de seguir.
+Um asset só é exportado quando passa em todos os checks bloqueantes. O comando `meshsmith validate` gera o `report.json`, e o Claude corrige as falhas antes de seguir.
 
 | Check | Critério | Ferramenta | Bloqueia |
 | --- | --- | --- | --- |
 | GLB válido | 0 erros, 0 warnings | glTF-Validator | Sim |
-| UV0 presente | 100% dos vértices | studio3d | Sim |
-| UV0 overlap | 0% (exceto `mirror`, `stack` e paleta low-poly) | studio3d (rasterização) | Sim |
-| UV0 fora de 0–1 | 0 ilhas (exceto tiling declarado) | studio3d | Sim |
-| Padding | ≥ tabela de padding | studio3d | Sim |
-| Texel density | ±10% entre ilhas | studio3d | Não (alerta) |
+| UV0 presente | 100% dos vértices | meshsmith | Sim |
+| UV0 overlap | 0% (exceto `mirror`, `stack` e paleta low-poly) | meshsmith (rasterização) | Sim |
+| UV0 fora de 0–1 | 0 ilhas (exceto tiling declarado) | meshsmith | Sim |
+| Padding | ≥ tabela de padding | meshsmith | Sim |
+| Texel density | ±10% entre ilhas | meshsmith | Não (alerta) |
 | Distorção | ≤ 5% por ilha | xatlas | Não (alerta) |
-| UV1 lightmap | Presente e sem overlap se `static` | studio3d | Sim |
-| Malha | Manifold, sem faces de área zero, normais para fora | three-mesh-bvh + studio3d | Sim |
-| Dimensões | ±2% do blueprint | studio3d (bounding box) | Sim |
+| UV1 lightmap | Presente e sem overlap se `static` | meshsmith | Sim |
+| Malha | Manifold, sem faces de área zero, normais para fora | three-mesh-bvh + meshsmith | Sim |
+| Dimensões | ±2% do blueprint | meshsmith (bounding box) | Sim |
 | Triângulos | Dentro do orçamento da categoria | glTF-Transform inspect | Sim |
 | Texturas | Potência de 2, no tamanho declarado; bordas das ilhas dilatadas (sem fundo vazando) | sharp | Sim |
-| Paleta (low-poly) | Toda face dentro de uma célula da paleta | studio3d | Sim |
+| Paleta (low-poly) | Toda face dentro de uma célula da paleta | meshsmith | Sim |
 | Fidelidade visual | Nota ≥ 8/10 do Claude em cada vista | Claude (visão) | Sim |
 
 Critérios de aceite da v1, medidos em um conjunto de 10 referências de teste:
@@ -199,12 +199,12 @@ Critérios de aceite da v1, medidos em um conjunto de 10 referências de teste:
 
 ## Estrutura de pastas e convenções
 
-A ferramenta é um projeto independente, sem dependência de nenhum projeto de engine. Cada asset tem uma pasta própria com a referência, o código-fonte e a saída de build. O `studio3d export` monta o pacote final em `dist/<nome>/` e `dist/<nome>.zip`.
+A ferramenta é um projeto independente, sem dependência de nenhum projeto de engine. Cada asset tem uma pasta própria com a referência, o código-fonte e a saída de build. O `meshsmith export` monta o pacote final em `dist/<nome>/` e `dist/<nome>.zip`.
 
 ```
-3D Studio/
+Meshsmith/
   package.json
-  cli/                 # comandos studio3d (new, build, render, uv, validate, export)
+  cli/                 # comandos meshsmith (new, build, render, uv, validate, export)
   lib/
     parts/             # biblioteca de peças: bevelBox, lathe, extrude, sweep, csg
     materials/         # materiais PBR procedurais e bake de texturas
@@ -222,7 +222,7 @@ A ferramenta é um projeto independente, sem dependência de nenhum projeto de e
       review.json      # avaliação visual (checklist por vista)
   dist/
     <nome>/            # pacote final: .glb, .fbx, .obj, textures/, preview.png, report.json
-  templates/           # esqueleto de asset para `studio3d new`
+  templates/           # esqueleto de asset para `meshsmith new`
   tools/               # scripts de diagnóstico (UV, topologia)
   .claude/skills/modelar-3d/SKILL.md
 ```
@@ -248,8 +248,8 @@ O MVP (referência vira asset aprovado) fecha no fim da F3. A F4 e a F5 levam o 
 | **F3 · Referência para modelo (MVP)** | Skill /modelar-3d, blueprint a partir de imagem ou prompt, render de 4 vistas, ciclo de comparação | **MVP: 5 referências reais viram assets aprovados** | 4 de 5 referências aprovadas (extintor, cadeira Adirondack, cone, cadeira estofada); falta 1 |
 | **F4 · Materiais e estilos** | Presets PBR procedurais, bake de BaseColor, Normal e ORM, AO via raycast, estilo low-poly (facetado + paleta) | 1 asset de cada estilo com texturas aprovadas: checker, vista de materiais e checks de textura | Concluída |
 | **F5 · Pacote de export** | FBX binário e OBJ (writers próprios, relidos pelo assimpjs), LODs com meshoptimizer, colisores, pacote `dist/<nome>/` + zip | 10 assets (pelo menos 3 de cada estilo) com pacote completo e checks ok, incluindo releitura do FBX e do OBJ | Concluída |
-| **F6 · Extras** | Kits modulares com grid, snapping e texturas tileáveis; geração em lote; TripoSR local para formas orgânicas (opcional, exige Python/CUDA) | Kit modular de arquitetura validado e lote dos 10+ assets em um comando | Kit (parede, parede com porta, piso, pilar) e `studio3d batch` concluídos (14/14); TripoSR pendente |
-| **F7 · Testes nas engines (última)** | Import no Unity por FBX (formato principal da equipe) com o pacote `unity/com.studio3d.import` (LODGroup, colisores), bake de lightmap; GLB via glTFast opcional; Godot e Blender se instalados | Critérios de aceite da v1 | Pacote Unity pronto; teste adiado para o fim |
+| **F6 · Extras** | Kits modulares com grid, snapping e texturas tileáveis; geração em lote; TripoSR local para formas orgânicas (opcional, exige Python/CUDA) | Kit modular de arquitetura validado e lote dos 10+ assets em um comando | Kit (parede, parede com porta, piso, pilar) e `meshsmith batch` concluídos (14/14); TripoSR pendente |
+| **F7 · Testes nas engines (última)** | Import no Unity por FBX (formato principal da equipe) com o pacote `unity/com.meshsmith.import` (LODGroup, colisores), bake de lightmap; GLB via glTFast opcional; Godot e Blender se instalados | Critérios de aceite da v1 | Pacote Unity pronto; teste adiado para o fim |
 
 A ordem prioriza UV e validação (F2) antes do ciclo com referência (F3): as regras de UV passam a ser garantidas desde o primeiro asset gerado.
 

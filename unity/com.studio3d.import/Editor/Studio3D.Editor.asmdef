@@ -1,6 +1,0 @@
-{
-  "name": "Studio3D.Editor",
-  "rootNamespace": "Studio3D.Editor",
-  "includePlatforms": ["Editor"],
-  "autoReferenced": true
-}

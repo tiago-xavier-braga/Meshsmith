@@ -2,15 +2,15 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace Studio3D.Editor
+namespace Meshsmith.Editor
 {
     /// <summary>
     /// GLB (glTFast) imports cannot be post-processed like FBX, so this menu builds a prefab
     /// next to the selected model with the LODGroup and collider set up.
     /// </summary>
-    internal static class Studio3DPrefabBuilder
+    internal static class MeshsmithPrefabBuilder
     {
-        const string Menu = "Assets/3D Studio/Create Prefab (LODs + Collider)";
+        const string Menu = "Assets/Meshsmith/Create Prefab (LODs + Collider)";
 
         [MenuItem(Menu, true)]
         static bool Validate() => Selection.activeObject is GameObject go && PrefabUtility.IsPartOfModelPrefab(go);
@@ -24,16 +24,16 @@ namespace Studio3D.Editor
                 if (string.IsNullOrEmpty(path)) continue;
                 var instance = (GameObject)PrefabUtility.InstantiatePrefab(obj);
                 PrefabUtility.UnpackPrefabInstance(instance, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
-                if (!Studio3DSetup.Apply(instance))
+                if (!MeshsmithSetup.Apply(instance))
                 {
-                    Debug.LogWarning($"3D Studio: {obj.name} has no _LOD/_col nodes");
+                    Debug.LogWarning($"Meshsmith: {obj.name} has no _LOD/_col nodes");
                     Object.DestroyImmediate(instance);
                     continue;
                 }
                 var target = Path.Combine(Path.GetDirectoryName(path) ?? "Assets", $"{obj.name}.prefab").Replace('\\', '/');
                 PrefabUtility.SaveAsPrefabAsset(instance, target);
                 Object.DestroyImmediate(instance);
-                Debug.Log($"3D Studio: prefab saved to {target}");
+                Debug.Log($"Meshsmith: prefab saved to {target}");
             }
         }
     }

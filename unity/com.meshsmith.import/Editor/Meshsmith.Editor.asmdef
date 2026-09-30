@@ -1,0 +1,6 @@
+{
+  "name": "Meshsmith.Editor",
+  "rootNamespace": "Meshsmith.Editor",
+  "includePlatforms": ["Editor"],
+  "autoReferenced": true
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// studio3d <command> <asset> [options]
+// meshsmith <command> <asset> [options]
 //   new       scaffold assets/<asset>/ (ref/, prompt.md, asset.json, asset.js)
 //   batch     [asset ...] [--step validate|export]: many assets, summary in dist/batch-report.{json,md}
 //   build     asset.js -> UV0/UV1 -> out/SM_<Nome>.glb
@@ -245,7 +245,7 @@ async function scaffold(name) {
 const COMMANDS = { build, uv, render, validate, export: exportAsset };
 
 /**
- * studio3d batch [asset ...] [--step validate|export]: every asset (all of assets/ when none are
+ * meshsmith batch [asset ...] [--step validate|export]: every asset (all of assets/ when none are
  * given) runs in its own process; the summary lands in dist/batch-report.{json,md}.
  */
 async function batch(names) {
@@ -256,7 +256,7 @@ async function batch(names) {
   const rows = [];
   for (const asset of all) {
     const t0 = performance.now();
-    const r = spawnSync(process.execPath, [join(ROOT, 'cli', 'studio3d.js'), step, asset, '--quiet'], { encoding: 'utf8' });
+    const r = spawnSync(process.execPath, [join(ROOT, 'cli', 'meshsmith.js'), step, asset, '--quiet'], { encoding: 'utf8' });
     const reportPath = join(ROOT, step === 'export' ? 'dist' : 'assets', asset, step === 'export' ? '' : 'out', 'report.json');
     const rep = existsSync(reportPath) ? JSON.parse(await readFile(reportPath, 'utf8')) : null;
     const tri = rep?.checks.find((c) => c.id === 'triangles')?.value;
@@ -272,7 +272,7 @@ async function batch(names) {
   }
   await mkdir(join(ROOT, 'dist'), { recursive: true });
   await writeFile(join(ROOT, 'dist', 'batch-report.json'), JSON.stringify({ step, generatedAt: new Date().toISOString(), rows }, null, 2));
-  const md = [`# Lote studio3d (${step})`, '', '| Asset | Estilo | OK | Tempo (s) | Triângulos | FBX/OBJ relidos | Pendências |', '| --- | --- | --- | --- | --- | --- | --- |',
+  const md = [`# Lote meshsmith (${step})`, '', '| Asset | Estilo | OK | Tempo (s) | Triângulos | FBX/OBJ relidos | Pendências |', '| --- | --- | --- | --- | --- | --- | --- |',
     ...rows.map((r) => `| ${r.asset} | ${r.style} | ${r.ok ? 'sim' : 'não'} | ${r.seconds} | ${r.triangles ?? '—'} | ${r.interchange ? Object.values(r.interchange).every(Boolean) ? 'ok' : 'falhou' : '—'} | ${[...r.failed, r.error].filter(Boolean).join(', ') || '—'} |`),
     '', `${rows.filter((r) => r.ok).length}/${rows.length} ok · ${rows.filter((r) => r.style === 'pbr').length} PBR · ${rows.filter((r) => r.style === 'lowpoly').length} low-poly · tempo médio ${(rows.reduce((s, r) => s + r.seconds, 0) / Math.max(1, rows.length)).toFixed(1)} s`];
   await writeFile(join(ROOT, 'dist', 'batch-report.md'), md.join('\n') + '\n');
@@ -289,7 +289,7 @@ if (cmd === 'batch') {
   process.exit(rows.every((r) => r.ok) ? 0 : 1);
 }
 if (!COMMANDS[cmd] || !name) {
-  console.log(`usage: studio3d <new|batch|${Object.keys(COMMANDS).join('|')}> <asset> [--mode m1,m2] [--views v1,v2] [--size 768] [--dest path] [--force]`);
+  console.log(`usage: meshsmith <new|batch|${Object.keys(COMMANDS).join('|')}> <asset> [--mode m1,m2] [--views v1,v2] [--size 768] [--dest path] [--force]`);
   process.exit(cmd ? 1 : 0);
 }
 const result = await COMMANDS[cmd](assetDir(name));

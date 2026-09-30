@@ -2,13 +2,13 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace Studio3D.Editor
+namespace Meshsmith.Editor
 {
     /// <summary>
-    /// Turns a 3D Studio hierarchy (SM_Nome_LOD0..n, SM_Nome_col) into a LODGroup plus a
+    /// Turns a Meshsmith hierarchy (SM_Nome_LOD0..n, SM_Nome_col) into a LODGroup plus a
     /// convex MeshCollider. Shared by the FBX postprocessor and the GLB prefab builder.
     /// </summary>
-    internal static class Studio3DSetup
+    internal static class MeshsmithSetup
     {
         static readonly Regex Lod = new Regex(@"_LOD(\d)$");
         static readonly Regex Col = new Regex(@"(_col|-col|-colonly)$");
@@ -16,7 +16,7 @@ namespace Studio3D.Editor
         // Screen-relative heights where each LOD hands over to the next (last one culls).
         static readonly float[] Transitions = { 0.5f, 0.2f, 0.05f, 0.02f };
 
-        /// <returns>true when the hierarchy looked like a 3D Studio asset.</returns>
+        /// <returns>true when the hierarchy looked like a Meshsmith asset.</returns>
         public static bool Apply(GameObject root)
         {
             var nodes = root.GetComponentsInChildren<Transform>(true);

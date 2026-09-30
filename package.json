@@ -1,14 +1,14 @@
 {
-  "name": "3d-studio",
+  "name": "meshsmith",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "3D Studio: game-ready 3D assets generated in Three.js code",
+  "description": "Meshsmith: game-ready 3D assets generated in Three.js code",
   "bin": {
-    "studio3d": "cli/studio3d.js"
+    "meshsmith": "cli/meshsmith.js"
   },
   "scripts": {
-    "studio3d": "node cli/studio3d.js",
+    "meshsmith": "node cli/meshsmith.js",
     "test": "node --test"
   },
   "engines": {

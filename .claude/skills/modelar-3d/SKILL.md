@@ -1,15 +1,15 @@
 ---
 name: modelar-3d
-description: Gera um modelo 3D game-ready (GLB com UV0/UV1, validado) a partir de imagens de referência e/ou prompt, modelando em código Three.js com a biblioteca do 3D Studio e refinando por comparação visual. Use quando o usuário pedir para modelar, gerar ou criar um asset/prop/modelo 3D, ou invocar /modelar-3d.
+description: Gera um modelo 3D game-ready (GLB com UV0/UV1, validado) a partir de imagens de referência e/ou prompt, modelando em código Three.js com a biblioteca do Meshsmith e refinando por comparação visual. Use quando o usuário pedir para modelar, gerar ou criar um asset/prop/modelo 3D, ou invocar /modelar-3d.
 ---
 
 # /modelar-3d
 
-Fluxo fixo do 3D Studio (spec: `3D Studio - Spec & Roadmap.md`). Rode tudo a partir da raiz do projeto. Sempre as mesmas etapas, na ordem.
+Fluxo fixo do Meshsmith (spec: `Meshsmith - Spec & Roadmap.md`). Rode tudo a partir da raiz do projeto. Sempre as mesmas etapas, na ordem.
 
 ## 1. Referência
 
-1. Escolha um nome em kebab-case e rode `node cli/studio3d.js new <nome>`.
+1. Escolha um nome em kebab-case e rode `node cli/meshsmith.js new <nome>`.
 2. Copie as imagens de referência para `assets/<nome>/ref/` e liste-as em `asset.json → reference.images` (caminhos relativos a `ref/`).
 3. Registre em `ref/prompt.md` o prompt, as medidas conhecidas e as observações do usuário.
 4. Sem medidas reais, estime pela referência e por objetos de escala conhecida (porta ≈ 2,1 m, assento ≈ 0,45 m, tampo de mesa ≈ 0,75 m) e anote a estimativa no `prompt.md`.
@@ -43,7 +43,7 @@ Escreva o gerador usando **apenas** a biblioteca `parts`. Leia `lib/parts/README
 ## 4 e 5. Render e comparação (ciclo, máximo de 5 iterações)
 
 ```
-node cli/studio3d.js render <nome>
+node cli/meshsmith.js render <nome>
 ```
 
 Isso gera `iterations/NN/` e um `sheet.png` com as referências ao lado das vistas front, right, top, iso (e `reference`, se houver câmera). **Leia só o `sheet.png`**, não as imagens soltas, para economizar tokens.
@@ -84,7 +84,7 @@ Sem imagem de referência (só prompt), avalie contra a descrição do prompt e 
 ## 6 a 8. UV, materiais e validação
 
 ```
-node cli/studio3d.js validate <nome>
+node cli/meshsmith.js validate <nome>
 ```
 
 UV0/UV1 e texturas são gerados automaticamente: PBR faz o bake de `T_<Nome>_BaseColor`/`Normal`/`ORM` (10 a 20 s por asset), e o low-poly gera a paleta. O comando grava `out/report.json`, `out/textures/` e os layouts em `debug/uv0.png`/`uv1.png`. Corrija toda falha bloqueante (✘) antes de seguir:
@@ -94,12 +94,12 @@ UV0/UV1 e texturas são gerados automaticamente: PBR faz o bake de `T_<Nome>_Bas
 - **Triângulos acima do orçamento**: menos `segments`/`curveSegments`, ou outra categoria se o asset for maior.
 - **Overlap ou padding**: normalmente só com `stack`/`mirror` mal declarados.
 
-Os alertas (!) não bloqueiam, mas cite no resumo os relevantes. Para ver o checker de UV, rode `node cli/studio3d.js render <nome> --mode checker --views front,iso`: os quadrados precisam ficar quadrados e do mesmo tamanho.
+Os alertas (!) não bloqueiam, mas cite no resumo os relevantes. Para ver o checker de UV, rode `node cli/meshsmith.js render <nome> --mode checker --views front,iso`: os quadrados precisam ficar quadrados e do mesmo tamanho.
 
 ## 9. Export
 
 ```
-node cli/studio3d.js export <nome>
+node cli/meshsmith.js export <nome>
 ```
 
 O export só roda com `readyToExport` (todos os checks bloqueantes ok e `review.json` presente). Ele grava `out/preview.png`, monta o pacote em `dist/<nome>/` (GLB, FBX, OBJ+MTL, texturas, preview, report) + `dist/<nome>.zip` e relê o FBX e o OBJ com o assimp: se triângulos ou bbox não baterem com o GLB, o export falha.
@@ -108,7 +108,7 @@ LODs (`_LOD1`, `_LOD2` a 50% e 25%) e o colisor (`_col`, casco convexo) são ger
 
 ## Lote
 
-`node cli/studio3d.js batch [asset ...] [--step validate|export]` roda vários assets (todos de `assets/` se nenhum for passado), cada um num processo, e grava `dist/batch-report.md` e `.json`.
+`node cli/meshsmith.js batch [asset ...] [--step validate|export]` roda vários assets (todos de `assets/` se nenhum for passado), cada um num processo, e grava `dist/batch-report.md` e `.json`.
 
 ## Resumo para o usuário
 

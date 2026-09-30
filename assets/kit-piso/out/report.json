@@ -1,7 +1,7 @@
 {
   "asset": "kit-piso",
   "mesh": "SM_KitPiso",
-  "generatedAt": "2026-09-30T17:24:45.224Z",
+  "generatedAt": "2026-09-30T17:33:11.283Z",
   "passed": true,
   "readyToExport": true,
   "blockingFailed": [],
@@ -69,7 +69,7 @@
       "id": "uv0-present",
       "label": "UV0 presente",
       "criterion": "100% dos vértices",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": true,
       "status": "pass",
       "value": "100%"
@@ -78,7 +78,7 @@
       "id": "uv0-overlap",
       "label": "UV0 overlap",
       "criterion": "0% (exceto mirror e stack)",
-      "tool": "studio3d (rasterização)",
+      "tool": "meshsmith (rasterização)",
       "blocking": true,
       "status": "pass",
       "value": "0.000% (0 px)"
@@ -87,7 +87,7 @@
       "id": "uv0-range",
       "label": "UV0 fora de 0–1",
       "criterion": "0 ilhas (exceto tiling declarado)",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": true,
       "status": "pass",
       "value": "0 ilhas"
@@ -96,7 +96,7 @@
       "id": "uv0-padding",
       "label": "Padding",
       "criterion": "≥ 8 px entre ilhas, ≥ 4 px da borda (1024²)",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": true,
       "status": "pass",
       "value": "gap mín > 10 px, borda mín null px"
@@ -105,7 +105,7 @@
       "id": "uv0-texel-density",
       "label": "Texel density",
       "criterion": "±10% entre ilhas",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": false,
       "status": "pass",
       "value": "0 px/m (mediana), desvio máx 0.0%",
@@ -119,7 +119,7 @@
       "id": "uv0-distortion",
       "label": "Distorção",
       "criterion": "≤ 5% por ilha",
-      "tool": "studio3d (Jacobiano da UV)",
+      "tool": "meshsmith (Jacobiano da UV)",
       "blocking": false,
       "status": "pass",
       "value": "pior ilha 0.0%"
@@ -128,7 +128,7 @@
       "id": "uv0-utilization",
       "label": "Aproveitamento",
       "criterion": "≥ 70% do espaço UV",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": false,
       "status": "warn",
       "value": "0.0%"
@@ -137,7 +137,7 @@
       "id": "uv0-seams",
       "label": "Seams",
       "criterion": "em arestas vivas ou áreas ocultas",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": false,
       "status": "pass",
       "value": "0.0% do comprimento de seam em superfície contínua visível",
@@ -149,7 +149,7 @@
       "id": "uv1-lightmap",
       "label": "UV1 lightmap",
       "criterion": "presente, sem overlap, padding ≥ 2 texels",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": true,
       "status": "pass",
       "value": "12 ilhas, overlap 0 px, gap mín > 4 texels @ 128²"
@@ -158,7 +158,7 @@
       "id": "mesh",
       "label": "Malha",
       "criterion": "manifold, sem faces de área zero, normais para fora",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": true,
       "status": "pass",
       "value": "2/2 peças watertight, 0 faces área zero, 0 normais invertidas"
@@ -167,7 +167,7 @@
       "id": "dimensions",
       "label": "Dimensões",
       "criterion": "±2% do blueprint, pivot grid-corner",
-      "tool": "studio3d (bounding box)",
+      "tool": "meshsmith (bounding box)",
       "blocking": true,
       "status": "pass",
       "value": "2.000 × 0.100 × 2.000 m (desvio x 0.0%, y 0.0%, z 0.0%); pivot ok (centro da base XZ 1.000, 1.000; base y 0.0000)"
@@ -176,7 +176,7 @@
       "id": "grid",
       "label": "Grid do kit",
       "criterion": "dimensões múltiplas de 0.5 × 0.1 × 0.5 m (±1 mm)",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": true,
       "status": "pass",
       "value": "4.00×0.5, 1.00×0.1, 4.00×0.5; sockets: north, south, west, east"
@@ -222,7 +222,7 @@
       "id": "collision",
       "label": "Colisão",
       "criterion": "<malha>_col presente",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": false,
       "status": "pass",
       "value": "hull, 62 triângulos"

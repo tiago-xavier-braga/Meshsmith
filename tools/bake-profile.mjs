@@ -9,7 +9,7 @@ let t = performance.now();
 const info = await unwrapAsset(root, rules, bp);
 console.log('uv', Math.round(performance.now() - t), 'ms');
 let mesh; root.traverse((o) => { if (o.isMesh) mesh = o; });
-process.env.STUDIO3D_PROFILE = '1';
+process.env.MESHSMITH_PROFILE = '1';
 t = performance.now();
 const r = await bakePBR(mesh, bp, rules, info[0].resolution);
 console.log('bake', Math.round(performance.now() - t), 'ms', r.presets);

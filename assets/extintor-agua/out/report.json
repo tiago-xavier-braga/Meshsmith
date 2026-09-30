@@ -1,7 +1,7 @@
 {
   "asset": "extintor-agua",
   "mesh": "SM_ExtintorAgua",
-  "generatedAt": "2026-09-30T17:24:13.958Z",
+  "generatedAt": "2026-09-30T17:32:42.600Z",
   "passed": true,
   "readyToExport": true,
   "blockingFailed": [],
@@ -77,7 +77,7 @@
       "id": "uv0-present",
       "label": "UV0 presente",
       "criterion": "100% dos vértices",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": true,
       "status": "pass",
       "value": "100%"
@@ -86,7 +86,7 @@
       "id": "uv0-overlap",
       "label": "UV0 overlap",
       "criterion": "0% (exceto mirror e stack)",
-      "tool": "studio3d (rasterização)",
+      "tool": "meshsmith (rasterização)",
       "blocking": true,
       "status": "pass",
       "value": "0.000% (0 px)"
@@ -95,7 +95,7 @@
       "id": "uv0-range",
       "label": "UV0 fora de 0–1",
       "criterion": "0 ilhas (exceto tiling declarado)",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": true,
       "status": "pass",
       "value": "0 ilhas"
@@ -104,7 +104,7 @@
       "id": "uv0-padding",
       "label": "Padding",
       "criterion": "≥ 4 px entre ilhas, ≥ 2 px da borda (512²)",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": true,
       "status": "pass",
       "value": "gap mín 5.0 px, borda mín 3 px"
@@ -113,7 +113,7 @@
       "id": "uv0-texel-density",
       "label": "Texel density",
       "criterion": "±10% entre ilhas",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": false,
       "status": "warn",
       "value": "537 px/m (mediana), desvio máx 10.2%",
@@ -127,7 +127,7 @@
       "id": "uv0-distortion",
       "label": "Distorção",
       "criterion": "≤ 5% por ilha",
-      "tool": "studio3d (Jacobiano da UV)",
+      "tool": "meshsmith (Jacobiano da UV)",
       "blocking": false,
       "status": "warn",
       "value": "pior ilha 32.8% (45 faixas < 4 px de largura ignoradas)"
@@ -136,7 +136,7 @@
       "id": "uv0-utilization",
       "label": "Aproveitamento",
       "criterion": "≥ 70% do espaço UV",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": false,
       "status": "warn",
       "value": "51.4%"
@@ -145,7 +145,7 @@
       "id": "uv0-seams",
       "label": "Seams",
       "criterion": "em arestas vivas ou áreas ocultas",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": false,
       "status": "warn",
       "value": "32.6% do comprimento de seam em superfície contínua visível",
@@ -157,7 +157,7 @@
       "id": "uv1-lightmap",
       "label": "UV1 lightmap",
       "criterion": "presente e sem overlap se static",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": true,
       "status": "n/a",
       "value": "asset não é static"
@@ -166,7 +166,7 @@
       "id": "mesh",
       "label": "Malha",
       "criterion": "manifold, sem faces de área zero, normais para fora",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": true,
       "status": "pass",
       "value": "11/11 peças watertight, 0 faces área zero, 0 normais invertidas"
@@ -175,7 +175,7 @@
       "id": "dimensions",
       "label": "Dimensões",
       "criterion": "±2% do blueprint, pivot base-center",
-      "tool": "studio3d (bounding box)",
+      "tool": "meshsmith (bounding box)",
       "blocking": true,
       "status": "pass",
       "value": "0.355 × 0.713 × 0.181 m (desvio x 1.3%, y 0.4%, z -0.1%); pivot ok (centro da base XZ 0.000, 0.000; base y 0.0000)"
@@ -226,7 +226,7 @@
       "id": "collision",
       "label": "Colisão",
       "criterion": "<malha>_col presente",
-      "tool": "studio3d",
+      "tool": "meshsmith",
       "blocking": false,
       "status": "pass",
       "value": "hull, 256 triângulos"

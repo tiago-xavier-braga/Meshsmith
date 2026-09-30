@@ -1,8 +1,0 @@
-{
-  "name": "com.studio3d.import",
-  "version": "0.1.0",
-  "displayName": "3D Studio Import",
-  "description": "Sets up LODGroup and colliders for 3D Studio packages (SM_<Nome>_LOD0..n, SM_<Nome>_col), for FBX automatically and for GLB (glTFast) via a menu that builds a prefab.",
-  "unity": "2022.3",
-  "author": { "name": "3D Studio" }
-}
