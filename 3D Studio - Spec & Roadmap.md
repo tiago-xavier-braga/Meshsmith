@@ -53,7 +53,7 @@ flowchart LR
 Peças principais:
 
 - **Blueprint (`asset.json`):** descrição estruturada do asset: partes, dimensões em metros, materiais, orçamento de triângulos e engine-alvo. É o contrato entre a análise e a modelagem.
-- **Gerador (`asset.js`):** módulo Three.js que lê o blueprint e constrói a cena. Usa uma biblioteca interna de peças (caixa chanfrada, lathe, extrude, sweep, booleanas).
+- **Gerador (`asset.js`):** módulo Three.js que lê o blueprint e constrói a cena. Usa uma biblioteca interna de peças (caixa chanfrada, cilindro, lathe, extrude, sweep, booleanas).
 - **Estúdio headless:** página Three.js aberta via Playwright ou pelo browser do Claude. Renderiza as vistas de comparação e a textura de checker de UV.
 - **CLI `studio3d`:** comandos `build`, `render`, `uv`, `validate` e `export`, que o Claude chama em sequência.
 - **Skill `/modelar-3d`:** orquestra o fluxo e registra cada iteração no relatório do asset.
@@ -67,7 +67,7 @@ Todas as ferramentas são gratuitas e open source e rodam em Node.js (a v24 já 
 | Node.js 24 | Runtime da CLI `studio3d` | MIT | 0 |
 | Three.js | Modelagem, render, GLTFExporter, OBJExporter | MIT | 0 |
 | Playwright | Browser headless para render WebGL e screenshots | Apache-2.0 | 0 |
-| three-bvh-csg | Operações booleanas (furos, recortes, uniões) | MIT | 1 |
+| manifold-3d | Operações booleanas (furos, recortes, uniões) com saída sempre watertight | Apache-2.0 | 1 |
 | three-mesh-bvh | Raycast rápido para bake de AO e checagens | MIT | 1 |
 | xatlas (build WASM) | UV unwrap, empacotamento e UV2 de lightmap | MIT | 2 |
 | glTF-Transform | Weld, dedup, tangentes, compressão e inspeção de GLB | MIT | 2 |
@@ -180,7 +180,7 @@ Critérios de aceite da v1, medidos em um conjunto de 10 referências de teste:
 
 ## Estrutura de pastas e convenções
 
-O projeto fica em `dist/`. Cada asset tem uma pasta própria com a referência, o código-fonte e o pacote exportado.
+O tooling fica em `www/projects/3D Studio/` (fora do projeto Unity, para o `node_modules` não entrar no import). O `studio3d export` copia só o pacote final para `dist/<nome>/`. Cada asset tem uma pasta própria com a referência, o código-fonte e o pacote exportado.
 
 ```
 3d-studio/

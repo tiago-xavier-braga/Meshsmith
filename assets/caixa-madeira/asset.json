@@ -1,0 +1,19 @@
+{
+  "name": "caixa-madeira",
+  "meshName": "SM_CaixaMadeira",
+  "category": "prop-medium",
+  "static": true,
+  "dimensions": { "x": 0.6, "y": 0.6, "z": 0.6 },
+  "reference": { "prompt": "Caixote de madeira de pinus, 60 cm, cantoneiras verticais, tábuas horizontais com fresta e alças vazadas nas laterais." },
+  "materials": {
+    "wood": { "color": "#b88a55", "roughness": 0.75, "metalness": 0 },
+    "woodDark": { "color": "#8a6238", "roughness": 0.8, "metalness": 0 }
+  },
+  "parts": [
+    { "id": "post", "material": "woodDark" },
+    { "id": "plank", "material": "wood" },
+    { "id": "plank-handle", "material": "wood" },
+    { "id": "lid", "material": "wood" },
+    { "id": "bottom", "material": "wood", "hidden": true }
+  ]
+}
