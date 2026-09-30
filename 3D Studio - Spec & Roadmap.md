@@ -28,7 +28,7 @@ O sistema foca em assets hard-surface e estilizados, onde a modelagem por códig
 | Peças técnicas e mecânicas | Sim | Precisão dimensional via blueprint |
 | Veículos estilizados | Parcial | Carroceria simples; curvas complexas limitadas |
 | Vegetação estilizada (árvores, rochas) | Parcial | Procedural com ruído |
-| Personagens, rostos, animais realistas | Não | Possível na F7 com gerador local opcional |
+| Personagens, rostos, animais realistas | Não | Possível na F6 com gerador local opcional |
 | Rigging e animação | Não | Fora do escopo |
 | Escultura e detalhe de alta frequência | Não | Simulado via normal map procedural |
 
@@ -91,8 +91,8 @@ Todas as ferramentas são gratuitas e open source e rodam em Node.js (a v24 já 
 | meshoptimizer | Simplificação para LODs | MIT | 5 |
 | assimpjs | Releitura do FBX e do OBJ exportados (verificação automática); o assimp só importa FBX | BSD-3 | 5 |
 | studio3d (writer próprio) | Export FBX binário 7.4 e OBJ/MTL | — | 5 |
-| Blender CLI (opcional) | Fallback headless para FBX, se o writer próprio falhar em alguma engine | GPL | 6 |
-| TripoSR local (opcional) | Malha-base para formas orgânicas, na RTX 3060 | MIT | 7 |
+| Blender CLI (opcional) | Fallback headless para FBX, se o writer próprio falhar em alguma engine | GPL | 7 |
+| TripoSR local (opcional) | Malha-base para formas orgânicas, na RTX 3060 | MIT | 6 |
 
 No lado das engines, o Unity importa GLB com o pacote gratuito **glTFast**; o Godot 4 e o Blender importam GLB nativamente.
 
@@ -145,12 +145,12 @@ Todo asset sai com dois canais de UV: **UV0** para texturas e **UV1** para light
 
 ## Export por engine
 
-O GLB é o formato mestre: um único arquivo abre corretamente nas três engines. O FBX e o OBJ são derivados dele, para pipelines que ainda os exigem. A ferramenta não escreve em projetos de engine: ela gera o pacote em `dist/<nome>/` (e um `.zip`), e quem usa copia para o projeto. Os scripts de import do lado da engine (LODGroup e colliders no Unity) são entregues na F6, como pacote à parte.
+O GLB é o formato mestre: um único arquivo abre corretamente nas três engines. O FBX e o OBJ são derivados dele, para pipelines que ainda os exigem. A ferramenta não escreve em projetos de engine: ela gera o pacote em `dist/<nome>/` (e um `.zip`), e quem usa copia para o projeto. Os scripts de import do lado da engine (LODGroup e colliders no Unity) ficam em `unity/com.studio3d.import` e são testados na F7.
 
 | Aspecto | Unity | Godot 4 | Blender |
 | --- | --- | --- | --- |
-| Formato principal | GLB via glTFast | GLB nativo | GLB nativo |
-| Formato alternativo | FBX (binary) | — | FBX, OBJ |
+| Formato principal | FBX (binary), padrão da equipe | GLB nativo | GLB nativo |
+| Formato alternativo | GLB via glTFast | — | FBX, OBJ |
 | Material | URP Lit (convertido pelo glTFast) | StandardMaterial3D | Principled BSDF |
 | UV de lightmap | Canal UV1 (`TEXCOORD_1`) | UV2 (`TEXCOORD_1`) | Segundo UV map |
 | Colisão | Malha `<nome>_col` vira MeshCollider via script de import | Sufixo `-col` ou `-colonly` no nó (hint nativo) | Objeto separado `<nome>_col` |
@@ -192,9 +192,9 @@ Critérios de aceite da v1, medidos em um conjunto de 10 referências de teste:
 
 - [ ] 10 de 10 assets passam em todos os checks bloqueantes
 - [ ] Pelo menos 3 assets de cada estilo (realista e low-poly) no conjunto
-- [ ] Cada asset importa sem erros no Unity (glTFast), no Godot 4 e no Blender (testado na F6)
+- [ ] Cada asset importa sem erros no Unity (FBX), no Godot 4 e no Blender (testado na F7)
 - [ ] A textura de checker não mostra esticamento visível em nenhuma vista
-- [ ] O lightmap bake no Unity não mostra vazamentos (light bleeding) nas seams (testado na F6)
+- [ ] O lightmap bake no Unity não mostra vazamentos (light bleeding) nas seams (testado na F7)
 - [ ] Tempo médio de uma referência até o pacote final abaixo de 15 minutos
 
 ## Estrutura de pastas e convenções
@@ -238,7 +238,7 @@ A ferramenta é um projeto independente em `www/projects/3D Studio/`, sem depend
 
 ## Roadmap
 
-O MVP (referência vira asset aprovado) fecha no fim da F3. A F4 e a F5 levam o asset a padrão de produção nos dois estilos, sem depender de nenhuma engine. Os testes de import ficam para a F6, a última fase da v1. A F7 é opcional. Cada fase só avança quando o seu gate é cumprido. As datas ficam para definir.
+O MVP (referência vira asset aprovado) fecha no fim da F3. A F4 e a F5 levam o asset a padrão de produção nos dois estilos, sem depender de nenhuma engine. A F6 traz os extras (kits modulares, lote). Os testes de import ficam para a F7, a última fase da v1. Cada fase só avança quando o seu gate é cumprido. As datas ficam para definir.
 
 | Fase | Entregas | Gate de saída | Status |
 | --- | --- | --- | --- |
@@ -248,8 +248,8 @@ O MVP (referência vira asset aprovado) fecha no fim da F3. A F4 e a F5 levam o 
 | **F3 · Referência para modelo (MVP)** | Skill /modelar-3d, blueprint a partir de imagem ou prompt, render de 4 vistas, ciclo de comparação | **MVP: 5 referências reais viram assets aprovados** | 4 de 5 referências aprovadas (extintor, cadeira Adirondack, cone, cadeira estofada); falta 1 |
 | **F4 · Materiais e estilos** | Presets PBR procedurais, bake de BaseColor, Normal e ORM, AO via raycast, estilo low-poly (facetado + paleta) | 1 asset de cada estilo com texturas aprovadas: checker, vista de materiais e checks de textura | Concluída |
 | **F5 · Pacote de export** | FBX binário e OBJ (writers próprios, relidos pelo assimpjs), LODs com meshoptimizer, colisores, pacote `dist/<nome>/` + zip | 10 assets (pelo menos 3 de cada estilo) com pacote completo e checks ok, incluindo releitura do FBX e do OBJ | Concluída |
-| **F6 · Testes nas engines** | Import no Unity (glTFast), script de import (LODGroup, colliders) como pacote à parte, bake de lightmap; Godot e Blender se instalados | Critérios de aceite da v1 | Pacote Unity pronto (`unity/com.studio3d.import`); falta o teste num projeto |
-| **F7 · Extras (opcional)** | TripoSR local para formas orgânicas, kits modulares com snapping, geração em lote | — | — |
+| **F6 · Extras** | Kits modulares com grid, snapping e texturas tileáveis; geração em lote; TripoSR local para formas orgânicas (opcional, exige Python/CUDA) | Kit modular de arquitetura validado e lote dos 10+ assets em um comando | Em andamento |
+| **F7 · Testes nas engines (última)** | Import no Unity por FBX (formato principal da equipe) com o pacote `unity/com.studio3d.import` (LODGroup, colisores), bake de lightmap; GLB via glTFast opcional; Godot e Blender se instalados | Critérios de aceite da v1 | Pacote Unity pronto; teste adiado para o fim |
 
 A ordem prioriza UV e validação (F2) antes do ciclo com referência (F3): as regras de UV passam a ser garantidas desde o primeiro asset gerado.
 
@@ -257,17 +257,17 @@ A ordem prioriza UV e validação (F2) antes do ciclo com referência (F3): as r
 
 | Risco | Impacto | Mitigação |
 | --- | --- | --- |
-| Formas curvas complexas ficam genéricas | Fidelidade baixa em veículos e orgânicos | Peças sweep e lathe, subdivisão; TripoSR local na F7 |
+| Formas curvas complexas ficam genéricas | Fidelidade baixa em veículos e orgânicos | Peças sweep e lathe, subdivisão; TripoSR local na F6 (opcional) |
 | Seams automáticos do xatlas em lugares visíveis | Viola as regras de UV | Seams definidos por peça no gerador; xatlas só empacota |
-| assimpjs gera FBX com eixos ou escala errados | Import quebrado no Unity | Releitura automática do FBX na F5; teste real na F6; fallback para Blender CLI headless |
+| assimpjs gera FBX com eixos ou escala errados | Import quebrado no Unity | Releitura automática do FBX na F5; teste real na F7; fallback para Blender CLI headless |
 | WebGL headless sem GPU no Playwright | Render lento ou diferente | Forçar GPU (RTX 3060) ou usar o browser do Claude |
 | Nota visual do Claude varia entre iterações | Critério de aprovação instável | Checklist fixo por vista, anotado no report.json |
 | Uso de tokens alto por asset (várias iterações com imagem) | Limite da licença | Teto de 5 iterações; renders em 768 px |
 
 Questões em aberto:
 
-- [ ] Qual pipeline de render é o alvo no Unity: URP, HDRP ou Built-in? (necessário na F6)
-- [ ] O GLB com glTFast basta no Unity, ou o FBX é obrigatório no fluxo da equipe? (necessário na F6)
+- [ ] Qual pipeline de render é o alvo no Unity: URP, HDRP ou Built-in? (necessário na F7)
+- [x] O GLB com glTFast basta no Unity, ou o FBX é obrigatório no fluxo da equipe? FBX é o formato principal no Unity; o GLB segue como formato mestre e para Godot/Blender
 - [ ] Os padrões de texel density (512 px/m para props) servem para os projetos atuais?
 - [x] Qual o estilo visual predominante? Os dois: realista (PBR) e low-poly (ver "Estilos visuais")
 - [x] Quais são as 10 referências do conjunto de teste da v1? caixa, tambor, suporte, banquinho (PBR e low-poly), extintor, cadeira Adirondack (low-poly), cone (low-poly) e cadeira estofada
