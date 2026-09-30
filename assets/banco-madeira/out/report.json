@@ -1,7 +1,7 @@
 {
   "asset": "banco-madeira",
   "mesh": "SM_BancoMadeira",
-  "generatedAt": "2026-09-30T15:38:37.590Z",
+  "generatedAt": "2026-09-30T15:52:42.882Z",
   "passed": true,
   "readyToExport": true,
   "blockingFailed": [],
@@ -203,6 +203,24 @@
           "Vista de topo: sem veio de madeira no assento (vem com as texturas da F4)."
         ]
       }
+    },
+    {
+      "id": "lods",
+      "label": "LODs",
+      "criterion": "LOD1/LOD2 com menos triângulos que o anterior",
+      "tool": "meshoptimizer",
+      "blocking": false,
+      "status": "pass",
+      "value": "LOD0 1852, LOD1 924, LOD2 586"
+    },
+    {
+      "id": "collision",
+      "label": "Colisão",
+      "criterion": "<malha>_col presente",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "pass",
+      "value": "hull, 256 triângulos"
     }
   ]
 }

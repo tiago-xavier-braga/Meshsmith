@@ -1,7 +1,7 @@
 {
   "asset": "extintor-agua",
   "mesh": "SM_ExtintorAgua",
-  "generatedAt": "2026-09-30T15:38:44.979Z",
+  "generatedAt": "2026-09-30T15:53:22.697Z",
   "passed": true,
   "readyToExport": true,
   "blockingFailed": [],
@@ -21,7 +21,7 @@
       "margin": 2
     }
   ],
-  "iterations": 2,
+  "iterations": 3,
   "review": {
     "iteration": 2,
     "checklist": {
@@ -212,6 +212,24 @@
           "O suporte de parede da foto não faz parte do asset."
         ]
       }
+    },
+    {
+      "id": "lods",
+      "label": "LODs",
+      "criterion": "LOD1/LOD2 com menos triângulos que o anterior",
+      "tool": "meshoptimizer",
+      "blocking": false,
+      "status": "pass",
+      "value": "LOD0 3452, LOD1 1866, LOD2 1068"
+    },
+    {
+      "id": "collision",
+      "label": "Colisão",
+      "criterion": "<malha>_col presente",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "pass",
+      "value": "hull, 256 triângulos"
     }
   ]
 }

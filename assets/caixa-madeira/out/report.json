@@ -1,7 +1,7 @@
 {
   "asset": "caixa-madeira",
   "mesh": "SM_CaixaMadeira",
-  "generatedAt": "2026-09-30T15:38:17.394Z",
+  "generatedAt": "2026-09-30T15:52:21.653Z",
   "passed": true,
   "readyToExport": true,
   "blockingFailed": [],
@@ -203,6 +203,24 @@
           "Sem pregos nem marcações de estêncil comuns em caixotes."
         ]
       }
+    },
+    {
+      "id": "lods",
+      "label": "LODs",
+      "criterion": "LOD1/LOD2 com menos triângulos que o anterior",
+      "tool": "meshoptimizer",
+      "blocking": false,
+      "status": "pass",
+      "value": "LOD0 1544, LOD1 1258, LOD2 1254"
+    },
+    {
+      "id": "collision",
+      "label": "Colisão",
+      "criterion": "<malha>_col presente",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "pass",
+      "value": "hull, 80 triângulos"
     }
   ]
 }

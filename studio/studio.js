@@ -144,8 +144,16 @@ window.studio = {
     model.traverse((o) => {
       if (o.isMesh) {
         o.castShadow = o.receiveShadow = true;
-        // Collision / LOD helper nodes are not part of the look.
-        if (/_col$|-col(only)?$/.test(o.name) || /_LOD[1-9]$/.test(o.name)) o.visible = false;
+        // Multi-primitive nodes load as a Group of renamed meshes: tag LOD / collision from the
+        // nearest ancestor carrying the suffix. Only LOD0 is part of the default look.
+        let lodLevel = 0, col = false;
+        for (let p = o; p; p = p.parent) {
+          const m = /_LOD(\d)$/.exec(p.name);
+          if (m) { lodLevel = Number(m[1]); break; }
+          if (/_col$|-col(only)?$/.test(p.name)) { col = true; break; }
+        }
+        o.userData.tag = { lod: lodLevel, col };
+        o.visible = !col && lodLevel === 0;
       }
     });
     scene.add(model);
@@ -169,14 +177,26 @@ window.studio = {
   },
 
   /** @returns {string} PNG data URL */
-  render({ view = 'front', mode = 'shaded', width = 768, height = 768, background = null } = {}) {
+  /** lod: which LOD to show (0 = render mesh); 'col' shows the collision mesh. */
+  render({ view = 'front', mode = 'shaded', width = 768, height = 768, background = null, lod = 0 } = {}) {
     renderer.setSize(width, height, false);
+    model.traverse((o) => {
+      if (!o.isMesh) return;
+      const { lod: level, col } = o.userData.tag;
+      o.visible = lod === 'col' ? col : !col && level === lod;
+    });
     scene.background = background ? new THREE.Color(background) : BG;
     applyMode(mode);
     ground.visible = view !== 'bottom';
     const cam = cameraFor(view, width / height);
     renderer.render(scene, cam);
     return renderer.domElement.toDataURL('image/png');
+  },
+
+  meshes() {
+    const out = [];
+    model?.traverse((o) => { if (o.isMesh) out.push([o.name, o.parent?.name, JSON.stringify(o.userData.tag), o.visible]); });
+    return out;
   },
 
   info() {

@@ -18,6 +18,7 @@
     "@gltf-transform/core": "^4.5.1",
     "@gltf-transform/extensions": "^4.5.1",
     "@gltf-transform/functions": "^4.5.1",
+    "assimpjs": "^0.0.10",
     "fflate": "^0.8.3",
     "gltf-validator": "^2.0.0-dev.3.10",
     "manifold-3d": "^3.5.4",

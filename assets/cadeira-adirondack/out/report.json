@@ -1,7 +1,7 @@
 {
   "asset": "cadeira-adirondack",
   "mesh": "SM_CadeiraAdirondack",
-  "generatedAt": "2026-09-30T15:36:34.862Z",
+  "generatedAt": "2026-09-30T15:53:25.229Z",
   "passed": true,
   "readyToExport": true,
   "blockingFailed": [],
@@ -170,6 +170,24 @@
           "Estilo low-poly: sem a borda curva ('cascata') da frente do assento e sem o recorte curvo das longarinas da foto."
         ]
       }
+    },
+    {
+      "id": "lods",
+      "label": "LODs",
+      "criterion": "LOD1/LOD2 com menos triângulos que o anterior",
+      "tool": "meshoptimizer",
+      "blocking": false,
+      "status": "n/a",
+      "value": "asset pequeno, sem LODs"
+    },
+    {
+      "id": "collision",
+      "label": "Colisão",
+      "criterion": "<malha>_col presente",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "pass",
+      "value": "hull, 84 triângulos"
     }
   ]
 }

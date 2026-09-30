@@ -102,7 +102,9 @@ Os alertas (!) não bloqueiam, mas cite no resumo os relevantes. Para ver o chec
 node cli/studio3d.js export <nome>
 ```
 
-O export só roda com `readyToExport` (todos os checks bloqueantes ok e `review.json` presente). Ele grava `out/preview.png` e monta o pacote em `dist/<nome>/` + `dist/<nome>.zip`. A ferramenta nunca escreve em projetos de engine: o usuário copia o pacote. Nunca use `--force` sem o usuário pedir.
+O export só roda com `readyToExport` (todos os checks bloqueantes ok e `review.json` presente). Ele grava `out/preview.png`, monta o pacote em `dist/<nome>/` (GLB, FBX, OBJ+MTL, texturas, preview, report) + `dist/<nome>.zip` e relê o FBX e o OBJ com o assimp: se triângulos ou bbox não baterem com o GLB, o export falha.
+
+LODs (`_LOD1`, `_LOD2` a 50% e 25%) e o colisor (`_col`, casco convexo) são gerados no build. No blueprint: `lods: [0.5, 0.25] | false`, `collision: "hull" | "box" | false`, e `decal: true` nas peças finas coladas na superfície (rótulos, adesivos), que os LODs não simplificam. A ferramenta nunca escreve em projetos de engine: o usuário copia o pacote. Nunca use `--force` sem o usuário pedir.
 
 ## Resumo para o usuário
 

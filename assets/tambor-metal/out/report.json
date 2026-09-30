@@ -1,7 +1,7 @@
 {
   "asset": "tambor-metal",
   "mesh": "SM_TamborMetal",
-  "generatedAt": "2026-09-30T15:38:25.311Z",
+  "generatedAt": "2026-09-30T15:52:30.143Z",
   "passed": true,
   "readyToExport": true,
   "blockingFailed": [],
@@ -203,6 +203,24 @@
           "Sem rótulos, amassados ou escorridos típicos de tambores em uso."
         ]
       }
+    },
+    {
+      "id": "lods",
+      "label": "LODs",
+      "criterion": "LOD1/LOD2 com menos triângulos que o anterior",
+      "tool": "meshoptimizer",
+      "blocking": false,
+      "status": "pass",
+      "value": "LOD0 2452, LOD1 1226, LOD2 724"
+    },
+    {
+      "id": "collision",
+      "label": "Colisão",
+      "criterion": "<malha>_col presente",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "pass",
+      "value": "hull, 256 triângulos"
     }
   ]
 }

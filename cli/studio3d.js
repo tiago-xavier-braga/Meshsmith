@@ -6,7 +6,8 @@
 //   render    build + views -> iterations/<n>/ + sheet.png (reference beside renders)
 //             --mode shaded,checker,uv1,wire,clay,normals  --views front,right,top,iso
 //   validate  build + all checks -> out/report.json (exit 1 on blocking failures)
-//   export    validate, then build the package dist/<asset>/ + dist/<asset>.zip (--dest, --force to skip the gate)
+//   export    validate, then build the package dist/<asset>/ (GLB, FBX, OBJ, textures, preview, report)
+//             + dist/<asset>.zip; FBX and OBJ are read back with assimp (--dest, --force to skip the gate)
 import { mkdir, readdir, cp, writeFile, rm, readFile, stat } from 'node:fs/promises';
 import { zipSync } from 'fflate';
 import { existsSync } from 'node:fs';
@@ -19,6 +20,11 @@ import { writeGLB } from '../lib/core/gltf.js';
 import { openStudio } from '../lib/core/render.js';
 import { unwrapAsset } from '../lib/uv/unwrap.js';
 import { applyTextures } from '../lib/materials/index.js';
+import { addLodsAndCollision } from '../lib/export/lod.js';
+import { sceneToFBX } from '../lib/export/fbx.js';
+import { sceneToOBJ } from '../lib/export/obj.js';
+import { readBack, compareBack } from '../lib/export/verify.js';
+import * as THREE from 'three';
 import { validateAsset } from '../lib/validate/index.js';
 import { contactSheet } from '../lib/core/sheet.js';
 import { ROOT } from '../lib/core/asset.js';
@@ -49,10 +55,11 @@ async function build(dir) {
   await rm(join(dir, 'out', 'textures'), { recursive: true, force: true });
   await mkdir(join(dir, 'out'), { recursive: true });
   const textures = await applyTextures(root, bp, uvInfo, join(dir, 'out'), rules);
+  const lodInfo = await addLodsAndCollision(root, bp);
   const glb = join(dir, 'out', `${bp.meshName}.glb`);
   await writeGLB(root, glb);
   log(`built ${glb} (${Math.round(performance.now() - t0)} ms)`);
-  return { bp, rules, root, glb, uvInfo, textures };
+  return { bp, rules, root, glb, uvInfo, textures, lodInfo };
 }
 
 async function writeImages(dir, images) {
@@ -162,8 +169,33 @@ async function writePreview(dir, bp) {
   }
 }
 
+/** FBX + OBJ next to the GLB, then both are read back with assimp and compared to LOD0. */
+async function writeInterchange(dest, bp, root) {
+  const texDir = join(dest, 'textures');
+  const texFiles = existsSync(texDir) ? await readdir(texDir) : [];
+  const pick = (re) => texFiles.find((f) => re.test(f));
+  const textures = {
+    baseColor: (pick(/_BaseColor\.png$/) ?? pick(/_Palette\.png$/)) && `textures/${pick(/_BaseColor\.png$/) ?? pick(/_Palette\.png$/)}`,
+    normal: pick(/_Normal\.png$/) && `textures/${pick(/_Normal\.png$/)}`,
+  };
+  const fbxPath = join(dest, `${bp.meshName}.fbx`);
+  await writeFile(fbxPath, sceneToFBX(root, { textures }));
+  const { obj, mtl } = sceneToOBJ(root, { name: bp.meshName, textures });
+  await writeFile(join(dest, `${bp.meshName}.obj`), obj);
+  await writeFile(join(dest, `${bp.meshName}.mtl`), mtl);
+
+  let lod0 = null;
+  root.traverse((o) => { if (o.isMesh && o.userData._parts) lod0 = o; });
+  const box = new THREE.Box3().setFromBufferAttribute(lod0.geometry.attributes.position);
+  const expected = { triangles: lod0.geometry.index.count / 3, size: box.getSize(new THREE.Vector3()).toArray() };
+  const lod0Name = new RegExp(`^${lod0.name}`);
+  const fbx = compareBack(expected, await readBack(fbxPath), lod0Name);
+  const objBack = compareBack(expected, await readBack(join(dest, `${bp.meshName}.obj`), [`${bp.meshName}.mtl`]), lod0Name);
+  return { fbx, obj: objBack };
+}
+
 async function exportAsset(dir) {
-  const { bp, report } = await validate(dir);
+  const { bp, report, root } = await validate(dir);
   if (!report.readyToExport && !values.force) {
     console.error(`\nexport bloqueado: ${[...report.blockingFailed, ...report.pending].join(', ')} (use --force para ignorar)`);
     process.exit(1);
@@ -173,6 +205,16 @@ async function exportAsset(dir) {
   await rm(dest, { recursive: true, force: true });
   await mkdir(dest, { recursive: true });
   await cp(join(dir, 'out'), dest, { recursive: true });
+  const reread = await writeInterchange(dest, bp, root);
+  report.interchange = reread;
+  await writeFile(join(dest, 'report.json'), JSON.stringify(report, null, 2));
+  for (const [fmt, r] of Object.entries(reread)) {
+    log(`  ${r.ok ? '✔' : '✘'} ${fmt.toUpperCase()} relido: ${r.triangles}/${r.expectedTriangles} triângulos, ${r.size.join(' × ')} m (esperado ${r.expectedSize.join(' × ')})`);
+  }
+  if (!Object.values(reread).every((r) => r.ok)) {
+    console.error(`\nexport falhou: FBX/OBJ relido não confere com o GLB (${dest})`);
+    process.exit(1);
+  }
   // Zip of the same folder, for handing the package over.
   const files = {};
   for (const rel of await readdir(dest, { recursive: true, withFileTypes: false })) {

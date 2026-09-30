@@ -1,7 +1,7 @@
 {
   "asset": "banco-madeira-lp",
   "mesh": "SM_BancoMadeiraLp",
-  "generatedAt": "2026-09-30T15:35:56.740Z",
+  "generatedAt": "2026-09-30T15:52:45.411Z",
   "passed": true,
   "readyToExport": true,
   "blockingFailed": [],
@@ -159,6 +159,24 @@
       "status": "pass",
       "value": "front 10, right 10, top 10, iso 10 (iteração 2)",
       "details": {}
+    },
+    {
+      "id": "lods",
+      "label": "LODs",
+      "criterion": "LOD1/LOD2 com menos triângulos que o anterior",
+      "tool": "meshoptimizer",
+      "blocking": false,
+      "status": "n/a",
+      "value": "asset pequeno, sem LODs"
+    },
+    {
+      "id": "collision",
+      "label": "Colisão",
+      "criterion": "<malha>_col presente",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "pass",
+      "value": "hull, 70 triângulos"
     }
   ]
 }

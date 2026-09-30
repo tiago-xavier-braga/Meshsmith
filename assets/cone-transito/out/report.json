@@ -1,7 +1,7 @@
 {
   "asset": "cone-transito",
   "mesh": "SM_ConeTransito",
-  "generatedAt": "2026-09-30T15:36:36.971Z",
+  "generatedAt": "2026-09-30T15:53:27.465Z",
   "passed": true,
   "readyToExport": true,
   "blockingFailed": [],
@@ -171,6 +171,24 @@
           "Faixas refletivas sem o padrão quadriculado da fita."
         ]
       }
+    },
+    {
+      "id": "lods",
+      "label": "LODs",
+      "criterion": "LOD1/LOD2 com menos triângulos que o anterior",
+      "tool": "meshoptimizer",
+      "blocking": false,
+      "status": "n/a",
+      "value": "asset pequeno, sem LODs"
+    },
+    {
+      "id": "collision",
+      "label": "Colisão",
+      "criterion": "<malha>_col presente",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "pass",
+      "value": "hull, 68 triângulos"
     }
   ]
 }

@@ -89,8 +89,9 @@ Todas as ferramentas são gratuitas e open source e rodam em Node.js (a v24 já 
 | Khronos glTF-Validator | Validação formal do GLB exportado | Apache-2.0 | 2 |
 | sharp | Redimensionar e converter texturas (PNG, WebP, KTX2 via toktx) | Apache-2.0 | 4 |
 | meshoptimizer | Simplificação para LODs | MIT | 5 |
-| assimpjs | Conversão GLB para FBX e OBJ | BSD-3 | 5 |
-| Blender CLI (opcional) | Fallback headless para FBX, se o assimpjs falhar | GPL | 5 |
+| assimpjs | Releitura do FBX e do OBJ exportados (verificação automática); o assimp só importa FBX | BSD-3 | 5 |
+| studio3d (writer próprio) | Export FBX binário 7.4 e OBJ/MTL | — | 5 |
+| Blender CLI (opcional) | Fallback headless para FBX, se o writer próprio falhar em alguma engine | GPL | 6 |
 | TripoSR local (opcional) | Malha-base para formas orgânicas, na RTX 3060 | MIT | 7 |
 
 No lado das engines, o Unity importa GLB com o pacote gratuito **glTFast**; o Godot 4 e o Blender importam GLB nativamente.
@@ -158,7 +159,8 @@ O GLB é o formato mestre: um único arquivo abre corretamente nas três engines
 Pacote gerado por asset (`dist/<nome>/`):
 
 - `SM_<Nome>.glb`, com texturas embutidas
-- `SM_<Nome>.fbx` e `SM_<Nome>.obj` + `.mtl`
+- `SM_<Nome>.fbx` (binário 7.4, com UV1 e LODs) e `SM_<Nome>.obj` + `.mtl` (só LOD0 e colisor)
+- Dentro do GLB e do FBX: `SM_<Nome>_LOD0` a `_LOD2` (a partir de 600 triângulos) e `SM_<Nome>_col` (casco convexo, ≤ 256 triângulos)
 - `textures/`, com PNGs soltos: `T_<Nome>_BaseColor`, `T_<Nome>_Normal` (OpenGL, Y+) e `T_<Nome>_ORM` (R = AO, G = roughness, B = metallic). No low-poly, só `T_<Nome>_Palette`
 - `preview.png`: as quatro vistas lado a lado com a referência
 - `report.json`: resultado de todas as validações
@@ -245,7 +247,7 @@ O MVP (referência vira asset aprovado) fecha no fim da F3. A F4 e a F5 levam o 
 | **F2 · UV e validação** | xatlas (UV0 + UV1), seams por ângulo, padding, texel density, checker e report.json | report.json sem falhas bloqueantes nos 3 props | Concluída |
 | **F3 · Referência para modelo (MVP)** | Skill /modelar-3d, blueprint a partir de imagem ou prompt, render de 4 vistas, ciclo de comparação | **MVP: 5 referências reais viram assets aprovados** | 4 de 5 referências aprovadas (extintor, cadeira Adirondack, cone, cadeira estofada); falta 1 |
 | **F4 · Materiais e estilos** | Presets PBR procedurais, bake de BaseColor, Normal e ORM, AO via raycast, estilo low-poly (facetado + paleta) | 1 asset de cada estilo com texturas aprovadas: checker, vista de materiais e checks de textura | Concluída |
-| **F5 · Pacote de export** | FBX e OBJ via assimpjs, LODs com meshoptimizer, colisores, pacote `dist/<nome>/` + zip | 10 assets (pelo menos 3 de cada estilo) com pacote completo e checks ok, incluindo releitura do FBX e do OBJ | Em andamento |
+| **F5 · Pacote de export** | FBX binário e OBJ (writers próprios, relidos pelo assimpjs), LODs com meshoptimizer, colisores, pacote `dist/<nome>/` + zip | 10 assets (pelo menos 3 de cada estilo) com pacote completo e checks ok, incluindo releitura do FBX e do OBJ | Concluída |
 | **F6 · Testes nas engines** | Import no Unity (glTFast), script de import (LODGroup, colliders) como pacote à parte, bake de lightmap; Godot e Blender se instalados | Critérios de aceite da v1 | — |
 | **F7 · Extras (opcional)** | TripoSR local para formas orgânicas, kits modulares com snapping, geração em lote | — | — |
 

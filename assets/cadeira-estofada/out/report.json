@@ -1,7 +1,7 @@
 {
   "asset": "cadeira-estofada",
   "mesh": "SM_CadeiraEstofada",
-  "generatedAt": "2026-09-30T15:39:00.411Z",
+  "generatedAt": "2026-09-30T15:53:43.113Z",
   "passed": true,
   "readyToExport": true,
   "blockingFailed": [],
@@ -212,6 +212,24 @@
           "Almofada do assento mais regular que a da foto (sem o volume irregular do estofado)."
         ]
       }
+    },
+    {
+      "id": "lods",
+      "label": "LODs",
+      "criterion": "LOD1/LOD2 com menos triângulos que o anterior",
+      "tool": "meshoptimizer",
+      "blocking": false,
+      "status": "pass",
+      "value": "LOD0 4756, LOD1 2576, LOD2 1490"
+    },
+    {
+      "id": "collision",
+      "label": "Colisão",
+      "criterion": "<malha>_col presente",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "pass",
+      "value": "hull, 256 triângulos"
     }
   ]
 }
