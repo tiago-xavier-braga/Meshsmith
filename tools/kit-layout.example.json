@@ -1,0 +1,11 @@
+[
+  { "asset": "kit-piso", "position": [0, 0, 0] },
+  { "asset": "kit-piso", "position": [2, 0, 0] },
+  { "asset": "kit-piso", "position": [0, 0, 2] },
+  { "asset": "kit-piso", "position": [2, 0, 2] },
+  { "asset": "kit-pilar", "position": [0, 0.1, 0] },
+  { "asset": "kit-parede", "position": [0.2, 0.1, 0] },
+  { "asset": "kit-parede-porta", "position": [2.2, 0.1, 0] },
+  { "asset": "kit-parede", "position": [0, 0.1, 2], "rotationY": 90 },
+  { "asset": "kit-parede", "position": [0, 0.1, 4], "rotationY": 90 }
+]
