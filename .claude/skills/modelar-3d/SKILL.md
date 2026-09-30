@@ -95,7 +95,7 @@ Os alertas (!) não bloqueiam, mas cite no resumo os relevantes. Para ver o chec
 node cli/studio3d.js export <nome>
 ```
 
-O export só roda com `readyToExport` (todos os checks bloqueantes ok e `review.json` presente). Ele grava `out/preview.png` e copia o pacote para `dist/<nome>/`. Nunca use `--force` sem o usuário pedir.
+O export só roda com `readyToExport` (todos os checks bloqueantes ok e `review.json` presente). Ele grava `out/preview.png` e monta o pacote em `dist/<nome>/` + `dist/<nome>.zip`. A ferramenta nunca escreve em projetos de engine: o usuário copia o pacote. Nunca use `--force` sem o usuário pedir.
 
 ## Resumo para o usuário
 

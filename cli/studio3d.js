@@ -6,10 +6,11 @@
 //   render    build + views -> iterations/<n>/ + sheet.png (reference beside renders)
 //             --mode shaded,checker,uv1,wire,clay,normals  --views front,right,top,iso
 //   validate  build + all checks -> out/report.json (exit 1 on blocking failures)
-//   export    validate, write out/preview.png, copy out/ into the Unity project (--dest, --force to skip the gate)
-import { mkdir, readdir, cp, writeFile, rm, readFile } from 'node:fs/promises';
+//   export    validate, then build the package dist/<asset>/ + dist/<asset>.zip (--dest, --force to skip the gate)
+import { mkdir, readdir, cp, writeFile, rm, readFile, stat } from 'node:fs/promises';
+import { zipSync } from 'fflate';
 import { existsSync } from 'node:fs';
-import { join, basename } from 'node:path';
+import { join, basename, sep } from 'node:path';
 import { parseArgs } from 'node:util';
 import sharp from 'sharp';
 import { assetDir, buildAsset } from '../lib/core/asset.js';
@@ -21,7 +22,8 @@ import { validateAsset } from '../lib/validate/index.js';
 import { contactSheet } from '../lib/core/sheet.js';
 import { ROOT } from '../lib/core/asset.js';
 
-const DEFAULT_DEST = 'dist';
+// The tool never writes into engine projects: packages go to dist/ and are copied from there.
+const DEFAULT_DEST = join(ROOT, 'dist');
 const DEFAULT_VIEWS = ['front', 'right', 'top', 'iso'];
 
 const { positionals, values } = parseArgs({
@@ -152,10 +154,17 @@ async function exportAsset(dir) {
   await rm(dest, { recursive: true, force: true });
   await mkdir(dest, { recursive: true });
   await cp(join(dir, 'out'), dest, { recursive: true });
-  log(`exported ${bp.name} -> ${dest}`);
+  // Zip of the same folder, for handing the package over.
+  const files = {};
+  for (const rel of await readdir(dest, { recursive: true, withFileTypes: false })) {
+    const abs = join(dest, rel);
+    if ((await stat(abs)).isFile()) files[`${bp.name}/${rel.split(sep).join('/')}`] = new Uint8Array(await readFile(abs));
+  }
+  await writeFile(`${dest}.zip`, zipSync(files, { level: 6 }));
+  log(`exported ${bp.name} -> ${dest} (+ .zip)`);
 }
 
-const pascal = (s) => s.replace(/(^|-)(w)/g, (_, __, c) => c.toUpperCase());
+const pascal = (s) => s.replace(/(^|-)(\w)/g, (_, __, c) => c.toUpperCase());
 
 async function scaffold(name) {
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(name)) throw new Error('asset name must be kebab-case');

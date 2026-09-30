@@ -2,3 +2,4 @@ node_modules/
 assets/*/iterations/
 *.log
 assets/*/debug/
+dist/
