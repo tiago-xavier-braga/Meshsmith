@@ -1,0 +1,11 @@
+{
+  "iteration": 2,
+  "checklist": {
+    "front": { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 2 },
+    "right": { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 2 },
+    "top":   { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 2 },
+    "iso":   { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 2 }
+  },
+  "differences": [],
+  "notes": "Versão low-poly do banco-madeira com o mesmo gerador. It1: assento de 9 lados ficava 3% menor no bbox; it2: octógono com vértices nos eixos."
+}

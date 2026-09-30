@@ -18,6 +18,7 @@ import { resolveRules } from '../lib/core/rules.js';
 import { writeGLB } from '../lib/core/gltf.js';
 import { openStudio } from '../lib/core/render.js';
 import { unwrapAsset } from '../lib/uv/unwrap.js';
+import { applyTextures } from '../lib/materials/index.js';
 import { validateAsset } from '../lib/validate/index.js';
 import { contactSheet } from '../lib/core/sheet.js';
 import { ROOT } from '../lib/core/asset.js';
@@ -44,12 +45,14 @@ async function build(dir) {
   const t0 = performance.now();
   const { bp, root } = await buildAsset(dir);
   const rules = resolveRules(bp);
-  const uvInfo = await unwrapAsset(root, rules);
+  const uvInfo = await unwrapAsset(root, rules, bp);
+  await rm(join(dir, 'out', 'textures'), { recursive: true, force: true });
   await mkdir(join(dir, 'out'), { recursive: true });
+  const textures = await applyTextures(root, bp, uvInfo, join(dir, 'out'));
   const glb = join(dir, 'out', `${bp.meshName}.glb`);
   await writeGLB(root, glb);
   log(`built ${glb} (${Math.round(performance.now() - t0)} ms)`);
-  return { bp, rules, root, glb, uvInfo };
+  return { bp, rules, root, glb, uvInfo, textures };
 }
 
 async function writeImages(dir, images) {

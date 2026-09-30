@@ -1,0 +1,132 @@
+{
+  "asset": "banco-madeira-lp",
+  "mesh": "SM_BancoMadeiraLp",
+  "generatedAt": "2026-09-30T14:26:15.439Z",
+  "passed": true,
+  "readyToExport": false,
+  "blockingFailed": [],
+  "pending": [
+    "visual"
+  ],
+  "warnings": [],
+  "uv": [
+    {
+      "mesh": "SM_BancoMadeiraLp_Mesh",
+      "resolution": 256,
+      "palette": true,
+      "lightmapTexelsPerUnit": 105.16812801361084
+    }
+  ],
+  "iterations": 2,
+  "review": null,
+  "checks": [
+    {
+      "id": "gltf",
+      "label": "GLB válido",
+      "criterion": "0 erros, 0 warnings",
+      "tool": "glTF-Validator",
+      "blocking": true,
+      "status": "pass",
+      "value": "0 erros, 0 warnings"
+    },
+    {
+      "id": "uv0-present",
+      "label": "UV0 presente",
+      "criterion": "100% dos vértices",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "pass",
+      "value": "100%"
+    },
+    {
+      "id": "palette",
+      "label": "Paleta (low-poly)",
+      "criterion": "toda face dentro da célula do seu material",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "pass",
+      "value": "188/188 faces, 2 cores"
+    },
+    {
+      "id": "uv0-overlap",
+      "label": "UV0 overlap",
+      "criterion": "não se aplica à paleta",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "n/a",
+      "value": "paleta low-poly"
+    },
+    {
+      "id": "uv0-range",
+      "label": "UV0 fora de 0–1",
+      "criterion": "não se aplica à paleta",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "n/a",
+      "value": "paleta low-poly"
+    },
+    {
+      "id": "uv0-padding",
+      "label": "Padding",
+      "criterion": "não se aplica à paleta",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "n/a",
+      "value": "paleta low-poly"
+    },
+    {
+      "id": "uv1-lightmap",
+      "label": "UV1 lightmap",
+      "criterion": "presente, sem overlap, padding ≥ 2 texels",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "pass",
+      "value": "35 ilhas, overlap 0 px, gap mín > 4 texels @ 128²"
+    },
+    {
+      "id": "mesh",
+      "label": "Malha",
+      "criterion": "manifold, sem faces de área zero, normais para fora",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "pass",
+      "value": "5/5 peças watertight, 0 faces área zero, 0 normais invertidas"
+    },
+    {
+      "id": "dimensions",
+      "label": "Dimensões",
+      "criterion": "±2% do blueprint, pivot base-center",
+      "tool": "studio3d (bounding box)",
+      "blocking": true,
+      "status": "pass",
+      "value": "0.320 × 0.450 × 0.320 m (desvio x -0.0%, y -0.0%, z -0.0%); pivot ok (centro XZ 0.000, 0.000; base y 0.0000)"
+    },
+    {
+      "id": "triangles",
+      "label": "Triângulos",
+      "criterion": "50–1500 (lowpoly)",
+      "tool": "glTF-Transform inspect",
+      "blocking": true,
+      "status": "pass",
+      "value": "188"
+    },
+    {
+      "id": "textures",
+      "label": "Texturas",
+      "criterion": "potência de 2, no tamanho declarado",
+      "tool": "sharp",
+      "blocking": true,
+      "status": "pass",
+      "value": "1 texturas ok"
+    },
+    {
+      "id": "visual",
+      "label": "Fidelidade visual",
+      "criterion": "nota ≥ 8/10 em cada vista",
+      "tool": "Claude (visão)",
+      "blocking": true,
+      "status": "pending",
+      "value": "sem review.json"
+    }
+  ]
+}
