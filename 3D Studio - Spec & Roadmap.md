@@ -243,9 +243,9 @@ O MVP (referência vira asset aprovado) fecha no fim da F3. A F4 e a F5 levam o 
 | **F0 · Fundação** | Projeto Node, Three.js, estúdio headless com Playwright, GLB de um cubo de teste | O GLB passa no glTF-Validator e renderiza certo no estúdio | Concluída |
 | **F1 · Biblioteca de peças** | bevelBox, cilindro, lathe, extrude, sweep e CSG; schema do blueprint (asset.json); normais por ângulo | 3 props feitos só com a biblioteca | Concluída |
 | **F2 · UV e validação** | xatlas (UV0 + UV1), seams por ângulo, padding, texel density, checker e report.json | report.json sem falhas bloqueantes nos 3 props | Concluída |
-| **F3 · Referência para modelo (MVP)** | Skill /modelar-3d, blueprint a partir de imagem ou prompt, render de 4 vistas, ciclo de comparação | **MVP: 5 referências reais viram assets aprovados** | Ferramental pronto; faltam as referências |
+| **F3 · Referência para modelo (MVP)** | Skill /modelar-3d, blueprint a partir de imagem ou prompt, render de 4 vistas, ciclo de comparação | **MVP: 5 referências reais viram assets aprovados** | 4 de 5 referências aprovadas (extintor, cadeira Adirondack, cone, cadeira estofada); falta 1 |
 | **F4 · Materiais e estilos** | Presets PBR procedurais, bake de BaseColor, Normal e ORM, AO via raycast, estilo low-poly (facetado + paleta) | 1 asset de cada estilo com texturas aprovadas: checker, vista de materiais e checks de textura | Concluída |
-| **F5 · Pacote de export** | FBX e OBJ via assimpjs, LODs com meshoptimizer, colisores, pacote `dist/<nome>/` + zip | 10 assets (pelo menos 3 de cada estilo) com pacote completo e checks ok, incluindo releitura do FBX e do OBJ | — |
+| **F5 · Pacote de export** | FBX e OBJ via assimpjs, LODs com meshoptimizer, colisores, pacote `dist/<nome>/` + zip | 10 assets (pelo menos 3 de cada estilo) com pacote completo e checks ok, incluindo releitura do FBX e do OBJ | Em andamento |
 | **F6 · Testes nas engines** | Import no Unity (glTFast), script de import (LODGroup, colliders) como pacote à parte, bake de lightmap; Godot e Blender se instalados | Critérios de aceite da v1 | — |
 | **F7 · Extras (opcional)** | TripoSR local para formas orgânicas, kits modulares com snapping, geração em lote | — | — |
 
@@ -268,4 +268,4 @@ Questões em aberto:
 - [ ] O GLB com glTFast basta no Unity, ou o FBX é obrigatório no fluxo da equipe? (necessário na F6)
 - [ ] Os padrões de texel density (512 px/m para props) servem para os projetos atuais?
 - [x] Qual o estilo visual predominante? Os dois: realista (PBR) e low-poly (ver "Estilos visuais")
-- [ ] Quais são as 10 referências do conjunto de teste da v1?
+- [x] Quais são as 10 referências do conjunto de teste da v1? caixa, tambor, suporte, banquinho (PBR e low-poly), extintor, cadeira Adirondack (low-poly), cone (low-poly) e cadeira estofada

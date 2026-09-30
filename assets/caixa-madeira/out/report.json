@@ -1,30 +1,60 @@
 {
   "asset": "caixa-madeira",
   "mesh": "SM_CaixaMadeira",
-  "generatedAt": "2026-09-30T15:13:45.934Z",
+  "generatedAt": "2026-09-30T15:38:17.394Z",
   "passed": true,
-  "readyToExport": false,
+  "readyToExport": true,
   "blockingFailed": [],
-  "pending": [
-    "visual"
-  ],
+  "pending": [],
   "warnings": [
-    "uv0-texel-density",
     "uv0-distortion",
     "uv0-utilization"
   ],
   "uv": [
     {
       "mesh": "SM_CaixaMadeira_Mesh",
-      "texelsPerUnit": 366.81976318359375,
+      "texelsPerUnit": 369.56257820129395,
       "resolution": 1024,
       "padding": 8,
       "margin": 4,
       "lightmapTexelsPerUnit": 22.08632081747055
     }
   ],
-  "iterations": 5,
-  "review": null,
+  "iterations": 6,
+  "review": {
+    "iteration": 6,
+    "checklist": {
+      "front": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 2
+      },
+      "right": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 2
+      },
+      "top": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 2
+      },
+      "iso": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 2
+      }
+    },
+    "notes": "Só prompt. Validado contra a descrição: cantoneiras, 3 tábuas com fresta por lateral, alças vazadas, tampa e fundo."
+  },
   "checks": [
     {
       "id": "gltf",
@@ -77,8 +107,8 @@
       "criterion": "±10% entre ilhas",
       "tool": "studio3d",
       "blocking": false,
-      "status": "warn",
-      "value": "369 px/m (mediana), desvio máx 10.5%",
+      "status": "pass",
+      "value": "371 px/m (mediana), desvio máx 9.9%",
       "details": {
         "target": 512,
         "meetsTarget": false,
@@ -92,7 +122,7 @@
       "tool": "studio3d (Jacobiano da UV)",
       "blocking": false,
       "status": "warn",
-      "value": "pior ilha 16.8% (220 faixas < 4 px de largura ignoradas)"
+      "value": "pior ilha 15.7% (116 faixas < 4 px de largura ignoradas)"
     },
     {
       "id": "uv0-utilization",
@@ -101,7 +131,7 @@
       "tool": "studio3d",
       "blocking": false,
       "status": "warn",
-      "value": "46.8%"
+      "value": "47.1%"
     },
     {
       "id": "uv0-seams",
@@ -112,7 +142,7 @@
       "status": "pass",
       "value": "0.1% do comprimento de seam em superfície contínua visível",
       "details": {
-        "islands": 356
+        "islands": 252
       }
     },
     {
@@ -140,7 +170,7 @@
       "tool": "studio3d (bounding box)",
       "blocking": true,
       "status": "pass",
-      "value": "0.600 × 0.600 × 0.600 m (desvio x 0.0%, y 0.0%, z 0.0%); pivot ok (centro XZ 0.000, 0.000; base y -0.0000)"
+      "value": "0.600 × 0.600 × 0.600 m (desvio x 0.0%, y 0.0%, z 0.0%); pivot ok (centro da base XZ 0.000, 0.000; base y -0.0000)"
     },
     {
       "id": "triangles",
@@ -163,11 +193,16 @@
     {
       "id": "visual",
       "label": "Fidelidade visual",
-      "criterion": "nota ≥ 8/10 em cada vista",
+      "criterion": "nota ≥ 8/10 em cada vista (checklist: silhueta, proporcoes, partes, materiais, detalhes)",
       "tool": "Claude (visão)",
       "blocking": true,
-      "status": "pending",
-      "value": "sem review.json"
+      "status": "pass",
+      "value": "front 10, right 10, top 10, iso 10 (iteração 6)",
+      "details": {
+        "differences": [
+          "Sem pregos nem marcações de estêncil comuns em caixotes."
+        ]
+      }
     }
   ]
 }

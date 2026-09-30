@@ -1,0 +1,37 @@
+{
+  "iteration": 6,
+  "checklist": {
+    "front": {
+      "silhueta": 2,
+      "proporcoes": 2,
+      "partes": 2,
+      "materiais": 2,
+      "detalhes": 1
+    },
+    "right": {
+      "silhueta": 2,
+      "proporcoes": 2,
+      "partes": 2,
+      "materiais": 2,
+      "detalhes": 1
+    },
+    "top": {
+      "silhueta": 2,
+      "proporcoes": 2,
+      "partes": 2,
+      "materiais": 2,
+      "detalhes": 2
+    },
+    "iso": {
+      "silhueta": 2,
+      "proporcoes": 2,
+      "partes": 2,
+      "materiais": 2,
+      "detalhes": 2
+    }
+  },
+  "differences": [
+    "Sem rótulos, amassados ou escorridos típicos de tambores em uso."
+  ],
+  "notes": "Só prompt. Anéis de rolagem, frisos, tampa rebaixada e dois bujões de tamanhos diferentes."
+}

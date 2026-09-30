@@ -1,0 +1,15 @@
+{
+  "iteration": 2,
+  "checklist": {
+    "ref-foto": { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 1 },
+    "front":    { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 1 },
+    "right":    { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 2 },
+    "top":      { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 2 },
+    "iso":      { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 1 }
+  },
+  "differences": [
+    "Rótulo com texto procedural (sem as letras reais WATER/SAFEX nem os pictogramas).",
+    "O suporte de parede da foto não faz parte do asset."
+  ],
+  "notes": "Escala pela foto (corpo Ø18 cm = 300 px). It1: rótulo liso e desgaste alto demais; it2: preset label (pseudo-impressão) e wear 0,15."
+}

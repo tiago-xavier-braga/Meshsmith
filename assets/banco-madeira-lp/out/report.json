@@ -1,7 +1,7 @@
 {
   "asset": "banco-madeira-lp",
   "mesh": "SM_BancoMadeiraLp",
-  "generatedAt": "2026-09-30T15:14:02.520Z",
+  "generatedAt": "2026-09-30T15:35:56.740Z",
   "passed": true,
   "readyToExport": true,
   "blockingFailed": [],
@@ -130,7 +130,7 @@
       "tool": "studio3d (bounding box)",
       "blocking": true,
       "status": "pass",
-      "value": "0.320 × 0.450 × 0.320 m (desvio x -0.0%, y -0.0%, z -0.0%); pivot ok (centro XZ 0.000, 0.000; base y 0.0000)"
+      "value": "0.320 × 0.450 × 0.320 m (desvio x -0.0%, y -0.0%, z -0.0%); pivot ok (centro da base XZ 0.000, 0.000; base y 0.0000)"
     },
     {
       "id": "triangles",

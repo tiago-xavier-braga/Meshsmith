@@ -1,7 +1,7 @@
 {
   "asset": "banco-madeira",
   "mesh": "SM_BancoMadeira",
-  "generatedAt": "2026-09-30T15:14:01.808Z",
+  "generatedAt": "2026-09-30T15:38:37.590Z",
   "passed": true,
   "readyToExport": true,
   "blockingFailed": [],
@@ -13,7 +13,7 @@
   "uv": [
     {
       "mesh": "SM_BancoMadeira_Mesh",
-      "texelsPerUnit": 946.0088729858398,
+      "texelsPerUnit": 927.5801658630371,
       "resolution": 1024,
       "padding": 8,
       "margin": 4,
@@ -108,7 +108,7 @@
       "tool": "studio3d",
       "blocking": false,
       "status": "pass",
-      "value": "947 px/m (mediana), desvio máx 2.5%",
+      "value": "929 px/m (mediana), desvio máx 4.3%",
       "details": {
         "target": 512,
         "meetsTarget": true,
@@ -131,7 +131,7 @@
       "tool": "studio3d",
       "blocking": false,
       "status": "warn",
-      "value": "27.6%"
+      "value": "26.6%"
     },
     {
       "id": "uv0-seams",
@@ -170,7 +170,7 @@
       "tool": "studio3d (bounding box)",
       "blocking": true,
       "status": "pass",
-      "value": "0.320 × 0.450 × 0.320 m (desvio x -0.0%, y -0.0%, z -0.0%); pivot ok (centro XZ 0.000, 0.000; base y 0.0000)"
+      "value": "0.320 × 0.450 × 0.320 m (desvio x -0.0%, y -0.0%, z -0.0%); pivot ok (centro da base XZ 0.000, -0.000; base y 0.0000)"
     },
     {
       "id": "triangles",

@@ -1,0 +1,37 @@
+{
+  "iteration": 6,
+  "checklist": {
+    "front": {
+      "silhueta": 2,
+      "proporcoes": 2,
+      "partes": 2,
+      "materiais": 2,
+      "detalhes": 2
+    },
+    "right": {
+      "silhueta": 2,
+      "proporcoes": 2,
+      "partes": 2,
+      "materiais": 2,
+      "detalhes": 2
+    },
+    "top": {
+      "silhueta": 2,
+      "proporcoes": 2,
+      "partes": 2,
+      "materiais": 2,
+      "detalhes": 2
+    },
+    "iso": {
+      "silhueta": 2,
+      "proporcoes": 2,
+      "partes": 2,
+      "materiais": 2,
+      "detalhes": 2
+    }
+  },
+  "differences": [
+    "Sem pregos nem marcações de estêncil comuns em caixotes."
+  ],
+  "notes": "Só prompt. Validado contra a descrição: cantoneiras, 3 tábuas com fresta por lateral, alças vazadas, tampa e fundo."
+}

@@ -1,0 +1,16 @@
+{
+  "iteration": 4,
+  "checklist": {
+    "ref-foto": { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 1, "detalhes": 1 },
+    "front":    { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 1, "detalhes": 1 },
+    "right":    { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 1 },
+    "top":      { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 2 },
+    "iso":      { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 1 }
+  },
+  "differences": [
+    "Veludo sem o brilho de pelo (sheen) da foto: o preset fabric só tem trama.",
+    "Travessa superior sem o entalhe em voluta; é um arco liso.",
+    "Almofada do assento mais regular que a da foto (sem o volume irregular do estofado)."
+  ],
+  "notes": "It1: encosto estofado caído (pivot da inclinação); it2: cores claras demais, assento baixo; it3: cores de nogueira e ocre, almofada mais alta; it4: verificação de normais/texturas (o brilho frontal era reflexo do ambiente do estúdio; rugosidade 0,58)."
+}

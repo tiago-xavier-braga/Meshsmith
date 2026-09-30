@@ -1,0 +1,105 @@
+{
+  "name": "extintor-agua",
+  "meshName": "SM_ExtintorAgua",
+  "category": "prop-medium",
+  "style": "pbr",
+  "static": false,
+  "dimensions": {
+    "x": 0.35,
+    "y": 0.71,
+    "z": 0.181
+  },
+  "reference": {
+    "images": [
+      "foto.jpg"
+    ],
+    "prompt": "Extintor de água pressurizada de 9 L (Safex): cilindro vermelho de Ø18 cm com fundo e ombro arredondados, válvula com manômetro, alavanca e alça pretas, mangueira preta com ponteiras metálicas formando um arco por cima, rótulo de instruções na frente. Uso moderado.",
+    "cameras": {
+      "foto.jpg": {
+        "position": [
+          0.02,
+          0.4,
+          1.75
+        ],
+        "target": [
+          -0.06,
+          0.36,
+          0
+        ],
+        "fov": 26
+      }
+    }
+  },
+  "materials": {
+    "body": {
+      "color": "#b3140e",
+      "roughness": 0.35,
+      "metalness": 0.2,
+      "preset": "painted-metal",
+      "wear": 0.15
+    },
+    "label": {
+      "color": "#b3140e",
+      "roughness": 0.4,
+      "metalness": 0,
+      "preset": "label",
+      "ink": "#f1ece0",
+      "accent": "#f0c21e",
+      "title": "#f4f0e6"
+    },
+    "black": {
+      "color": "#1a1a1c",
+      "roughness": 0.5,
+      "metalness": 0,
+      "preset": "plastic"
+    },
+    "hose": {
+      "color": "#141414",
+      "roughness": 0.8,
+      "metalness": 0,
+      "preset": "rubber"
+    },
+    "steel": {
+      "color": "#b9bdc2",
+      "roughness": 0.3,
+      "metalness": 1,
+      "preset": "bare-metal"
+    },
+    "gauge": {
+      "color": "#e6e6e3",
+      "roughness": 0.3,
+      "metalness": 0,
+      "preset": "plastic"
+    }
+  },
+  "parts": [
+    {
+      "id": "body",
+      "material": "body"
+    },
+    {
+      "id": "label",
+      "material": "label"
+    },
+    {
+      "id": "valve",
+      "material": "steel"
+    },
+    {
+      "id": "lever",
+      "material": "black"
+    },
+    {
+      "id": "gauge",
+      "material": "gauge"
+    },
+    {
+      "id": "hose",
+      "material": "hose"
+    },
+    {
+      "id": "ferrule",
+      "material": "steel"
+    }
+  ]
+}

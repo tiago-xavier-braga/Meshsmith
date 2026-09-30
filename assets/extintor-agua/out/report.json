@@ -1,0 +1,217 @@
+{
+  "asset": "extintor-agua",
+  "mesh": "SM_ExtintorAgua",
+  "generatedAt": "2026-09-30T15:38:44.979Z",
+  "passed": true,
+  "readyToExport": true,
+  "blockingFailed": [],
+  "pending": [],
+  "warnings": [
+    "uv0-texel-density",
+    "uv0-distortion",
+    "uv0-utilization",
+    "uv0-seams"
+  ],
+  "uv": [
+    {
+      "mesh": "SM_ExtintorAgua_Mesh",
+      "texelsPerUnit": 535.0570678710938,
+      "resolution": 512,
+      "padding": 4,
+      "margin": 2
+    }
+  ],
+  "iterations": 2,
+  "review": {
+    "iteration": 2,
+    "checklist": {
+      "ref-foto": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 1
+      },
+      "front": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 1
+      },
+      "right": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 2
+      },
+      "top": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 2
+      },
+      "iso": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 1
+      }
+    },
+    "notes": "Escala pela foto (corpo Ø18 cm = 300 px). It1: rótulo liso e desgaste alto demais; it2: preset label (pseudo-impressão) e wear 0,15."
+  },
+  "checks": [
+    {
+      "id": "gltf",
+      "label": "GLB válido",
+      "criterion": "0 erros, 0 warnings",
+      "tool": "glTF-Validator",
+      "blocking": true,
+      "status": "pass",
+      "value": "0 erros, 0 warnings"
+    },
+    {
+      "id": "uv0-present",
+      "label": "UV0 presente",
+      "criterion": "100% dos vértices",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "pass",
+      "value": "100%"
+    },
+    {
+      "id": "uv0-overlap",
+      "label": "UV0 overlap",
+      "criterion": "0% (exceto mirror e stack)",
+      "tool": "studio3d (rasterização)",
+      "blocking": true,
+      "status": "pass",
+      "value": "0.000% (0 px)"
+    },
+    {
+      "id": "uv0-range",
+      "label": "UV0 fora de 0–1",
+      "criterion": "0 ilhas (exceto tiling declarado)",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "pass",
+      "value": "0 ilhas"
+    },
+    {
+      "id": "uv0-padding",
+      "label": "Padding",
+      "criterion": "≥ 4 px entre ilhas, ≥ 2 px da borda (512²)",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "pass",
+      "value": "gap mín 5.0 px, borda mín 3 px"
+    },
+    {
+      "id": "uv0-texel-density",
+      "label": "Texel density",
+      "criterion": "±10% entre ilhas",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "warn",
+      "value": "537 px/m (mediana), desvio máx 10.2%",
+      "details": {
+        "target": 512,
+        "meetsTarget": true,
+        "textureResolution": 512
+      }
+    },
+    {
+      "id": "uv0-distortion",
+      "label": "Distorção",
+      "criterion": "≤ 5% por ilha",
+      "tool": "studio3d (Jacobiano da UV)",
+      "blocking": false,
+      "status": "warn",
+      "value": "pior ilha 32.8% (45 faixas < 4 px de largura ignoradas)"
+    },
+    {
+      "id": "uv0-utilization",
+      "label": "Aproveitamento",
+      "criterion": "≥ 70% do espaço UV",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "warn",
+      "value": "51.4%"
+    },
+    {
+      "id": "uv0-seams",
+      "label": "Seams",
+      "criterion": "em arestas vivas ou áreas ocultas",
+      "tool": "studio3d",
+      "blocking": false,
+      "status": "warn",
+      "value": "32.6% do comprimento de seam em superfície contínua visível",
+      "details": {
+        "islands": 100
+      }
+    },
+    {
+      "id": "uv1-lightmap",
+      "label": "UV1 lightmap",
+      "criterion": "presente e sem overlap se static",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "n/a",
+      "value": "asset não é static"
+    },
+    {
+      "id": "mesh",
+      "label": "Malha",
+      "criterion": "manifold, sem faces de área zero, normais para fora",
+      "tool": "studio3d",
+      "blocking": true,
+      "status": "pass",
+      "value": "11/11 peças watertight, 0 faces área zero, 0 normais invertidas"
+    },
+    {
+      "id": "dimensions",
+      "label": "Dimensões",
+      "criterion": "±2% do blueprint, pivot base-center",
+      "tool": "studio3d (bounding box)",
+      "blocking": true,
+      "status": "pass",
+      "value": "0.355 × 0.713 × 0.181 m (desvio x 1.3%, y 0.4%, z -0.1%); pivot ok (centro da base XZ 0.000, 0.000; base y 0.0000)"
+    },
+    {
+      "id": "triangles",
+      "label": "Triângulos",
+      "criterion": "1500–5000 (prop-medium)",
+      "tool": "glTF-Transform inspect",
+      "blocking": true,
+      "status": "pass",
+      "value": "3452"
+    },
+    {
+      "id": "textures",
+      "label": "Texturas",
+      "criterion": "potência de 2, no tamanho declarado",
+      "tool": "sharp",
+      "blocking": true,
+      "status": "pass",
+      "value": "3 texturas ok"
+    },
+    {
+      "id": "visual",
+      "label": "Fidelidade visual",
+      "criterion": "nota ≥ 8/10 em cada vista (checklist: silhueta, proporcoes, partes, materiais, detalhes)",
+      "tool": "Claude (visão)",
+      "blocking": true,
+      "status": "pass",
+      "value": "ref-foto 9, front 9, right 10, top 10, iso 9 (iteração 2)",
+      "details": {
+        "differences": [
+          "Rótulo com texto procedural (sem as letras reais WATER/SAFEX nem os pictogramas).",
+          "O suporte de parede da foto não faz parte do asset."
+        ]
+      }
+    }
+  ]
+}
