@@ -48,7 +48,7 @@ async function build(dir) {
   const uvInfo = await unwrapAsset(root, rules, bp);
   await rm(join(dir, 'out', 'textures'), { recursive: true, force: true });
   await mkdir(join(dir, 'out'), { recursive: true });
-  const textures = await applyTextures(root, bp, uvInfo, join(dir, 'out'));
+  const textures = await applyTextures(root, bp, uvInfo, join(dir, 'out'), rules);
   const glb = join(dir, 'out', `${bp.meshName}.glb`);
   await writeGLB(root, glb);
   log(`built ${glb} (${Math.round(performance.now() - t0)} ms)`);

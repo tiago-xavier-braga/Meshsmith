@@ -1,7 +1,7 @@
 {
   "asset": "caixa-madeira",
   "mesh": "SM_CaixaMadeira",
-  "generatedAt": "2026-09-30T14:15:57.901Z",
+  "generatedAt": "2026-09-30T14:35:49.924Z",
   "passed": true,
   "readyToExport": false,
   "blockingFailed": [],
@@ -22,7 +22,7 @@
       "lightmapTexelsPerUnit": 22.08632081747055
     }
   ],
-  "iterations": 0,
+  "iterations": 5,
   "review": null,
   "checks": [
     {
@@ -156,8 +156,8 @@
       "criterion": "potência de 2, no tamanho declarado",
       "tool": "sharp",
       "blocking": true,
-      "status": "n/a",
-      "value": "sem texturas (materiais por fator)"
+      "status": "pass",
+      "value": "3 texturas ok"
     },
     {
       "id": "visual",

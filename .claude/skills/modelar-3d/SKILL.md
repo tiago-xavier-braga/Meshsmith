@@ -18,10 +18,13 @@ Fluxo fixo do 3D Studio (spec: `3D Studio - Spec & Roadmap.md`). Rode tudo a par
 
 Olhe as referências e decomponha o objeto antes de escrever código:
 
+- `style`: `pbr` (realista) ou `lowpoly`. Os dois estilos são de primeira classe; pergunte ao usuário se não estiver claro. O gerador pode ler `bp.style` para servir aos dois (veja `assets/banco-madeira/asset.js` e `banco-madeira-lp`, que reusa o mesmo gerador).
 - `category`: `prop-small` | `prop-medium` | `prop-hero` | `architecture` | `lowpoly` (define o orçamento de triângulos e a densidade de texel).
 - `dimensions`: bounding box final em metros. O validate exige ±2%.
 - `parts`: uma entrada por peça lógica, com `material` e as flags (`hidden` para faces nunca vistas, `stack`/`mirror` para instâncias que compartilham UV, `tiling` para superfícies repetidas).
 - `materials`: cor `#rrggbb` lida da referência, `roughness` e `metalness` (metal = 1, pintura e plástico entre 0 e 0,2, madeira 0).
+  - **PBR:** `preset` define o bake procedural: `wood`, `painted-metal`, `bare-metal`, `plastic`, `rubber`, `concrete`, `fabric` ou `solid` (sem preset, ele é deduzido do id/nome do material). Na peça, `grain: "x"|"y"|"z"` orienta o veio da madeira ou a escovação do metal (padrão: eixo mais longo da peça).
+  - **Low-poly:** cada material vira uma célula de `T_<Nome>_Palette`; `gradient: "#rrggbb"` cria um gradiente vertical (base = `color`, topo = `gradient`).
 - `reference.camera` (quando há foto): `{ "position": [x,y,z], "target": [x,y,z], "fov": 35 }`, estimado para reproduzir o enquadramento da foto. Ele gera a vista `reference_*`, que é a mais importante na comparação.
 
 O schema completo está em `lib/core/blueprint.js` (`BLUEPRINT_SCHEMA_DOC`).
@@ -32,6 +35,7 @@ Escreva o gerador usando **apenas** a biblioteca `parts`. Leia `lib/parts/README
 
 - Pivot no centro da base (y = 0) e frente em +Z.
 - Chanfro de 2 a 5 mm nas arestas visíveis (exceto low-poly).
+- Low-poly: sem chanfros, poucos segmentos (5 a 8 em cilindros; use 8 lados com vértice nos eixos quando o bbox precisar bater) e normais facetadas automáticas.
 - Proporções derivadas de `bp.dimensions`, não de números soltos, para ajustes rápidos.
 - Comente só o que não for óbvio (por exemplo, de onde veio uma medida).
 
@@ -80,7 +84,7 @@ Sem imagem de referência (só prompt), avalie contra a descrição do prompt e 
 node cli/studio3d.js validate <nome>
 ```
 
-UV0/UV1 são gerados automaticamente. O comando grava `out/report.json` e os layouts em `debug/uv0.png`/`uv1.png`. Corrija toda falha bloqueante (✘) antes de seguir:
+UV0/UV1 e texturas são gerados automaticamente: PBR faz o bake de `T_<Nome>_BaseColor`/`Normal`/`ORM` (10 a 20 s por asset), e o low-poly gera a paleta. O comando grava `out/report.json`, `out/textures/` e os layouts em `debug/uv0.png`/`uv1.png`. Corrija toda falha bloqueante (✘) antes de seguir:
 
 - **Malha** (peça não watertight): contorno com auto-interseção, furo sem sentido oposto ou CSG de entradas abertas.
 - **Dimensões**: ajuste o `asset.js` ou o `asset.json` (se a medida do blueprint estiver errada, corrija a medida e anote no `prompt.md`).

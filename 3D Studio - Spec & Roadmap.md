@@ -82,7 +82,8 @@ Todas as ferramentas são gratuitas e open source e rodam em Node.js (a v24 já 
 | Three.js | Modelagem, render, GLTFExporter, OBJExporter | MIT | 0 |
 | Playwright | Browser headless para render WebGL e screenshots | Apache-2.0 | 0 |
 | manifold-3d | Operações booleanas (furos, recortes, uniões) com saída sempre watertight | Apache-2.0 | 1 |
-| three-mesh-bvh | Raycast rápido para bake de AO e checagens | MIT | 1 |
+| three-mesh-bvh | Raycast rápido para bake de AO e checagens | MIT | 4 |
+| mikktspace (WASM) | Tangentes MikkTSpace iguais às das engines, para o normal map | MIT | 4 |
 | xatlas (build WASM) | UV unwrap, empacotamento e UV2 de lightmap | MIT | 2 |
 | glTF-Transform | Weld, dedup, tangentes, compressão e inspeção de GLB | MIT | 2 |
 | Khronos glTF-Validator | Validação formal do GLB exportado | Apache-2.0 | 2 |
@@ -243,7 +244,7 @@ O MVP (referência vira asset aprovado) fecha no fim da F3. A F4 e a F5 levam o 
 | **F1 · Biblioteca de peças** | bevelBox, cilindro, lathe, extrude, sweep e CSG; schema do blueprint (asset.json); normais por ângulo | 3 props feitos só com a biblioteca | Concluída |
 | **F2 · UV e validação** | xatlas (UV0 + UV1), seams por ângulo, padding, texel density, checker e report.json | report.json sem falhas bloqueantes nos 3 props | Concluída |
 | **F3 · Referência para modelo (MVP)** | Skill /modelar-3d, blueprint a partir de imagem ou prompt, render de 4 vistas, ciclo de comparação | **MVP: 5 referências reais viram assets aprovados** | Ferramental pronto; faltam as referências |
-| **F4 · Materiais e estilos** | Presets PBR procedurais, bake de BaseColor, Normal e ORM, AO via raycast, estilo low-poly (facetado + paleta) | 1 asset de cada estilo com texturas aprovadas: checker, vista de materiais e checks de textura | Em andamento |
+| **F4 · Materiais e estilos** | Presets PBR procedurais, bake de BaseColor, Normal e ORM, AO via raycast, estilo low-poly (facetado + paleta) | 1 asset de cada estilo com texturas aprovadas: checker, vista de materiais e checks de textura | Concluída |
 | **F5 · Pacote de export** | FBX e OBJ via assimpjs, LODs com meshoptimizer, colisores, pacote `dist/<nome>/` + zip | 10 assets (pelo menos 3 de cada estilo) com pacote completo e checks ok, incluindo releitura do FBX e do OBJ | — |
 | **F6 · Testes nas engines** | Import no Unity (glTFast), script de import (LODGroup, colliders) como pacote à parte, bake de lightmap; Godot e Blender se instalados | Critérios de aceite da v1 | — |
 | **F7 · Extras (opcional)** | TripoSR local para formas orgânicas, kits modulares com snapping, geração em lote | — | — |

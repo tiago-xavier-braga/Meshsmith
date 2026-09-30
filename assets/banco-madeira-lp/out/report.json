@@ -1,13 +1,11 @@
 {
   "asset": "banco-madeira-lp",
   "mesh": "SM_BancoMadeiraLp",
-  "generatedAt": "2026-09-30T14:26:15.439Z",
+  "generatedAt": "2026-09-30T14:36:13.478Z",
   "passed": true,
-  "readyToExport": false,
+  "readyToExport": true,
   "blockingFailed": [],
-  "pending": [
-    "visual"
-  ],
+  "pending": [],
   "warnings": [],
   "uv": [
     {
@@ -18,7 +16,40 @@
     }
   ],
   "iterations": 2,
-  "review": null,
+  "review": {
+    "iteration": 2,
+    "checklist": {
+      "front": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 2
+      },
+      "right": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 2
+      },
+      "top": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 2
+      },
+      "iso": {
+        "silhueta": 2,
+        "proporcoes": 2,
+        "partes": 2,
+        "materiais": 2,
+        "detalhes": 2
+      }
+    },
+    "notes": "Versão low-poly do banco-madeira com o mesmo gerador. It1: assento de 9 lados ficava 3% menor no bbox; it2: octógono com vértices nos eixos."
+  },
   "checks": [
     {
       "id": "gltf",
@@ -122,11 +153,12 @@
     {
       "id": "visual",
       "label": "Fidelidade visual",
-      "criterion": "nota ≥ 8/10 em cada vista",
+      "criterion": "nota ≥ 8/10 em cada vista (checklist: silhueta, proporcoes, partes, materiais, detalhes)",
       "tool": "Claude (visão)",
       "blocking": true,
-      "status": "pending",
-      "value": "sem review.json"
+      "status": "pass",
+      "value": "front 10, right 10, top 10, iso 10 (iteração 2)",
+      "details": {}
     }
   ]
 }

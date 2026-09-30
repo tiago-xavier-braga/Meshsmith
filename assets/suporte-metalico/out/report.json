@@ -1,7 +1,7 @@
 {
   "asset": "suporte-metalico",
   "mesh": "SM_SuporteMetalico",
-  "generatedAt": "2026-09-30T14:15:59.948Z",
+  "generatedAt": "2026-09-30T14:36:03.310Z",
   "passed": true,
   "readyToExport": false,
   "blockingFailed": [],
@@ -23,7 +23,7 @@
       "lightmapTexelsPerUnit": 376.8694877624512
     }
   ],
-  "iterations": 0,
+  "iterations": 4,
   "review": null,
   "checks": [
     {
@@ -157,8 +157,8 @@
       "criterion": "potência de 2, no tamanho declarado",
       "tool": "sharp",
       "blocking": true,
-      "status": "n/a",
-      "value": "sem texturas (materiais por fator)"
+      "status": "pass",
+      "value": "3 texturas ok"
     },
     {
       "id": "visual",

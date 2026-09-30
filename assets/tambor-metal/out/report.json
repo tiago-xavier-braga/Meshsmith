@@ -1,7 +1,7 @@
 {
   "asset": "tambor-metal",
   "mesh": "SM_TamborMetal",
-  "generatedAt": "2026-09-30T14:16:27.172Z",
+  "generatedAt": "2026-09-30T14:36:00.776Z",
   "passed": true,
   "readyToExport": false,
   "blockingFailed": [],
@@ -22,7 +22,7 @@
       "lightmapTexelsPerUnit": 42.5834983587265
     }
   ],
-  "iterations": 0,
+  "iterations": 4,
   "review": null,
   "checks": [
     {
@@ -156,8 +156,8 @@
       "criterion": "potência de 2, no tamanho declarado",
       "tool": "sharp",
       "blocking": true,
-      "status": "n/a",
-      "value": "sem texturas (materiais por fator)"
+      "status": "pass",
+      "value": "3 texturas ok"
     },
     {
       "id": "visual",

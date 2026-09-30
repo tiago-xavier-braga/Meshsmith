@@ -1,7 +1,7 @@
 {
   "asset": "banco-madeira",
   "mesh": "SM_BancoMadeira",
-  "generatedAt": "2026-09-30T14:22:15.443Z",
+  "generatedAt": "2026-09-30T14:36:12.766Z",
   "passed": true,
   "readyToExport": true,
   "blockingFailed": [],
@@ -20,7 +20,7 @@
       "lightmapTexelsPerUnit": 119.06110048294067
     }
   ],
-  "iterations": 0,
+  "iterations": 5,
   "review": {
     "iteration": 3,
     "checklist": {
@@ -187,8 +187,8 @@
       "criterion": "potência de 2, no tamanho declarado",
       "tool": "sharp",
       "blocking": true,
-      "status": "n/a",
-      "value": "sem texturas (materiais por fator)"
+      "status": "pass",
+      "value": "3 texturas ok"
     },
     {
       "id": "visual",
