@@ -27,6 +27,8 @@ export default function build(bp, { parts: P, materials }) {
 | `bevelBox` | `{ size: [x,y,z], bevel = 0.003, segments = 1, origin = 'base' }` | `segments` 1 = chanfro de 45°, >1 = arredondado. `origin: 'center'` centraliza em Y |
 | `cylinder` | `{ radius, height, segments = 24, bevel = 0.003, radiusTop }` | Base em y = 0; `radiusTop` gera tronco de cone |
 | `lathe` | `{ profile: [[r, y], ...], segments = 24, phiStart, phiLength }` | Perfil de baixo para cima; r = 0 nas pontas vira tampa plana |
+| `loft` | `{ sections: [[[x,y,z], ...], ...], capStart = true, capEnd = true }` | Seções fechadas com o mesmo número de pontos; cascas, capacetes, cascos, garrafas |
+| `superellipse` | `{ y, a, front, back = front, n = 2, segments = 48, cx, cz }` | Seção para `loft` no plano XZ: meia-largura `a`, meia-profundidade frente/trás, `n` > 2 mais quadrado |
 | `extrude` | `{ shape: [[x,y],...], holes: [[[x,y],...]], depth, bevel = 0.002, bevelSegments = 1, curveSegments = 12 }` | Contorno no plano XY, extrudado em Z e centrado em Z. Furos em sentido oposto ao contorno |
 | `sweep` | `{ path: [[x,y,z],...], profile?: [[x,y],...], radius = 0.01, radialSegments = 12, segments = 32, closed = false, curve = 'catmullrom' \| 'polyline' }` | Tubos, alças, aros e molduras; as pontas são tampadas se o caminho for aberto |
 | `roundedRect(w, h, r, steps = 4)` | contorno 2D | Para `extrude` (tábuas, placas, furos oblongos) |
@@ -39,6 +41,19 @@ export default function build(bp, { parts: P, materials }) {
 | `transform(geo, { position, rotation, scale })` | Cópia transformada; escala negativa corrige o winding |
 | `mirror(geo, 'x' \| 'y' \| 'z')` | Espelha pelo plano da origem |
 | `csg(base, 'subtract' \| 'add' \| 'intersect', ...outros)` | Booleanas com manifold-3d (saída sempre watertight). Prefira `extrude` com `holes` para furos em chapas planas: a topologia fica mais limpa |
+
+## Placas em superfícies curvas
+
+Para máscaras, painéis e placas que seguem uma casca, corte uma **camada** da casca com um **prisma** do contorno visto de frente ou de lado:
+
+```js
+const shell = (off) => P.loft({ sections: /* superellipses com a+off, front+off, back+off */ });
+const layer = { outer: shell(0.004), inner: shell(-0.004) };
+const prism = P.transform(P.extrude({ shape: contornoFrente, holes: [olhoD, olhoE], depth: 0.3, bevel: 0 }), { position: [0, 0, 0.17] });
+const placa = P.csg(P.csg(prism, 'intersect', layer.outer), 'subtract', layer.inner);
+```
+
+Sulcos (boca, painéis) são prismas finos subtraídos da placa.
 
 ## Dicas de modelagem
 

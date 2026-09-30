@@ -1,7 +1,7 @@
 {
   "asset": "caixa-madeira",
   "mesh": "SM_CaixaMadeira",
-  "generatedAt": "2026-09-30T14:35:49.924Z",
+  "generatedAt": "2026-09-30T15:13:45.934Z",
   "passed": true,
   "readyToExport": false,
   "blockingFailed": [],
@@ -9,13 +9,14 @@
     "visual"
   ],
   "warnings": [
+    "uv0-texel-density",
     "uv0-distortion",
     "uv0-utilization"
   ],
   "uv": [
     {
       "mesh": "SM_CaixaMadeira_Mesh",
-      "texelsPerUnit": 376.16193294525146,
+      "texelsPerUnit": 366.81976318359375,
       "resolution": 1024,
       "padding": 8,
       "margin": 4,
@@ -76,8 +77,8 @@
       "criterion": "±10% entre ilhas",
       "tool": "studio3d",
       "blocking": false,
-      "status": "pass",
-      "value": "380 px/m (mediana), desvio máx 7.4%",
+      "status": "warn",
+      "value": "369 px/m (mediana), desvio máx 10.5%",
       "details": {
         "target": 512,
         "meetsTarget": false,
@@ -91,7 +92,7 @@
       "tool": "studio3d (Jacobiano da UV)",
       "blocking": false,
       "status": "warn",
-      "value": "pior ilha 13.8% (116 faixas < 4 px de largura ignoradas)"
+      "value": "pior ilha 16.8% (220 faixas < 4 px de largura ignoradas)"
     },
     {
       "id": "uv0-utilization",
@@ -100,7 +101,7 @@
       "tool": "studio3d",
       "blocking": false,
       "status": "warn",
-      "value": "49.0%"
+      "value": "46.8%"
     },
     {
       "id": "uv0-seams",
@@ -111,7 +112,7 @@
       "status": "pass",
       "value": "0.1% do comprimento de seam em superfície contínua visível",
       "details": {
-        "islands": 252
+        "islands": 356
       }
     },
     {

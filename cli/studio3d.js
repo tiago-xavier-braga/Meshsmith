@@ -114,11 +114,27 @@ async function render(dir) {
         await studio.render({ view: bp.reference.camera, mode, width: size, height: size }, f);
         files.push(f);
       }
+      // One camera per reference photo: { "frente.jpg": { position, target, fov } }.
+      for (const [image, camera] of Object.entries(bp.reference?.cameras ?? {})) {
+        const f = join(out, `ref-${basename(image).replace(/\.\w+$/, '')}_${mode}.png`);
+        await studio.render({ view: camera, mode, width: size, height: size }, f);
+        files.push(f);
+      }
     }
     await writeFile(join(out, 'stats.json'), JSON.stringify(stats, null, 2));
     // One sheet per iteration: references first, then the camera-matched render and the views.
-    const refs = referenceImages(dir, bp).map((p, i) => ({ label: `referência ${i + 1}`, input: p }));
-    const renders = files.map((f) => ({ label: basename(f, '.png'), input: f }));
+    // Photos with their own camera go side by side with that render; the rest lead the sheet.
+    const cams = bp.reference?.cameras ?? {};
+    const refs = [], paired = new Set();
+    for (const p of referenceImages(dir, bp)) {
+      const name = basename(p);
+      refs.push({ label: `referência: ${name}`, input: p });
+      if (cams[name]) {
+        const r = files.find((f) => basename(f).startsWith(`ref-${name.replace(/\.\w+$/, '')}_`));
+        if (r) { refs.push({ label: basename(r, '.png'), input: r }); paired.add(r); }
+      }
+    }
+    const renders = files.filter((f) => !paired.has(f)).map((f) => ({ label: basename(f, '.png'), input: f }));
     const sheet = join(out, 'sheet.png');
     const n = Number(basename(out));
     await writeFile(sheet, await contactSheet([...refs, ...renders], {

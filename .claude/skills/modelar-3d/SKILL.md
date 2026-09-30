@@ -23,9 +23,10 @@ Olhe as referências e decomponha o objeto antes de escrever código:
 - `dimensions`: bounding box final em metros. O validate exige ±2%.
 - `parts`: uma entrada por peça lógica, com `material` e as flags (`hidden` para faces nunca vistas, `stack`/`mirror` para instâncias que compartilham UV, `tiling` para superfícies repetidas).
 - `materials`: cor `#rrggbb` lida da referência, `roughness` e `metalness` (metal = 1, pintura e plástico entre 0 e 0,2, madeira 0).
-  - **PBR:** `preset` define o bake procedural: `wood`, `painted-metal`, `bare-metal`, `plastic`, `rubber`, `concrete`, `fabric` ou `solid` (sem preset, ele é deduzido do id/nome do material). Na peça, `grain: "x"|"y"|"z"` orienta o veio da madeira ou a escovação do metal (padrão: eixo mais longo da peça).
+  - **PBR:** `wear` (0 a 1) no `painted-metal` gera lascas nas bordas, riscos e sujeira nas frestas; `emissive: "#rrggbb"` para olhos e LEDs. `preset` define o bake procedural: `wood`, `painted-metal`, `bare-metal`, `plastic`, `rubber`, `concrete`, `fabric` ou `solid` (sem preset, ele é deduzido do id/nome do material). Na peça, `grain: "x"|"y"|"z"` orienta o veio da madeira ou a escovação do metal (padrão: eixo mais longo da peça).
   - **Low-poly:** cada material vira uma célula de `T_<Nome>_Palette`; `gradient: "#rrggbb"` cria um gradiente vertical (base = `color`, topo = `gradient`).
-- `reference.camera` (quando há foto): `{ "position": [x,y,z], "target": [x,y,z], "fov": 35 }`, estimado para reproduzir o enquadramento da foto. Ele gera a vista `reference_*`, que é a mais importante na comparação.
+- `reference.cameras` (quando há foto): uma câmera por imagem, `{ "frente.jpg": { "position": [x,y,z], "target": [x,y,z], "fov": 28 } }`, estimada para reproduzir o enquadramento da foto. Cada uma gera a vista `ref-<imagem>_*`, colocada ao lado da foto na `sheet.png`: são as vistas mais importantes na comparação.
+- Referências da internet: prefira o Wikimedia Commons (licença livre, URL direta), salve os recortes em `ref/` e registre autor e licença em `ref/SOURCES.md`.
 
 O schema completo está em `lib/core/blueprint.js` (`BLUEPRINT_SCHEMA_DOC`).
 
@@ -58,6 +59,8 @@ Compare e preencha o checklist fixo de cada vista, com 0 a 2 pontos por critéri
 | `detalhes` | chanfros, furos e frisos presentes | detalhes simplificados | sem detalhes |
 
 Liste as diferenças concretas (por exemplo: "encosto 20% mais alto que na referência"), corrija o `asset.json`/`asset.js` e renderize de novo. Pare quando todas as vistas tiverem nota ≥ 8 ou ao chegar na 5ª iteração. Nesse caso, registre as diferenças que restaram e avise o usuário.
+
+Para detalhes que a folha não mostra (desgaste, sulcos), faça closes sem criar iteração: `node tools/closeup.mjs <nome> <saida.png> x,y,z tx,ty,tz fov`.
 
 Grave a avaliação final em `assets/<nome>/review.json`:
 

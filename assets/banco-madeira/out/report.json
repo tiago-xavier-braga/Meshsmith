@@ -1,7 +1,7 @@
 {
   "asset": "banco-madeira",
   "mesh": "SM_BancoMadeira",
-  "generatedAt": "2026-09-30T14:36:12.766Z",
+  "generatedAt": "2026-09-30T15:14:01.808Z",
   "passed": true,
   "readyToExport": true,
   "blockingFailed": [],
@@ -13,14 +13,14 @@
   "uv": [
     {
       "mesh": "SM_BancoMadeira_Mesh",
-      "texelsPerUnit": 938.1905555725098,
+      "texelsPerUnit": 946.0088729858398,
       "resolution": 1024,
       "padding": 8,
       "margin": 4,
       "lightmapTexelsPerUnit": 119.06110048294067
     }
   ],
-  "iterations": 5,
+  "iterations": 6,
   "review": {
     "iteration": 3,
     "checklist": {
@@ -99,7 +99,7 @@
       "tool": "studio3d",
       "blocking": true,
       "status": "pass",
-      "value": "gap mín 9.0 px, borda mín 5 px"
+      "value": "gap mín > 10 px, borda mín 5 px"
     },
     {
       "id": "uv0-texel-density",
@@ -108,7 +108,7 @@
       "tool": "studio3d",
       "blocking": false,
       "status": "pass",
-      "value": "939 px/m (mediana), desvio máx 3.1%",
+      "value": "947 px/m (mediana), desvio máx 2.5%",
       "details": {
         "target": 512,
         "meetsTarget": true,
@@ -131,7 +131,7 @@
       "tool": "studio3d",
       "blocking": false,
       "status": "warn",
-      "value": "27.1%"
+      "value": "27.6%"
     },
     {
       "id": "uv0-seams",

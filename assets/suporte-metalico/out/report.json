@@ -1,7 +1,7 @@
 {
   "asset": "suporte-metalico",
   "mesh": "SM_SuporteMetalico",
-  "generatedAt": "2026-09-30T14:36:03.310Z",
+  "generatedAt": "2026-09-30T15:13:54.820Z",
   "passed": true,
   "readyToExport": false,
   "blockingFailed": [],
@@ -16,14 +16,14 @@
   "uv": [
     {
       "mesh": "SM_SuporteMetalico_Mesh",
-      "texelsPerUnit": 920.8916664123535,
+      "texelsPerUnit": 923.6270904541016,
       "resolution": 256,
       "padding": 2,
       "margin": 1,
       "lightmapTexelsPerUnit": 376.8694877624512
     }
   ],
-  "iterations": 4,
+  "iterations": 5,
   "review": null,
   "checks": [
     {
@@ -78,7 +78,7 @@
       "tool": "studio3d",
       "blocking": false,
       "status": "warn",
-      "value": "925 px/m (mediana), desvio máx 10.8%",
+      "value": "926 px/m (mediana), desvio máx 10.7%",
       "details": {
         "target": 512,
         "meetsTarget": true,
@@ -101,7 +101,7 @@
       "tool": "studio3d",
       "blocking": false,
       "status": "warn",
-      "value": "59.7%"
+      "value": "59.9%"
     },
     {
       "id": "uv0-seams",

@@ -1,7 +1,7 @@
 {
   "asset": "tambor-metal",
   "mesh": "SM_TamborMetal",
-  "generatedAt": "2026-09-30T14:36:00.776Z",
+  "generatedAt": "2026-09-30T15:13:52.610Z",
   "passed": true,
   "readyToExport": false,
   "blockingFailed": [],
@@ -15,14 +15,14 @@
   "uv": [
     {
       "mesh": "SM_TamborMetal_Mesh",
-      "texelsPerUnit": 310.02705097198486,
+      "texelsPerUnit": 310.02702713012695,
       "resolution": 1024,
       "padding": 8,
       "margin": 4,
       "lightmapTexelsPerUnit": 42.5834983587265
     }
   ],
-  "iterations": 4,
+  "iterations": 5,
   "review": null,
   "checks": [
     {
