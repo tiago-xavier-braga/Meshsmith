@@ -123,3 +123,8 @@ FBX and OBJ are read back with assimp on every export and must match the GLB.
 
 Reference photos in `assets/*/ref/` come from Wikimedia Commons under their
 own licences; author and licence for each file are listed in its `SOURCES.md`.
+They are not covered by the project licence.
+
+## License
+
+[MIT](LICENSE)

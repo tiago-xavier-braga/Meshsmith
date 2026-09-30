@@ -30,5 +30,7 @@
     "three-mesh-bvh": "^0.9.15",
     "xatlas-three": "^0.2.1",
     "xatlasjs": "^0.2.0"
-  }
+  },
+  "license": "MIT",
+  "author": "Tiago Xavier"
 }
