@@ -248,7 +248,7 @@ O MVP (referência vira asset aprovado) fecha no fim da F3. A F4 e a F5 levam o 
 | **F3 · Referência para modelo (MVP)** | Skill /modelar-3d, blueprint a partir de imagem ou prompt, render de 4 vistas, ciclo de comparação | **MVP: 5 referências reais viram assets aprovados** | 4 de 5 referências aprovadas (extintor, cadeira Adirondack, cone, cadeira estofada); falta 1 |
 | **F4 · Materiais e estilos** | Presets PBR procedurais, bake de BaseColor, Normal e ORM, AO via raycast, estilo low-poly (facetado + paleta) | 1 asset de cada estilo com texturas aprovadas: checker, vista de materiais e checks de textura | Concluída |
 | **F5 · Pacote de export** | FBX binário e OBJ (writers próprios, relidos pelo assimpjs), LODs com meshoptimizer, colisores, pacote `dist/<nome>/` + zip | 10 assets (pelo menos 3 de cada estilo) com pacote completo e checks ok, incluindo releitura do FBX e do OBJ | Concluída |
-| **F6 · Testes nas engines** | Import no Unity (glTFast), script de import (LODGroup, colliders) como pacote à parte, bake de lightmap; Godot e Blender se instalados | Critérios de aceite da v1 | — |
+| **F6 · Testes nas engines** | Import no Unity (glTFast), script de import (LODGroup, colliders) como pacote à parte, bake de lightmap; Godot e Blender se instalados | Critérios de aceite da v1 | Pacote Unity pronto (`unity/com.studio3d.import`); falta o teste num projeto |
 | **F7 · Extras (opcional)** | TripoSR local para formas orgânicas, kits modulares com snapping, geração em lote | — | — |
 
 A ordem prioriza UV e validação (F2) antes do ciclo com referência (F3): as regras de UV passam a ser garantidas desde o primeiro asset gerado.
