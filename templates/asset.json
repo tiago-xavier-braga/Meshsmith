@@ -1,0 +1,17 @@
+{
+  "name": "__NAME__",
+  "meshName": "__MESH__",
+  "category": "prop-medium",
+  "static": true,
+  "dimensions": { "x": 0.5, "y": 0.5, "z": 0.5 },
+  "reference": {
+    "images": [],
+    "prompt": ""
+  },
+  "materials": {
+    "base": { "color": "#9a9a9a", "roughness": 0.6, "metalness": 0 }
+  },
+  "parts": [
+    { "id": "body", "material": "base" }
+  ]
+}

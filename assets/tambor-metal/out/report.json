@@ -1,7 +1,7 @@
 {
   "asset": "tambor-metal",
   "mesh": "SM_TamborMetal",
-  "generatedAt": "2026-09-30T14:07:34.331Z",
+  "generatedAt": "2026-09-30T14:16:27.172Z",
   "passed": true,
   "readyToExport": false,
   "blockingFailed": [],
@@ -15,13 +15,15 @@
   "uv": [
     {
       "mesh": "SM_TamborMetal_Mesh",
-      "texelsPerUnit": 318.40617656707764,
+      "texelsPerUnit": 310.02705097198486,
       "resolution": 1024,
       "padding": 8,
       "margin": 4,
       "lightmapTexelsPerUnit": 42.5834983587265
     }
   ],
+  "iterations": 0,
+  "review": null,
   "checks": [
     {
       "id": "gltf",
@@ -75,7 +77,7 @@
       "tool": "studio3d",
       "blocking": false,
       "status": "pass",
-      "value": "319 px/m (mediana), desvio máx 9.2%",
+      "value": "310 px/m (mediana), desvio máx 6.5%",
       "details": {
         "target": 512,
         "meetsTarget": false,
@@ -89,7 +91,7 @@
       "tool": "studio3d (Jacobiano da UV)",
       "blocking": false,
       "status": "warn",
-      "value": "pior ilha 22.1% (20 faixas < 4 px de largura ignoradas)"
+      "value": "pior ilha 27.7% (17 faixas < 4 px de largura ignoradas)"
     },
     {
       "id": "uv0-utilization",
@@ -98,7 +100,7 @@
       "tool": "studio3d",
       "blocking": false,
       "status": "warn",
-      "value": "22.1%"
+      "value": "21.0%"
     },
     {
       "id": "uv0-seams",
@@ -107,9 +109,9 @@
       "tool": "studio3d",
       "blocking": false,
       "status": "pass",
-      "value": "5.2% do comprimento de seam em superfície contínua visível",
+      "value": "12.2% do comprimento de seam em superfície contínua visível",
       "details": {
-        "islands": 46
+        "islands": 43
       }
     },
     {
@@ -137,7 +139,7 @@
       "tool": "studio3d (bounding box)",
       "blocking": true,
       "status": "pass",
-      "value": "0.586 × 0.880 × 0.586 m (desvio x 0.3%, y -0.0%, z 0.3%); pivot ok"
+      "value": "0.586 × 0.880 × 0.586 m (desvio x 0.3%, y -0.0%, z 0.3%); pivot ok (centro XZ 0.000, 0.000; base y 0.0000)"
     },
     {
       "id": "triangles",

@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 // studio3d <command> <asset> [options]
+//   new       scaffold assets/<asset>/ (ref/, prompt.md, asset.json, asset.js)
 //   build     asset.js -> UV0/UV1 -> out/SM_<Nome>.glb
 //   uv        build + UV layout images (debug/uv0.png, uv1.png) + UV metrics
-//   render    build + views -> iterations/<n>/   --mode shaded,checker,uv1,wire,clay,normals  --views front,right,top,iso
+//   render    build + views -> iterations/<n>/ + sheet.png (reference beside renders)
+//             --mode shaded,checker,uv1,wire,clay,normals  --views front,right,top,iso
 //   validate  build + all checks -> out/report.json (exit 1 on blocking failures)
-//   export    validate, then copy out/ into the Unity project (--dest, --force to skip the gate)
-import { mkdir, readdir, cp, writeFile, rm } from 'node:fs/promises';
-import { join } from 'node:path';
+//   export    validate, write out/preview.png, copy out/ into the Unity project (--dest, --force to skip the gate)
+import { mkdir, readdir, cp, writeFile, rm, readFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { join, basename } from 'node:path';
 import { parseArgs } from 'node:util';
 import sharp from 'sharp';
 import { assetDir, buildAsset } from '../lib/core/asset.js';
@@ -15,6 +18,8 @@ import { writeGLB } from '../lib/core/gltf.js';
 import { openStudio } from '../lib/core/render.js';
 import { unwrapAsset } from '../lib/uv/unwrap.js';
 import { validateAsset } from '../lib/validate/index.js';
+import { contactSheet } from '../lib/core/sheet.js';
+import { ROOT } from '../lib/core/asset.js';
 
 const DEFAULT_DEST = 'dist';
 const DEFAULT_VIEWS = ['front', 'right', 'top', 'iso'];
@@ -71,6 +76,10 @@ async function uv(dir) {
   log(`UV layouts: ${join(dbg, 'uv0.png')}${report.checks.find((c) => c.id === 'uv1-lightmap')?.status !== 'n/a' ? `, ${join(dbg, 'uv1.png')}` : ''}`);
 }
 
+function referenceImages(dir, bp) {
+  return (bp.reference?.images ?? []).map((p) => join(dir, 'ref', p)).filter((p) => existsSync(p));
+}
+
 async function nextIteration(dir) {
   const it = join(dir, 'iterations');
   await mkdir(it, { recursive: true });
@@ -102,7 +111,31 @@ async function render(dir) {
       }
     }
     await writeFile(join(out, 'stats.json'), JSON.stringify(stats, null, 2));
-    console.log(JSON.stringify({ iteration: out, stats, files }, null, 2));
+    // One sheet per iteration: references first, then the camera-matched render and the views.
+    const refs = referenceImages(dir, bp).map((p, i) => ({ label: `referência ${i + 1}`, input: p }));
+    const renders = files.map((f) => ({ label: basename(f, '.png'), input: f }));
+    const sheet = join(out, 'sheet.png');
+    const n = Number(basename(out));
+    await writeFile(sheet, await contactSheet([...refs, ...renders], {
+      columns: Math.min(4, refs.length + renders.length),
+      title: `${bp.meshName} · iteração ${n} · ${stats.triangles} tris · ${stats.size.map((v) => v.toFixed(3)).join(' × ')} m`,
+    }));
+    const max = resolveRules(bp).maxIterations;
+    if (n > max) console.warn(`aviso: iteração ${n} passou do teto de ${max} (spec: máximo de 5 por padrão)`);
+    console.log(JSON.stringify({ iteration: out, sheet, stats, files }, null, 2));
+  } finally {
+    await studio.close();
+  }
+}
+
+/** out/preview.png: the four views side by side with the references (spec package). */
+async function writePreview(dir, bp) {
+  const studio = await openStudio();
+  try {
+    await studio.load(join(dir, 'out', `${bp.meshName}.glb`));
+    const cells = referenceImages(dir, bp).map((p, i) => ({ label: `referência ${i + 1}`, input: p }));
+    for (const view of DEFAULT_VIEWS) cells.push({ label: view, input: await studio.render({ view, width: 512, height: 512 }) });
+    await writeFile(join(dir, 'out', 'preview.png'), await contactSheet(cells, { cell: 512, columns: Math.min(4, cells.length), title: bp.meshName }));
   } finally {
     await studio.close();
   }
@@ -114,6 +147,7 @@ async function exportAsset(dir) {
     console.error(`\nexport bloqueado: ${[...report.blockingFailed, ...report.pending].join(', ')} (use --force para ignorar)`);
     process.exit(1);
   }
+  await writePreview(dir, bp);
   const dest = join(values.dest, bp.name);
   await rm(dest, { recursive: true, force: true });
   await mkdir(dest, { recursive: true });
@@ -121,10 +155,29 @@ async function exportAsset(dir) {
   log(`exported ${bp.name} -> ${dest}`);
 }
 
+const pascal = (s) => s.replace(/(^|-)(w)/g, (_, __, c) => c.toUpperCase());
+
+async function scaffold(name) {
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(name)) throw new Error('asset name must be kebab-case');
+  const dir = join(ROOT, 'assets', name);
+  if (existsSync(dir)) throw new Error(`${dir} already exists`);
+  await mkdir(join(dir, 'ref'), { recursive: true });
+  const tpl = join(ROOT, 'templates');
+  const fill = async (f) => (await readFile(join(tpl, f), 'utf8')).replaceAll('__NAME__', name).replaceAll('__MESH__', `SM_${pascal(name)}`);
+  await writeFile(join(dir, 'asset.json'), await fill('asset.json'));
+  await writeFile(join(dir, 'asset.js'), await fill('asset.js'));
+  await writeFile(join(dir, 'ref', 'prompt.md'), await fill('prompt.md'));
+  console.log(`created ${dir}`);
+}
+
 const COMMANDS = { build, uv, render, validate, export: exportAsset };
 
+if (cmd === 'new' && name) {
+  await scaffold(name);
+  process.exit(0);
+}
 if (!COMMANDS[cmd] || !name) {
-  console.log(`usage: studio3d <${Object.keys(COMMANDS).join('|')}> <asset> [--mode m1,m2] [--views v1,v2] [--size 768] [--dest path] [--force]`);
+  console.log(`usage: studio3d <new|${Object.keys(COMMANDS).join('|')}> <asset> [--mode m1,m2] [--views v1,v2] [--size 768] [--dest path] [--force]`);
   process.exit(cmd ? 1 : 0);
 }
 const result = await COMMANDS[cmd](assetDir(name));

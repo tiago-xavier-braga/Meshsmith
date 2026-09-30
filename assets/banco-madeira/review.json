@@ -1,0 +1,13 @@
+{
+  "iteration": 3,
+  "checklist": {
+    "front": { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 2 },
+    "right": { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 2 },
+    "top":   { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 1 },
+    "iso":   { "silhueta": 2, "proporcoes": 2, "partes": 2, "materiais": 2, "detalhes": 2 }
+  },
+  "differences": [
+    "Vista de topo: sem veio de madeira no assento (vem com as texturas da F4)."
+  ],
+  "notes": "Só prompt (sem imagem). It1: pernas inclinadas para o lado errado; it2: pés furavam o chão em 2 mm; it3: pés cortados rente via CSG intersect e dimensões do blueprint corrigidas para o bbox real do tripé."
+}

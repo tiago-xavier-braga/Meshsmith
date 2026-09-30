@@ -1,7 +1,7 @@
 {
   "asset": "suporte-metalico",
   "mesh": "SM_SuporteMetalico",
-  "generatedAt": "2026-09-30T14:07:45.803Z",
+  "generatedAt": "2026-09-30T14:15:59.948Z",
   "passed": true,
   "readyToExport": false,
   "blockingFailed": [],
@@ -16,13 +16,15 @@
   "uv": [
     {
       "mesh": "SM_SuporteMetalico_Mesh",
-      "texelsPerUnit": 770.6900119781494,
+      "texelsPerUnit": 920.8916664123535,
       "resolution": 256,
-      "padding": 8,
-      "margin": 4,
+      "padding": 2,
+      "margin": 1,
       "lightmapTexelsPerUnit": 376.8694877624512
     }
   ],
+  "iterations": 0,
+  "review": null,
   "checks": [
     {
       "id": "gltf",
@@ -63,11 +65,11 @@
     {
       "id": "uv0-padding",
       "label": "Padding",
-      "criterion": "≥ 8 px entre ilhas, ≥ 4 px da borda (256²)",
+      "criterion": "≥ 2 px entre ilhas, ≥ 1 px da borda (256²)",
       "tool": "studio3d",
       "blocking": true,
       "status": "pass",
-      "value": "gap mín > 10 px, borda mín 5 px"
+      "value": "gap mín > 4 px, borda mín 2 px"
     },
     {
       "id": "uv0-texel-density",
@@ -76,7 +78,7 @@
       "tool": "studio3d",
       "blocking": false,
       "status": "warn",
-      "value": "777 px/m (mediana), desvio máx 10.5%",
+      "value": "925 px/m (mediana), desvio máx 10.8%",
       "details": {
         "target": 512,
         "meetsTarget": true,
@@ -90,7 +92,7 @@
       "tool": "studio3d (Jacobiano da UV)",
       "blocking": false,
       "status": "warn",
-      "value": "pior ilha 18.0% (6 faixas < 4 px de largura ignoradas)"
+      "value": "pior ilha 22.8% (10 faixas < 4 px de largura ignoradas)"
     },
     {
       "id": "uv0-utilization",
@@ -99,7 +101,7 @@
       "tool": "studio3d",
       "blocking": false,
       "status": "warn",
-      "value": "42.2%"
+      "value": "59.7%"
     },
     {
       "id": "uv0-seams",
@@ -108,9 +110,9 @@
       "tool": "studio3d",
       "blocking": false,
       "status": "pass",
-      "value": "11.2% do comprimento de seam em superfície contínua visível",
+      "value": "5.0% do comprimento de seam em superfície contínua visível",
       "details": {
-        "islands": 35
+        "islands": 31
       }
     },
     {
@@ -138,7 +140,7 @@
       "tool": "studio3d (bounding box)",
       "blocking": true,
       "status": "pass",
-      "value": "0.080 × 0.120 × 0.120 m (desvio x -0.0%, y -0.0%, z -0.0%); pivot ok"
+      "value": "0.080 × 0.120 × 0.120 m (desvio x -0.0%, y -0.0%, z -0.0%); pivot ok (centro XZ 0.000, 0.000; base y 0.0000)"
     },
     {
       "id": "triangles",
