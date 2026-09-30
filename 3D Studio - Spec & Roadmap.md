@@ -199,7 +199,7 @@ Critérios de aceite da v1, medidos em um conjunto de 10 referências de teste:
 
 ## Estrutura de pastas e convenções
 
-A ferramenta é um projeto independente em `www/projects/3D Studio/`, sem dependência de nenhum projeto de engine. Cada asset tem uma pasta própria com a referência, o código-fonte e a saída de build. O `studio3d export` monta o pacote final em `dist/<nome>/` e `dist/<nome>.zip`.
+A ferramenta é um projeto independente, sem dependência de nenhum projeto de engine. Cada asset tem uma pasta própria com a referência, o código-fonte e a saída de build. O `studio3d export` monta o pacote final em `dist/<nome>/` e `dist/<nome>.zip`.
 
 ```
 3D Studio/

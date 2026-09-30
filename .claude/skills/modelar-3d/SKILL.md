@@ -5,7 +5,7 @@ description: Gera um modelo 3D game-ready (GLB com UV0/UV1, validado) a partir d
 
 # /modelar-3d
 
-Fluxo fixo do 3D Studio (spec: `3D Studio - Spec & Roadmap.md`). Rode tudo a partir da raiz do projeto (`www/projects/3D Studio`). Sempre as mesmas etapas, na ordem.
+Fluxo fixo do 3D Studio (spec: `3D Studio - Spec & Roadmap.md`). Rode tudo a partir da raiz do projeto. Sempre as mesmas etapas, na ordem.
 
 ## 1. Referência
 
